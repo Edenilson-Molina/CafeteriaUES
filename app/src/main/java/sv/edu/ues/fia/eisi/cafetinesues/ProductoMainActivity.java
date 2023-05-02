@@ -1,43 +1,47 @@
 package sv.edu.ues.fia.eisi.cafetinesues;
 
-import androidx.appcompat.app.AppCompatActivity;
+//import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ListActivity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-public class ProductoMainActivity extends AppCompatActivity {
-    EditText codigo_Producto;
-    EditText codigo_TipoProducto;
-    EditText nombre_Producto;
-    EditText estado_Producto;
-    EditText precioactual_Producto;
+public class ProductoMainActivity extends ListActivity {
+
+    String[] menu = {"Insertar Registro","Eliminar Registro",
+                     "Consultar Registro","Actualizar Registro"};
+    String[] activities = {"ProductoInsertarActivity","ProductoEliminarActivity",
+                           "ProductoConsultarActivity","ProductoActualizarActivity"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_producto_main);
-        codigo_Producto = (EditText) findViewById(R.id.codigo_Producto);
-        codigo_TipoProducto = (EditText) findViewById(R.id.codigo_TipoProducto);
-        nombre_Producto = (EditText) findViewById(R.id.nombre_Producto);
-        estado_Producto = (EditText) findViewById(R.id.estado_Producto);
-        precioactual_Producto = (EditText) findViewById(R.id.precioactual_Producto);
+        ListView listView = getListView();
+        //listView.setBackgroundColor(Color.rgb(0, 0, 255));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menu);
+        setListAdapter(adapter);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l,View v,int position,long id){
+        super.onListItemClick(l, v, position, id);
+
+        String nombreValue=activities[position];
+
+        l.getChildAt(position).setBackgroundColor(Color.rgb(128, 128, 255));
+
+        try{
+            Class<?> clase = Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
+            Intent inte = new Intent(this,clase);
+            this.startActivity(inte);
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
 
     }
 
-    public void insertarProducto(View v)
-    {
-        String consola = codigo_Producto.getText().toString();
-        Toast.makeText(this, consola, Toast.LENGTH_SHORT).show();
-    }
-
-    public void limpiarTexto(View v)
-    {
-        codigo_Producto.setText("");
-        codigo_TipoProducto.setText("");
-        nombre_Producto.setText("");
-        estado_Producto.setText("");
-        precioactual_Producto.setText("");
-    }
 }
