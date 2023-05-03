@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ControlDB {
     // CAMPOS DE CADA TABLA
     private static final String[] campos_Combo = new String[]{"id_Combo", "precio_Combo"};
+    private static final String[] campos_ComboProducto = new String[]{"id_ComboProducto", "id_Combo", "id_Producto"};
 
 
 
@@ -253,9 +254,9 @@ public class ControlDB {
         return regAfectados;
     }
 
-    public Combo consultar(int id_Combo) {
+    public Combo consultarCombo(int id_Combo) {
         String[] id = {String.valueOf(id_Combo)};
-        // Verificar que exista el registro a consultar
+        // Verificar que exista el registro a consultarCombo
         if (verificarIntegridad(id_Combo, 2)) {
             Cursor cursor = db.query("Combo", campos_Combo, "id_Combo = ?", id, null, null, null);
             if (cursor.moveToFirst()) {
@@ -271,14 +272,86 @@ public class ControlDB {
             return null;
         }
     }
+
+    //
+    //
+    // METODOS PARA COMBOPRODUCTO
+    //
+    //
+    //
+    public String insertar(ComboProducto comboProducto) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(comboProducto, 3)) {
+            regInsertados = "ID existente o Producto/Combo inexistente";
+        } else {
+            ContentValues comboProductoValues = new ContentValues();
+            comboProductoValues.put("id_ComboProducto", comboProducto.getId_ComboProducto());
+            comboProductoValues.put("id_Combo", comboProducto.getId_Combo());
+            comboProductoValues.put("id_Producto", comboProducto.getId_Producto());
+            contador = db.insert("ComboProducto", null, comboProductoValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+
+    public String actualizar(ComboProducto comboProducto) {
+        // Verificar si existe el registro a actualizar
+        // En este caso nos interesa que SI exista
+        if (verificarIntegridad(comboProducto, 3)) {
+            String[] id = {String.valueOf(comboProducto.getId_ComboProducto())};
+            ContentValues cv = new ContentValues();
+            cv.put("id_Combo", comboProducto.getId_Combo());
+            cv.put("id_Producto", comboProducto.getId_Producto());
+            db.update("ComboProducto", cv, "id_ComboProducto = ?", id);
+            return "Registro Actualizado Correctamente";
+        } else {
+            return "Registro con id_ComboProducto " + comboProducto.getId_ComboProducto() + " no existe";
+        }
+    }
+
+    public String eliminar(ComboProducto comboProducto) {
+        String regAfectados = "filas afectadas= ";
+        int contador = 0;
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(comboProducto, 3)) {
+            contador += db.delete("ComboProducto", "id_ComboProducto='" + comboProducto.getId_ComboProducto() + "'", null);
+        }
+        regAfectados += contador;
+        return regAfectados;
+    }
+
+    public ComboProducto consultarComboProducto(int id_ComboProducto) {
+        String[] id = {String.valueOf(id_ComboProducto)};
+        // Verificar que exista el registro a consultarCombo
+        if (verificarIntegridad(id_ComboProducto, 4)) {
+            Cursor cursor = db.query("ComboProducto", campos_ComboProducto, "id_ComboProducto = ?", id, null, null, null);
+            if (cursor.moveToFirst()) {
+                ComboProducto comboProducto = new ComboProducto();
+                comboProducto.setId_ComboProducto(cursor.getInt(0));
+                comboProducto.setId_Combo(cursor.getInt(1));
+                comboProducto.setId_Producto(cursor.getInt(2));
+                return comboProducto;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
     //
     //
     //
 
-    // DEMAS METODOS PARA LAS DEMAS TABLAS
+
+    // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
 
 
 
+    //
+    //
+    //
     private boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
         switch (relacion) {
             //
@@ -298,11 +371,41 @@ public class ControlDB {
                 }
                 return false;
             case 2:
-                // Verificar si ya existe ese id_Combo
+                // Verificar si existe ese id_Combo
                 String[] id2 = {String.valueOf(dato)};
                 abrir();
                 Cursor cursor2 = db.query("Combo", null, "id_combo = ?", id2, null, null, null);
                 if (cursor2.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA COMBO_PRODUCTO
+            //
+            //
+            case 3:
+                // Verificar si ya existe ese COMBO_PRODUCTO y si existen  el Combo y Producto especificado
+                ComboProducto comboProducto = (ComboProducto)dato;
+                String[] id1c = {String.valueOf(comboProducto.getId_ComboProducto())};
+                String[] id2c = {String.valueOf(comboProducto.getId_Combo())};
+                String[] id3c = {String.valueOf(comboProducto.getId_Producto())};
+                abrir();
+                Cursor cursor1c = db.query("ComboProducto", null, "id_ComboProducto = ?", id1c, null, null, null);
+                Cursor cursor2c = db.query("Combo", null, "id_Combo = ?", id2c, null, null, null);
+                Cursor cursor3c = db.query("Producto", null, "id_Producto = ?", id3c, null, null, null);
+                if(cursor1c.moveToFirst() && cursor2c.moveToFirst() && cursor3c.moveToFirst()){
+                    //Se encontraron datos
+                    return true;
+                }
+                return false;
+            case 4:
+                // Verificar si existe ese id_ComboProducto
+                String[] id2cc = {String.valueOf(dato)};
+                abrir();
+                Cursor cursor2cc = db.query("ComboProducto", null, "id_ComboProducto = ?", id2cc, null, null, null);
+                if (cursor2cc.moveToFirst()) {
                     // Ya existe
                     return true;
                 }

@@ -1,5 +1,5 @@
 package sv.edu.ues.fia.eisi.cafetinesues;
-// ComboProducto posee id_ComboProducto, id_Combo, id_Producto
+
 public class ComboProducto {
     private int id_ComboProducto;
     private int id_Combo;

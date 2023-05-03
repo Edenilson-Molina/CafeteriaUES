@@ -23,7 +23,7 @@ public class ComboConsultarActivity extends AppCompatActivity {
 
     public void consultarCombo(View v){
         helper.abrir();
-        Combo combo = helper.consultar(Integer.parseInt(editIdCombo.getText().toString()));
+        Combo combo = helper.consultarCombo(Integer.parseInt(editIdCombo.getText().toString()));
         helper.cerrar();
         if(combo == null)
             Toast.makeText(this, "Combo no registrado", Toast.LENGTH_LONG).show();
