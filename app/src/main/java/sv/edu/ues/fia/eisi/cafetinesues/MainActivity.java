@@ -2,24 +2,53 @@ package sv.edu.ues.fia.eisi.cafetinesues;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
+
+    // AGREGAR DEMAS MENUS, Y SU CORRESPONDIENTE ACTIVITY, EN CADA STRING
+    String[] menu = {"Tabla Combo", "Tabla ComboProducto", "Llenar BD"};
+    String[] activities = {"ComboMenuActivity", "ComboProductoMenuActivity"};
+
+    ControlDB DBhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run()
-            {
-                Intent homeIntent = new Intent(MainActivity.this, ProductoMainActivity.class);
-                startActivity(homeIntent);
-                finish();
-            }
-        },1000);
+        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menu));
+        DBhelper=new ControlDB(this);
     }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id){
+        super.onListItemClick(l, v, position, id);
+        if(position!=2){
+
+            String nombreValue=activities[position];
+
+            try{
+                Class<?> clase=Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
+                Intent inte = new Intent(this,clase);
+                this.startActivity(inte);
+            }catch(ClassNotFoundException e){
+                e.printStackTrace();
+            }
+
+        }else{
+            DBhelper.abrir();
+            String tost=DBhelper.llenarBD();
+            DBhelper.cerrar();
+            Toast.makeText(this, tost, Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
 }
