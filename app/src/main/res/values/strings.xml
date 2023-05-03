@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">CafetinesUES</string>
+    <string name="title_activity_combo_menu">ComboMenuActivity</string>
+    <string name="title_activity_combo_insertar">ComboInsertarActivity</string>
+    <string name="title_activity_combo_eliminar">ComboEliminarActivity</string>
+    <string name="title_activity_combo_actualizar">ComboActualizarActivity</string>
+    <string name="title_activity_combo_consultar">ComboConsultarActivity</string>
+    <string name="resultado">Resultado</string>
+    <string name="nombre_del_combo">Nombre del Combo</string>
+    <string name="consultar">Consultar</string>
+    <string name="limpiar">Limpiar</string>
+    <string name="precio_del_combo">Precio del Combo</string>
+    <string name="codigo_consulta_combo">Código</string>
+    <string name="combo_consulta">COMBO</string>
+    <string name="insertar_combo">Insertar</string>
+    <string name="eliminar_combo">Eliminar</string>
+    <string name="nombre_combo_actualizar">COMBO</string>
+    <string name="id_combo_actualizar">ID del Combo</string>
+    <string name="precio_combo_actualizar">Precio del Combo</string>
+    <string name="actualizar_como_boton">Actualizar</string>
+    <string name="limpiar_combo_actualizar">Limpiar</string>
+    <string name="id_del_combo_eliminar">ID del Combo</string>
+    <string name="precio_del_combo_eliminar">Precio del Combo</string>
+    <string name="limpiar_combo_eliminar">Limpiar</string>
+    <string name="combo_titulo_insertar">COMBO</string>
+    <string name="id_del_combo_insertar">ID del Combo</string>
+    <string name="precio_del_combo_insertar">Precio del Combo</string>
+    <string name="limpiar_combo_insertar">Limpiar</string>
 </resources>

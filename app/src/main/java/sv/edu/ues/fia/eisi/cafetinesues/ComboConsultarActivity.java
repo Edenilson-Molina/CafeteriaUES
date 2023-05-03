@@ -3,11 +3,11 @@ package sv.edu.ues.fia.eisi.cafetinesues;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class ComboConsultarActivity extends AppCompatActivity {
-
     ControlDB helper;
     EditText editIdCombo;
     EditText editPrecioCombo;
@@ -21,14 +21,19 @@ public class ComboConsultarActivity extends AppCompatActivity {
         editPrecioCombo = (EditText) findViewById(R.id.precio_Combo);
     }
 
-    public void consultarCombo(){
+    public void consultarCombo(View v){
         helper.abrir();
-        Combo combo = helper.consultarCombo(editIdCombo.getText().toString());
+        Combo combo = helper.consultar(Integer.parseInt(editIdCombo.getText().toString()));
         helper.cerrar();
         if(combo == null)
             Toast.makeText(this, "Combo no registrado", Toast.LENGTH_LONG).show();
         else{
             editPrecioCombo.setText(String.valueOf(combo.getPrecio_Combo()));
         }
+    }
+
+    public void limpiarTextoConsultarCombo(View v){
+        editIdCombo.setText("");
+        editPrecioCombo.setText("");
     }
 }

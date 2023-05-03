@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="COMBO"
+            android:text="@string/combo_titulo_insertar"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del Combo"
+            android:hint="@string/id_del_combo_insertar"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -47,31 +47,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Nombre del Combo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nombre_Combo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Precio del Combo"
+            android:hint="@string/precio_del_combo_insertar"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -93,14 +73,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="insertarCombo"
-                android:text="Insertar"
+                android:text="@string/insertar_combo"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
             <Button
                 android:layout_width="wrap_content"
-                android:onClick="limpiarTextoCombo"
+                android:onClick="limpiarTextoInsertarCombo"
                 android:textStyle="bold"
-                android:text="Limpiar" />
+                android:text="@string/limpiar_combo_insertar" />
         </TableRow>
     </LinearLayout>
 

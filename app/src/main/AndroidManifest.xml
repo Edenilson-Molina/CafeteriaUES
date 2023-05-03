@@ -12,6 +12,9 @@
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
         <activity
+            android:name=".ComboMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".ComboActualizarActivity"
             android:exported="false" />
         <activity
@@ -22,9 +25,6 @@
             android:exported="false" />
         <activity
             android:name=".ComboInsertarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProductoMainActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

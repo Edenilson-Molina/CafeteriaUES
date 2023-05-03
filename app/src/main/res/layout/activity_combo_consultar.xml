@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="COMBO"
+            android:text="@string/combo_consulta"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="Código"
+            android:hint="@string/codigo_consulta_combo"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
@@ -56,13 +56,13 @@
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="5sp"
                 android:onClick="consultarCombo"
-                android:text="Consultar"
+                android:text="@string/consultar"
                 android:textStyle="bold" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="limpiarTextoConsultarCombo"
-                android:text="Limpiar"
+                android:text="@string/limpiar"
                 android:textStyle="bold" />
         </TableRow>
 
@@ -85,29 +85,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Resultado"
+            android:text="@string/resultado"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_3"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:hint="Nombre del Combo"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nombre_Combo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_5"
@@ -115,7 +95,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="Precio del Combo"
+            android:hint="@string/precio_del_combo"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
@@ -129,10 +109,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
