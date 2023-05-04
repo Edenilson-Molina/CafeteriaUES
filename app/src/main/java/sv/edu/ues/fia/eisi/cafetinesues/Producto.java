@@ -8,6 +8,9 @@ public class Producto {
     private String estado_Producto;
     private float precioactual_Producto;
 
+    public Producto() {
+    }
+
     public Producto(int codigo_Producto, int codigo_TipoProducto, String nombre_Producto, String estado_Producto, float precioactual_Producto) {
         this.codigo_Producto = codigo_Producto;
         this.codigo_TipoProducto = codigo_TipoProducto;

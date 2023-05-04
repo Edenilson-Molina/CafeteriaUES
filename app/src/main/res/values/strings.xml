@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">CafetinesUES</string>
+    <!-- Botones genericos -->
+    <string name="insertar">Insertar</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="consultar">Consultar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="limpiar">Limpiar</string>
+
+
     <string name="title_activity_combo_menu">ComboMenuActivity</string>
     <string name="title_activity_combo_insertar">ComboInsertarActivity</string>
     <string name="title_activity_combo_eliminar">ComboEliminarActivity</string>
@@ -7,8 +15,6 @@
     <string name="title_activity_combo_consultar">ComboConsultarActivity</string>
     <string name="resultado">Resultado</string>
     <string name="nombre_del_combo">Nombre del Combo</string>
-    <string name="consultar">Consultar</string>
-    <string name="limpiar">Limpiar</string>
     <string name="precio_del_combo">Precio del Combo</string>
     <string name="codigo_consulta_combo">Código</string>
     <string name="combo_consulta">COMBO</string>
@@ -26,4 +32,20 @@
     <string name="id_del_combo_insertar">ID del Combo</string>
     <string name="precio_del_combo_insertar">Precio del Combo</string>
     <string name="limpiar_combo_insertar">Limpiar</string>
+    <string name="actualizarProducto">Actualizar</string>
+
+    <!-- Tabla Producto -->
+    <string name="texto_Producto">PRODUCTO</string>
+    <string name="id_Producto">ID del producto</string>
+    <!--<string name="id_TipoProducto"></string>-->
+    <string name="nombre_Producto">Nombre del producto</string>
+    <string name="estado_Producto">Estado del producto</string>
+    <string name="precioactual_Producto">Precio actual</string>
+
+    <!-- Tabla TipoProducto -->
+    <string name="texto_TipoProducto">TIPO PRODUCTO</string>
+    <string name="id_TipoProducto">ID del tipo producto</string>
+    <string name="nombre_TipoProducto">Nombre del tipo producto</string>
+
+
 </resources>
