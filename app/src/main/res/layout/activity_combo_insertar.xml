@@ -39,8 +39,11 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_Combo"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -59,6 +62,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/precio_Combo"
+                android:inputType="numberDecimal"
+                android:digits="0123456789."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

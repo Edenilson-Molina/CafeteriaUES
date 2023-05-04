@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ComboConsultarActivity">
+    tools:context=".DetallePedidoConsultarActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/combo_consulta"
+            android:text="CONSULTA DETALLE PEDIDO"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,13 +33,13 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="ID del Combo"
+            android:hint="ID Detalle_Pedido"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_ComboConsulta"
+                android:id="@+id/id_DetallePedido"
                 android:inputType="number"
                 android:digits="0123456789"
                 android:layout_width="match_parent"
@@ -57,13 +57,13 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="5sp"
-                android:onClick="consultarCombo"
+                android:onClick="consultarDetallePedido"
                 android:text="@string/consultar"
                 android:textStyle="bold" />
 
             <Button
                 android:layout_width="wrap_content"
-                android:onClick="limpiarTextoConsultarCombo"
+                android:onClick="limpiarTextoConsultarDetallePedido"
                 android:text="@string/limpiar"
                 android:textStyle="bold" />
         </TableRow>
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="100dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -91,19 +91,20 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_5"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="@string/precio_del_combo"
+            android:hint="ID Pedido"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/precio_Combo"
+                android:id="@+id/id_Pedido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -111,6 +112,93 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="ID Combo"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/id_Combo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_6"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="ID Producto"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/id_Producto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_10"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="Cantidad del Producto o Combo"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cantidad_Producto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_11"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="Subtotal"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/subtotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

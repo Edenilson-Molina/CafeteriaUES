@@ -12,6 +12,21 @@
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
         <activity
+            android:name=".DetallePedidoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoActualizarActivity"
+            android:exported="false" />
+        <activity
             android:name=".ComboProductoInsertarActivity"
             android:exported="false" />
         <activity
@@ -56,8 +71,6 @@
         <activity
             android:name=".ProductoMainActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".MainActivity"
             android:exported="true">

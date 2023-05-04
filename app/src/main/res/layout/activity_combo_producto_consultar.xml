@@ -40,6 +40,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_ComboProductoConsulta"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

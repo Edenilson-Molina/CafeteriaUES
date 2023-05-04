@@ -3,6 +3,9 @@ package sv.edu.ues.fia.eisi.cafetinesues;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,13 +24,18 @@ public class ComboInsertarActivity extends AppCompatActivity {
         EditPrecio_Combo = (EditText) findViewById(R.id.precio_Combo);
     }
 
+
     public void insertarCombo(View v) {
         String id_Combo=EditId_Combo.getText().toString();
         String precio_Combo=EditPrecio_Combo.getText().toString();
         String regInsertados;
         Combo combo=new Combo();
-        combo.setId_Combo(Integer.parseInt(id_Combo));
-        combo.setPrecio_Combo(Float.parseFloat(precio_Combo));
+        try {
+            combo.setPrecio_Combo(Float.parseFloat(precio_Combo));
+            combo.setId_Combo(Integer.parseInt(id_Combo));
+        } catch (Exception e) {
+            Toast.makeText(this, "Tipo de dato incorrecto", Toast.LENGTH_SHORT).show();
+        }
         helper.abrir();
         regInsertados=helper.insertar(combo);
         helper.cerrar();
