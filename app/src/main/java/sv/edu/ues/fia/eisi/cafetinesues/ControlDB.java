@@ -14,6 +14,8 @@ public class ControlDB {
     private static final String[] campos_Combo = new String[]{"id_Combo", "precio_Combo"};
     private static final String[] campos_ComboProducto = new String[]{"id_ComboProducto", "id_Combo", "id_Producto"};
     private static final String[] campos_DetallePedido = new String[]{"id_DetallePedido", "id_Pedido", "id_Combo", "id_Producto", "cantidad_Producto", "subtotal"};
+    private static final String[] campos_Producto = new String[]{"id_Producto","id_TipoProducto","nombre_Producto","estado_Producto","precioactual_Producto"};
+    private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
 
 
     private final Context context;
@@ -298,7 +300,7 @@ public class ControlDB {
     }
 
     public String actualizar(ComboProducto comboProducto) {
-        // Verificar si existen los registros a actualizar
+        // Verificar si existe el registro a actualizar
         // En este caso nos interesa que SI exista
         if (verificarIntegridad(comboProducto, 4)) {
             String[] id = {String.valueOf(comboProducto.getId_ComboProducto())};
@@ -450,10 +452,190 @@ public class ControlDB {
 
     //
     //
+    // METODOS PARA PRODUCTO
     //
+    //
+    //
+
+    public String insertar(Producto producto) {
+        String resultado = "";
+        long contador = 0;
+        TipoProducto tipoProducto = new TipoProducto();
+        tipoProducto.setId_TipoProducto(producto.getCodigo_TipoProducto());
+
+        boolean existenciaProducto = verificarIntegridad(producto, 11);
+        boolean existenciaTipoProducto = verificarIntegridad(tipoProducto,14);
+
+        // Verificar si existe el registro a insertar
+        if (!(existenciaProducto) && (existenciaTipoProducto)) {
+            ContentValues productoValues = new ContentValues();
+            productoValues.put(campos_Producto[0], producto.getCodigo_Producto());
+            productoValues.put(campos_Producto[1], producto.getCodigo_TipoProducto());
+            productoValues.put(campos_Producto[2], producto.getNombre_Producto());
+            productoValues.put(campos_Producto[3], producto.getEstado_Producto());
+            productoValues.put(campos_Producto[4], producto.getPrecioactual_Producto());
+            contador = db.insert("Producto", null, productoValues);
+            resultado = "Registro Insertado Nº= "  + contador;
+        } else {
+            if(existenciaProducto)
+                resultado = "El producto ya existe";
+            if(!(existenciaTipoProducto))
+            {
+                if(resultado.isEmpty())
+                {
+                    resultado = "No existe el tipo de producto";
+                }else {
+                    resultado +=" y\nNo existe el tipo de producto";
+                }
+            }
+
+        }
+        return resultado;
+    }
+
+    public String actualizar(Producto producto) {
+        // Verificar si existe el registro a actualizar
+        // En este caso nos interesa que SI exista
+        TipoProducto tipoProducto = new TipoProducto();
+        tipoProducto.setId_TipoProducto(producto.getCodigo_TipoProducto());
+        String resultado = "";
+        boolean existenciaProducto = verificarIntegridad(producto, 11);
+        boolean existenciaTipoProducto = verificarIntegridad(tipoProducto,14);
+
+        if ((existenciaProducto) && (existenciaTipoProducto)) {
+            String[] id = {String.valueOf(producto.getCodigo_Producto())};
+            ContentValues productoUpdate = new ContentValues();
+            productoUpdate.put(campos_Producto[1],producto.getCodigo_TipoProducto());
+            productoUpdate.put(campos_Producto[2],producto.getNombre_Producto());
+            productoUpdate.put(campos_Producto[3],producto.getEstado_Producto());
+            productoUpdate.put(campos_Producto[4],producto.getPrecioactual_Producto());
+            db.update("Producto", productoUpdate, "id_Producto = ?", id);
+            resultado = "Registro Actualizado Correctamente";
+        } else {
+            if(!(existenciaProducto))
+                resultado = "El producto no existe";
+            if(!(existenciaTipoProducto))
+            {
+                if(resultado.isEmpty())
+                {
+                    resultado = "El tipo de producto no existe";
+                }
+                else{
+                    resultado += " y\nEl tipo de producto no existe";
+                }
+            }
+
+        }
+        return resultado;
+    }
+
+    public String eliminar(Producto producto) {
+        String regAfectados = "filas afectadas= ";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(producto, 11) && !(verificarIntegridad(producto,12))) {
+            contador += db.delete("Producto", "id_Producto='" + producto.getCodigo_Producto() + "'", null);
+            regAfectados += contador;
+        }
+        else {
+            regAfectados = "No existe o\nEsta asociado";
+        }
+
+        return regAfectados;
+    }
+
+    public Producto consultarProducto(Producto producto) {
+        // Verificar que exista el registro a consultar de Producto
+        if (verificarIntegridad(producto, 11)) {
+            Cursor cursor = db.query("Producto", campos_Producto, "id_Producto = ?",
+                    new String[]{String.valueOf(producto.getCodigo_Producto())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                Producto productoConsulta = new Producto();
+                productoConsulta.setCodigo_Producto(cursor.getInt(0));
+                productoConsulta.setCodigo_TipoProducto(cursor.getInt(1));
+                productoConsulta.setNombre_Producto(cursor.getString(2));
+                productoConsulta.setEstado_Producto(cursor.getString(3));
+                productoConsulta.setPrecioactual_Producto(cursor.getFloat(4));
+                return productoConsulta;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    //
+    //
+    // METODOS PARA TIPO PRODUCTO
+    //
+    //
+    //
+    public String insertar(TipoProducto tipoProducto) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(tipoProducto, 14)) {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues tipoProductoValues = new ContentValues();
+            tipoProductoValues.put(campos_TipoProducto[0], tipoProducto.getId_TipoProducto());
+            tipoProductoValues.put(campos_TipoProducto[1],tipoProducto.getNombre_TipoProducto());
+            contador = db.insert("TipoProducto", null, tipoProductoValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+
+    public String actualizar(TipoProducto tipoProducto) {
+        // Verificar si existe el registro a actualizar
+        // En este caso nos interesa que SI exista
+        if (verificarIntegridad(tipoProducto, 14)) {
+            String[] id = {String.valueOf(tipoProducto.getId_TipoProducto())};
+            ContentValues tipoProductoUpdate = new ContentValues();
+            tipoProductoUpdate.put(campos_TipoProducto[1],tipoProducto.getNombre_TipoProducto());
+            db.update("TipoProducto", tipoProductoUpdate, "id_TipoProducto = ?", id);
+            return "Registro Actualizado Correctamente";
+        } else {
+            return "Tipo de Producto con código " + tipoProducto.getId_TipoProducto() + " no existe";
+        }
+    }
+
+    public String eliminar(TipoProducto tipoProducto) {
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(tipoProducto, 14) && !(verificarIntegridad(tipoProducto,15))) {
+            contador += db.delete("TipoProducto", "id_TipoProducto='" + tipoProducto.getId_TipoProducto() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe o\nEsta asociado";
+        }
+
+        return regAfectados;
+    }
+
+    public TipoProducto consultarTipoProducto(TipoProducto tipoproducto) {
+        // Verificar que exista el registro a consultar de Producto
+        if (verificarIntegridad(tipoproducto, 14)) {
+            Cursor cursor = db.query("TipoProducto", campos_TipoProducto, "id_TipoProducto = ?",
+                    new String[]{String.valueOf(tipoproducto.getId_TipoProducto())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                TipoProducto tipoProductoConsulta = new TipoProducto();
+                tipoProductoConsulta.setId_TipoProducto(cursor.getInt(0));
+                tipoProductoConsulta.setNombre_TipoProducto(cursor.getString(1));
+                return tipoProductoConsulta;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
     // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
-
-
 
 
 
@@ -621,6 +803,63 @@ public class ControlDB {
                 abrir();
                 Cursor cursordp = db.query("DetallePedido", null, "id_DetallePedido = ?", iddp, null, null, null);
                 if (cursordp.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+
+            //
+            //
+            // INTEGRIDAD PARA PRODUCTO
+            //
+            //
+            case 11:
+                // Verificar que no exista el producto
+                Producto producto1 = (Producto) dato;
+                String[] id_Producto1 = {String.valueOf(producto1.getCodigo_Producto())};
+                abrir();
+                Cursor cursorIP = db.query("Producto", null, "id_Producto = ?",id_Producto1, null, null, null);
+                if (cursorIP.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            case 12:
+                // Verificar que existencia del producto en las relaciones
+                Producto producto12 = (Producto) dato;
+                String[] id_Producto12 = {String.valueOf(producto12.getCodigo_Producto())};
+                abrir();
+                Cursor cursorCP12 = db.query("ComboProducto", null, "id_Producto = ?",id_Producto12, null, null, null);
+                Cursor cursorDP12 = db.query("DetallePedido", null, "id_Producto = ?",id_Producto12, null, null, null);
+                Cursor cursorPP12 = db.query("PrecioProducto", null, "id_Producto = ?",id_Producto12, null, null, null);
+                if (cursorCP12.moveToFirst() || cursorDP12.moveToFirst() || cursorPP12.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA TIPO PRODUCTO
+            //
+            //
+            case 14:
+                // Verificar la existencia del Tipo Producto
+                TipoProducto tipoProducto1 = (TipoProducto) dato;
+                String[] id_TipoProducto1 = {String.valueOf(tipoProducto1.getId_TipoProducto())};
+                abrir();
+                Cursor cursorITP = db.query("TipoProducto", null, "id_TipoProducto = ?",id_TipoProducto1, null, null, null);
+                if (cursorITP.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            case 15:
+                // Verificar la existencia del Tipo Producto en Producto
+                TipoProducto tipoProducto15 = (TipoProducto) dato;
+                String[] id_TipoProducto15 = {String.valueOf(tipoProducto15.getId_TipoProducto())};
+                abrir();
+                Cursor cursorP15 = db.query("Producto", null, "id_TipoProducto = ?",id_TipoProducto15, null, null, null);
+                if (cursorP15.moveToFirst()) {
                     // Ya existe
                     return true;
                 }

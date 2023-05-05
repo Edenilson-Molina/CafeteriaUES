@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class ProductoConsultarActivity extends Activity {
+    ControlDB helper;
     EditText codigo_Producto;
     EditText codigo_TipoProducto;
     EditText nombre_Producto;
@@ -19,6 +20,7 @@ public class ProductoConsultarActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producto_consultar);
+        helper = new ControlDB(this);
         codigo_Producto = (EditText) findViewById(R.id.codigo_Producto);
         codigo_TipoProducto = (EditText) findViewById(R.id.codigo_TipoProducto);
         nombre_Producto = (EditText) findViewById(R.id.nombre_Producto);
@@ -28,8 +30,19 @@ public class ProductoConsultarActivity extends Activity {
 
     public void consultarProducto(View v)
     {
-        Toast.makeText(this,codigo_Producto.getText().toString(), Toast.LENGTH_SHORT).show();
-        precioactual_Producto.setText("1.53");
+        Producto productoConsulta = new Producto();
+        productoConsulta.setCodigo_Producto(Integer.parseInt(codigo_Producto.getText().toString()));
+        helper.abrir();
+        Producto producto = helper.consultarProducto(productoConsulta);
+        helper.cerrar();
+        if(producto == null)
+            Toast.makeText(this, "Producto no registrado", Toast.LENGTH_LONG).show();
+        else{
+            codigo_TipoProducto.setText(String.valueOf(producto.getCodigo_TipoProducto()));
+            nombre_Producto.setText(producto.getNombre_Producto());
+            estado_Producto.setText(producto.getEstado_Producto());
+            precioactual_Producto.setText(String.valueOf(producto.getPrecioactual_Producto()));
+        }
     }
 
     public void limpiarTexto(View v)

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductoEliminarActivity">
-
+    tools:context=".TipoProductoConsultarActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/texto_Producto"
+            android:text="@string/texto_TipoProducto"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -30,14 +29,15 @@
             android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/id_Producto"
+
+            android:hint="@string/id_TipoProducto"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/codigo_Producto"
+                android:id="@+id/codigo_TipoProducto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number">
@@ -52,11 +52,42 @@
             android:gravity="center">
             <Button
                 android:layout_width="wrap_content"
-                android:onClick="eliminarProducto"
-                android:text="@string/eliminar"
+                android:onClick="consultarTipoProducto"
+                android:text="@string/consultar"
+                android:textStyle="bold"
+                android:layout_marginEnd="5sp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:onClick="limpiarTexto"
+                android:text="@string/limpiar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
         </TableRow>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="@string/nombre_TipoProducto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nombre_TipoProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

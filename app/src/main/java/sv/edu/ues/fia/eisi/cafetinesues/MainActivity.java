@@ -14,8 +14,9 @@ import android.widget.Toast;
 public class MainActivity extends ListActivity {
 
     // AGREGAR DEMAS MENUS, Y SU CORRESPONDIENTE ACTIVITY, EN CADA STRING
-    String[] menu = {"Tabla Combo", "Tabla ComboProducto", "Tabla DetallePedido", "Llenar BD"};
-    String[] activities = {"ComboMenuActivity", "ComboProductoMenuActivity", "DetallePedidoMenuActivity"};
+    String[] menu = {"Tabla Combo", "Tabla ComboProducto", "Tabla DetallePedido","Tabla TipoProducto","Tabla Producto", "Llenar BD"};
+    String[] activities = {"ComboMenuActivity", "ComboProductoMenuActivity", "DetallePedidoMenuActivity",
+                            "TipoProductoMainActivity","ProductoMainActivity"};
 
     ControlDB DBhelper;
 
@@ -29,7 +30,7 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id){
         super.onListItemClick(l, v, position, id);
-        if(position!=3){
+        if(position!=5){
 
             String nombreValue=activities[position];
 
