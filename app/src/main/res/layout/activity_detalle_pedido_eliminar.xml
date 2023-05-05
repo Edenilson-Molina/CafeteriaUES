@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="DETALLE PEDIDO"
+            android:text="@string/texto_detalle_pedido"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del DetallePedido"
+            android:hint="@string/id_detalle_pedido"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -52,124 +52,124 @@
 
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/textInputLayout_5"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
 
-            android:hint="ID del Pedido"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
+<!--            android:hint="ID del Pedido"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            tools:ignore="MissingConstraints">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_Pedido"
-                android:inputType="number"
-                android:digits="0123456789"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/id_Pedido"-->
+<!--                android:inputType="number"-->
+<!--                android:digits="0123456789"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-            </com.google.android.material.textfield.TextInputEditText>
+<!--            </com.google.android.material.textfield.TextInputEditText>-->
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="ID del Combo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_Combo"
-                android:inputType="number"
-                android:digits="0123456789"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
 
-            android:hint="ID del Producto"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/textInputLayout_6"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_Producto"
-                android:inputType="number"
-                android:digits="0123456789"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            android:hint="ID del Combo"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            tools:ignore="MissingConstraints">-->
 
-            </com.google.android.material.textfield.TextInputEditText>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/id_Combo"-->
+<!--                android:inputType="number"-->
+<!--                android:digits="0123456789"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            </com.google.android.material.textfield.TextInputEditText>-->
 
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Cantidad del Producto o Combo elegido"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cantidad_Producto"
-                android:inputType="numberDecimal"
-                android:digits="0123456789."
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/textInputLayout_7"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
 
-            android:hint="Subtotal"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
+<!--            android:hint="ID del Producto"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            tools:ignore="MissingConstraints">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/subtotal"
-                android:inputType="numberDecimal"
-                android:digits="0123456789."
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/id_Producto"-->
+<!--                android:inputType="number"-->
+<!--                android:digits="0123456789"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-            </com.google.android.material.textfield.TextInputEditText>
+<!--            </com.google.android.material.textfield.TextInputEditText>-->
 
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/textInputLayout_8"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:hint="Cantidad del Producto o Combo elegido"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            tools:ignore="MissingConstraints">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/cantidad_Producto"-->
+<!--                android:inputType="numberDecimal"-->
+<!--                android:digits="0123456789."-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--            </com.google.android.material.textfield.TextInputEditText>-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/textInputLayout_9"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:hint="Subtotal"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            tools:ignore="MissingConstraints">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/subtotal"-->
+<!--                android:inputType="numberDecimal"-->
+<!--                android:digits="0123456789."-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--            </com.google.android.material.textfield.TextInputEditText>-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
 
 
@@ -180,14 +180,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="eliminarDetallePedido"
-                android:text="Eliminar"
+                android:text="@string/eliminar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="limpiarTextoEliminarDetallePedido"
                 android:textStyle="bold"
-                android:text="@string/limpiar_combo_actualizar" />
+                android:text="@string/limpiar" />
         </TableRow>
     </LinearLayout>
 

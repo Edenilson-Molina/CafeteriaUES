@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="COMBO_PRODUCTO"
+            android:text="@string/texto_combo_producto"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del ComboProducto"
+            android:hint="@string/id_combo_producto"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del Combo"
+            android:hint="@string/id_combo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del Producto"
+            android:hint="@string/id_Producto"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -108,14 +108,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="actualizarComboProducto"
-                android:text="@string/actualizar_como_boton"
+                android:text="@string/actualizar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="limpiarTextoActualizarComboProducto"
                 android:textStyle="bold"
-                android:text="@string/limpiar_combo_actualizar" />
+                android:text="@string/limpiar" />
         </TableRow>
     </LinearLayout>
 

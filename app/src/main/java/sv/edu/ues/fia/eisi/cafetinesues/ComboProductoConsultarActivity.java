@@ -37,7 +37,7 @@ public class ComboProductoConsultarActivity extends AppCompatActivity {
     }
 
     public void limpiarTextoConsultarComboProducto(View v){
-        EditIdProducto.setText("");
+        EditIdComboProducto.setText("");
         EditIdCombo.setText("");
         EditIdProducto.setText("");
     }

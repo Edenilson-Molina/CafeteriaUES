@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="COMBO"
+            android:text="@string/texto_combo"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="@string/id_del_combo_eliminar"
+            android:hint="@string/id_combo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -48,27 +48,27 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/textInputLayout_5"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
 
-            android:hint="@string/precio_del_combo_eliminar"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
+<!--            android:hint="@string/precio_del_combo_eliminar"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            tools:ignore="MissingConstraints">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/precio_Combo"
-                android:inputType="numberDecimal"
-                android:digits="0123456789."
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/precio_Combo"-->
+<!--                android:inputType="numberDecimal"-->
+<!--                android:digits="0123456789."-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-            </com.google.android.material.textfield.TextInputEditText>
+<!--            </com.google.android.material.textfield.TextInputEditText>-->
 
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <TableRow
             android:layout_width="match_parent"
@@ -77,14 +77,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="eliminarCombo"
-                android:text="@string/eliminar_combo"
+                android:text="@string/eliminar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="limpiarTextoEliminarCombo"
                 android:textStyle="bold"
-                android:text="@string/limpiar_combo_eliminar" />
+                android:text="@string/limpiar" />
         </TableRow>
     </LinearLayout>
 

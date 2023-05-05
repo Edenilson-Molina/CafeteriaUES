@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="DETALLE PEDIDO"
+            android:text="@string/texto_detalle_pedido"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del DetallePedido"
+            android:hint="@string/id_detalle_pedido"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del Pedido"
+            android:hint="@string/id_pedido"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del Combo"
+            android:hint="@string/id_combo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="ID del Producto"
+            android:hint="@string/id_Producto"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -130,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Cantidad del Producto o Combo elegido"
+            android:hint="@string/cantidad_detalle_pedido"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -154,7 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Subtotal"
+            android:hint="@string/subtotal_detalle_pedido"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -180,14 +180,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="insertarDetallePedido"
-                android:text="Insertar"
+                android:text="@string/insertar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="limpiarTextoInsertarDetallePedido"
                 android:textStyle="bold"
-                android:text="@string/limpiar_combo_actualizar" />
+                android:text="@string/limpiar" />
         </TableRow>
     </LinearLayout>
 

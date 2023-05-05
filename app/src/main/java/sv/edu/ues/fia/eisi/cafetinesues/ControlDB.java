@@ -879,7 +879,20 @@ public class ControlDB {
         // DATOS PARA COMBO
         final String[] VECcombo = {"1", "2", "3", "4", "5"};
         final String[] VECprecio = {"1.00", "2.00", "3.00", "4.00", "5.00"};
+        //DATOS PARA PRODUCTO
+        final String[] VECproducto = {"1", "2", "3", "4", "5"};
+        final String[] VECnombre = {"Producto1", "Producto2", "Producto3", "Producto4", "Producto5"};
+        final String[] VECestado_producto = {"Estado1", "Estado2", "Estado3", "Estado4", "Estado5"};
+        final String[] VECprecioActualProducto = {"1.00", "2.00", "3.00", "4.00", "5.00"};
+        final String[] VECidTipoProducto = {"1", "2", "3", "4", "5"};
+        //DATOS PARA TIPO PRODUCTO
+        final String[] VECtipoProducto = {"1", "2", "3", "4", "5"};
+        final String[] VECnombreTipoProducto = {"TipoProducto1", "TipoProducto2", "TipoProducto3", "TipoProducto4", "TipoProducto5"};
         // DATOS PARA COMBO_PRODUCTO
+        final String[] VECComboProducto = {"1", "2", "3", "4", "5"};
+        final String[] VECidCombo = {"1", "2", "3", "4", "5"};
+        final String[] VECidProducto = {"1", "2", "3", "4", "5"};
+        // DATOS PARA DETALLE_PEDIDO
 
 
 
@@ -888,6 +901,9 @@ public class ControlDB {
 
         // ELIMINAR REGISTROS
         db.execSQL("DELETE FROM Combo");
+        db.execSQL("DELETE FROM Producto");
+        db.execSQL("DELETE FROM TipoProducto");
+        db.execSQL("DELETE FROM ComboProducto");
 
 
 
@@ -898,6 +914,34 @@ public class ControlDB {
             combo.setId_Combo(Integer.parseInt(VECcombo[i]));
             combo.setPrecio_Combo(Float.parseFloat(VECprecio[i]));
             insertar(combo);
+        }
+
+        // LLENAR TABLA TIPO PRODUCTO
+        TipoProducto tipoProducto = new TipoProducto();
+        for (int i = 0; i < 5; i++) {
+            tipoProducto.setId_TipoProducto(Integer.parseInt(VECtipoProducto[i]));
+            tipoProducto.setNombre_TipoProducto(VECnombreTipoProducto[i]);
+            insertar(tipoProducto);
+        }
+
+        // LLENAR TABLA PRODUCTO
+        Producto producto = new Producto();
+        for (int i = 0; i < 5; i++) {
+            producto.setCodigo_Producto(Integer.parseInt(VECproducto[i]));
+            producto.setNombre_Producto(VECnombre[i]);
+            producto.setEstado_Producto(VECestado_producto[i]);
+            producto.setPrecioactual_Producto(Float.parseFloat(VECprecioActualProducto[i]));
+            producto.setCodigo_TipoProducto(Integer.parseInt(VECidTipoProducto[i]));
+            insertar(producto);
+        }
+
+        // LLENAR TABLA COMBO_PRODUCTO
+        ComboProducto comboProducto = new ComboProducto();
+        for (int i = 0; i < 5; i++) {
+            comboProducto.setId_ComboProducto(Integer.parseInt(VECComboProducto[i]));
+            comboProducto.setId_Combo(Integer.parseInt(VECidCombo[i]));
+            comboProducto.setId_Producto(Integer.parseInt(VECidProducto[i]));
+            insertar(comboProducto);
         }
 
 

@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="CONSULTA COMBO PRODUCTO"
+            android:text="@string/texto_combo_producto"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="ID Combo_Producto"
+            android:hint="@string/id_combo_producto"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="ID Combo"
+            android:hint="@string/id_combo"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
@@ -122,7 +122,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="ID Producto"
+            android:hint="@string/id_Producto"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">

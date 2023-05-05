@@ -11,11 +11,11 @@ public class DetallePedidoEliminarActivity extends AppCompatActivity {
 
     ControlDB helper;
     EditText EditId_DetallePedido;
-    EditText EditId_Pedido;
-    EditText EditId_Combo;
-    EditText EditId_Producto;
-    EditText EditCantidad_Producto;
-    EditText EditSubtotal;
+    //EditText EditId_Pedido;
+    //EditText EditId_Combo;
+    //EditText EditId_Producto;
+    //EditText EditCantidad_Producto;
+    //EditText EditSubtotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +23,11 @@ public class DetallePedidoEliminarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalle_pedido_eliminar);
         helper = new ControlDB(this);
         EditId_DetallePedido = (EditText) findViewById(R.id.id_DetallePedido);
-        EditId_Pedido = (EditText) findViewById(R.id.id_Pedido);
-        EditId_Combo = (EditText) findViewById(R.id.id_Combo);
-        EditId_Producto = (EditText) findViewById(R.id.id_Producto);
-        EditCantidad_Producto = (EditText) findViewById(R.id.cantidad_Producto);
-        EditSubtotal = (EditText) findViewById(R.id.subtotal);
+//        EditId_Pedido = (EditText) findViewById(R.id.id_Pedido);
+//        EditId_Combo = (EditText) findViewById(R.id.id_Combo);
+//        EditId_Producto = (EditText) findViewById(R.id.id_Producto);
+//        EditCantidad_Producto = (EditText) findViewById(R.id.cantidad_Producto);
+//        EditSubtotal = (EditText) findViewById(R.id.subtotal);
     }
 
     public void eliminarDetallePedido(View v) {
@@ -51,10 +51,10 @@ public class DetallePedidoEliminarActivity extends AppCompatActivity {
 
     public void limpiarTextoEliminarDetallePedido(View v) {
         EditId_DetallePedido.setText("");
-        EditId_Pedido.setText("");
-        EditId_Combo.setText("");
-        EditId_Producto.setText("");
-        EditCantidad_Producto.setText("");
-        EditSubtotal.setText("");
+//        EditId_Pedido.setText("");
+//        EditId_Combo.setText("");
+//        EditId_Producto.setText("");
+//        EditCantidad_Producto.setText("");
+//        EditSubtotal.setText("");
     }
 }
