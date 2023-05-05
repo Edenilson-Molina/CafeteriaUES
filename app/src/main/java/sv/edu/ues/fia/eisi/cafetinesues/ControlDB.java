@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ControlDB {
     // CAMPOS DE CADA TABLA
@@ -17,6 +18,7 @@ public class ControlDB {
     private static final String[] campos_Producto = new String[]{"id_Producto","id_TipoProducto","nombre_Producto","estado_Producto","precioactual_Producto"};
     private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
 
+    private static final String[] Campos_Empleado = new String[] {"id_Empleado","id_Local", "nombre_Empleado", "tipo_Empleado"};
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -530,6 +532,103 @@ public class ControlDB {
         }
     }
 
+    //
+    // METODOS PARA EMPLEADO
+    //
+    //
+    //
+    public String Insertar(Empleado empleado){
+        String resultado = "";
+        long contador = 0;
+        Local local = new Local();
+        local.setId_Local(empleado.getId_Local());
+        boolean existenciaLocal = verificarIntegridad(local, 42);
+        boolean existenciaEmpleado = verificarIntegridad(empleado,41);
+        //verificar si existe el registro al insertar
+        if(!(existenciaEmpleado)&&(existenciaLocal)){
+            ContentValues empleadoValues = new ContentValues();
+            empleadoValues.put(Campos_Empleado[0], empleado.getId_Empleado());
+            empleadoValues.put(Campos_Empleado[1], empleado.getId_Local());
+            empleadoValues.put(Campos_Empleado[2], empleado.getNombre_Empleado());
+            empleadoValues.put(Campos_Empleado[3], empleado.getTipo_Empleado());
+            contador = db.insert("Empleado", null, empleadoValues);
+            resultado = "Registro Insertado N°=" + contador;
+        }else{
+            if(existenciaEmpleado){
+                resultado = "El Empleado ya existe";
+                if(!(existenciaEmpleado)){
+                    if(resultado.isEmpty()){
+                        resultado = "No eciste el Empleado";
+                    }
+                    else {
+                        resultado += "y\nNo existe el Local";
+                    }
+                }
+            }
+        }
+        return resultado;
+    }
+    public String Actualizar(Empleado empleado){
+        String resultado = "";
+        long contador = 0;
+        Local local = new Local();
+        local.setId_Local(empleado.getId_Local());
+        boolean existenciaLocal = verificarIntegridad(empleado, 42);
+        boolean existenciaEmpleado = verificarIntegridad(empleado,41);
+        if((existenciaEmpleado)&&(existenciaLocal)){
+            String[] id = {String.valueOf(empleado.getId_Empleado())};
+            ContentValues empleadoUpdate = new ContentValues();
+            empleadoUpdate.put(Campos_Empleado[1], empleado.getId_Local());
+            empleadoUpdate.put(Campos_Empleado[2], empleado.getNombre_Empleado());
+            empleadoUpdate.put(Campos_Empleado[3], empleado.getTipo_Empleado());
+            contador = db.update("Empleado", empleadoUpdate,"id_Empleado = ?",id);
+            resultado = "Registro  Actualizado Correctamente";
+        }else{
+            if(!(existenciaEmpleado)){
+                resultado = "El Empleado ya existe";
+                if(!(existenciaLocal)){
+                    if(resultado.isEmpty()){
+                        resultado = "El tipo de producto no existe";
+                    }else{
+                        resultado += "y\nNo existe el Local";
+                    }
+                }
+            }
+        }
+        return resultado;
+    }
+    public String Eliminar (Empleado empleado){
+        String resultado = "";
+        int contador = 0;
+        if (verificarIntegridad(empleado, 41)&& !(verificarIntegridad(empleado,42))){
+
+            contador+= db.delete("Empleado", "id_Empleado='"+empleado.getId_Empleado()+"'",null);
+            resultado = "Filas afectadas N° = "+contador;
+        }else{
+            resultado = "No existe o\nEsta asociado";
+        }
+        return resultado;
+    }
+
+    public Empleado consultarEmpleado(Empleado empleado){
+        if(verificarIntegridad(empleado,41)){
+            Cursor cursor = db.query("Empleado", Campos_Empleado, "id_Empleado=?",
+                    new String[]{String.valueOf(empleado.getId_Empleado())},null,null,null);
+            if (cursor.moveToFirst()){
+                Empleado empleadoConsulta = new Empleado();
+                empleadoConsulta.setId_Empleado(cursor.getInt(0));
+                empleadoConsulta.setId_Local(cursor.getInt(1));
+                empleadoConsulta.setNombre_Empleado(cursor.getString(2));
+                empleadoConsulta.setTipo_Empleado(cursor.getString(3));
+                return empleadoConsulta;
+            }else{
+                return null;
+            }
+
+        }else {
+            return null;
+        }
+    }
     // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
 
 
@@ -649,6 +748,32 @@ public class ControlDB {
                 Cursor cursorP15 = db.query("Producto", null, "id_TipoProducto = ?",id_TipoProducto15, null, null, null);
                 if (cursorP15.moveToFirst()) {
                     // Ya existe
+                    return true;
+                }
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA EMPLEADO
+            //
+            //
+            case 41:
+                //verificar la integridad de existencia del empleado
+                Empleado empleado = (Empleado) dato;
+                String[] id_Empleado = {String.valueOf(empleado.getId_Empleado())};
+                abrir();
+                Cursor cursor41 = db.query("Empleado",null, "id_Empleado=?", id_Empleado,null,null,null);
+                if(cursor41.moveToFirst()){
+                    return true;
+                }
+                return false;
+            case 42:
+                //verificar la integridad de existencia d eempleado en relaciones
+                Empleado empleado1 = (Empleado) dato;
+                String []  id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
+                abrir();
+                Cursor cursorE1 = db.query("Envio",null,"id_Empleado=?" ,id_Empleado1,null, null,null);
+                Cursor cursorL1 = db.query("Local",null, "id_Empleado=?",id_Empleado1, null,null,null);
+                if (cursorE1.moveToFirst() || cursorL1.moveToFirst()){
                     return true;
                 }
                 return false;

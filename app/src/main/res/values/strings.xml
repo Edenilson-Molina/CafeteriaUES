@@ -41,7 +41,12 @@
     <string name="nombre_Producto">Nombre del producto</string>
     <string name="estado_Producto">Estado del producto</string>
     <string name="precioactual_Producto">Precio actual</string>
-
+    <!-- Tabla Empleado -->
+    <string name="texto_Empleado">EMPLEADO</string>
+    <string name="id_Empleado">ID del empleado</string>
+    <string name="nombre_Empleado">Nombre del empleado</string>
+    <string name="tipo_Empleado">Tipo del empleado</string>
+    <string name="id_Local">ID del local</string>
     <!-- Tabla TipoProducto -->
     <string name="texto_TipoProducto">TIPO PRODUCTO</string>
     <string name="id_TipoProducto">ID del tipo producto</string>
