@@ -29,8 +29,6 @@
     <string name="id_pedido">ID del Pedido</string>
 
 
-
-
     <!-- Tabla Producto -->
     <string name="texto_Producto">PRODUCTO</string>
     <string name="id_Producto">ID del Producto</string>
@@ -43,6 +41,19 @@
     <string name="texto_TipoProducto">TIPO PRODUCTO</string>
     <string name="id_TipoProducto">ID del Tipo Producto</string>
     <string name="nombre_TipoProducto">Nombre del Tipo Producto</string>
+
+    <!-- Tabla Cliente -->
+    <string name="texto_cliente">CLIENTE</string>
+    <string name="texto_id_cliente">Id Cliente</string>
+    <string name="texto_nombre">Nombres</string>
+    <string name="texto_apellido">Apellidos</string>
+    <string name="texto_fecha_nacimiento">Fecha de Nacimiento</string>
+    <string name="texto_ubicacion">ID Ubicacion</string>
+
+    !-- Tabla TipoPago -->
+    <string name="texto_TipoPago">Tipo Pago</string>
+    <string name="texto_id_tipoPago">Id TipoPago</string>
+    <string name="texto_nombreTipoPago">Nombre Pago</string>
 
 
 </resources>

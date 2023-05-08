@@ -12,6 +12,12 @@
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
         <activity
+            android:name=".TipoPagoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteInsertarActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoProductoConsultarActivity"
             android:exported="false" />
         <activity

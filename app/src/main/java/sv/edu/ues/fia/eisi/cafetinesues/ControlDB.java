@@ -16,6 +16,8 @@ public class ControlDB {
     private static final String[] campos_DetallePedido = new String[]{"id_DetallePedido", "id_Pedido", "id_Combo", "id_Producto", "cantidad_Producto", "subtotal"};
     private static final String[] campos_Producto = new String[]{"id_Producto","id_TipoProducto","nombre_Producto","estado_Producto","precioactual_Producto"};
     private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
+    private static final String[] campos_Cliente = new String[] {"id_Cliente","nombres_Cliente","apellidos_Cliente","fecha_nacimiento","id_Ubicacion"};
+    private static final String[] campos_TipoPago = new String[] {"id_TipoPago","nombre_TipoPago"};
 
 
     private final Context context;
@@ -635,6 +637,74 @@ public class ControlDB {
             return null;
         }
     }
+
+    //
+    //
+    // METODOS PARA CLIENTE
+    //
+    //
+    //
+    public String insertar(Cliente cliente) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(cliente, 21)) {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues clienteValues = new ContentValues();
+            clienteValues.put(campos_Cliente[0],cliente.getId_cliente());
+            clienteValues.put(campos_Cliente[1],cliente.getNombres());
+            clienteValues.put(campos_Cliente[2],cliente.getApellidos());
+            clienteValues.put(campos_Cliente[3],cliente.getFecha_nacimiento());
+            clienteValues.put(campos_Cliente[4],cliente.getId_ubicacion());
+            contador = db.insert("Cliente", null, clienteValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+    public String eliminar(Cliente cliente){
+        String regInsertados = "Registro Eliminado Nº= ";
+        return  regInsertados;
+    }
+
+    public String actualizar(Cliente cliente){
+        String regInsertados = "Registro Actualizado Nº= ";
+        return  regInsertados;
+    }
+
+    //
+    //
+    // METODOS PARA TIPOPAGO
+    //
+    //
+    //
+
+    public String insertar(TipoPago tipoPago) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(tipoPago, 22)) {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues tipoPagoValues = new ContentValues();
+            tipoPagoValues.put(campos_TipoPago[0],tipoPago.getId_TipoPago());
+            tipoPagoValues.put(campos_TipoPago[1],tipoPago.getNombre_TipoPago());
+            contador = db.insert("TipoPago", null, tipoPagoValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+    public String eliminar(TipoPago tipoPago){
+        String regInsertados = "Registro Eliminado Nº= ";
+        return  regInsertados;
+    }
+
+    public String actualizar(TipoPago tipoPago){
+        String regInsertados = "Registro Actualizado Nº= ";
+        return  regInsertados;
+    }
+
+
     // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
 
 
@@ -863,6 +933,19 @@ public class ControlDB {
                     // Ya existe
                     return true;
                 }
+                return false;
+            case 21:
+                //validar que exista ubicacion
+                //falta crear clase ubicacion
+                //Ubicacion ubicacion = (Ubicacion) dato;
+                //String[] idu = { ubicacion.getCodmateria() };
+                //abrir();
+                //Cursor cm = db.query("materia", null, "id_ubicacion = ?", idu, null,
+                //                        null, null);
+                //if (cm.moveToFirst()) {
+                    // Se encontro Materia
+                   // return true;
+               // }
                 return false;
 
             default:
