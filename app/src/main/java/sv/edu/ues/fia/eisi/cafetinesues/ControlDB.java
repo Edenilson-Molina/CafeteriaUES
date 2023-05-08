@@ -683,7 +683,7 @@ public class ControlDB {
         String regInsertados = "Registro Insertado Nº= ";
         long contador = 0;
         // Verificar si existe el registro a insertar
-        if (verificarIntegridad(tipoPago, 22)) {
+        if (verificarIntegridad(tipoPago, 21)) {
             regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
         } else {
             ContentValues tipoPagoValues = new ContentValues();
@@ -695,13 +695,45 @@ public class ControlDB {
         return regInsertados;
     }
     public String eliminar(TipoPago tipoPago){
-        String regInsertados = "Registro Eliminado Nº= ";
-        return  regInsertados;
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(tipoPago, 21)) {
+            contador += db.delete("TipoPago", "id_TipoPago='" + tipoPago.getId_TipoPago() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe o\nEsta asociado";
+        }
+
+        return regAfectados;
     }
 
     public String actualizar(TipoPago tipoPago){
-        String regInsertados = "Registro Actualizado Nº= ";
-        return  regInsertados;
+        if (verificarIntegridad(tipoPago, 21)) {
+            String[] id = { String.valueOf(tipoPago.getId_TipoPago())};
+            ContentValues cv = new ContentValues();
+            cv.put("nombre_TipoPago", tipoPago.getNombre_TipoPago());
+            db.update("TipoPago", cv, "id_TipoPago = ?", id);
+            return "Registro Actualizado Correctamente";
+        } else {
+            return "Registro con ID " + tipoPago.getId_TipoPago() + " no existe";
+        }
+    }
+
+    public TipoPago consultarTipoPago(String id_tp){
+        String[] id = {id_tp};
+
+        Cursor cursor = db.query("TipoPago", campos_TipoPago, "id_TipoPago = ?",
+                id, null, null, null);
+        if (cursor.moveToFirst()) {
+            TipoPago tipoPago = new TipoPago();
+            tipoPago.setNombre_TipoPago(cursor.getString(1));
+            return tipoPago;
+        } else {
+            return null;
+        }
     }
 
 
@@ -946,6 +978,14 @@ public class ControlDB {
                     // Se encontro Materia
                    // return true;
                // }
+                TipoPago tipoPago = (TipoPago) dato;
+                String[] id_tipoPago = {String.valueOf(tipoPago.getId_TipoPago())};
+                abrir();
+                Cursor cursorIP21 = db.query("TipoPago", null, "id_TipoPago = ?",id_tipoPago, null, null, null);
+                if (cursorIP21.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
                 return false;
 
             default:

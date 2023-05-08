@@ -12,6 +12,18 @@
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
         <activity
+            android:name=".TipoPagoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoPagoInsertarActivity"
             android:exported="false" />
         <activity

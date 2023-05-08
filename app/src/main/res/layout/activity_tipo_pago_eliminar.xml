@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TipoPagoInsertarActivity">
+    tools:context=".TipoPagoEliminarActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,45 +47,19 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="@string/texto_nombreTipoPago"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtNombrePago"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-
-        <TableRow
+      <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
             <Button
                 android:layout_width="wrap_content"
-                android:onClick="insertarTipopago"
-                android:text="@string/insertar"
+                android:onClick="eliminarTipoPago"
+                android:text="@string/eliminar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
             <Button
                 android:layout_width="wrap_content"
-                android:onClick="limpiarTexto"
+                android:onClick="limpiarTextoTipoPagoEliminar"
                 android:textStyle="bold"
                 android:text="@string/limpiar" />
         </TableRow>

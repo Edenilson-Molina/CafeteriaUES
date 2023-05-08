@@ -22,17 +22,21 @@ public class TipoPagoInsertarActivity extends Activity {
         nombre_tipoPago = (EditText) findViewById(R.id.txtNombrePago);
     }
     public void insertarTipopago(View v){
-        String id_tp = id_tipoPago.getText().toString();
-        String n_tp = nombre_tipoPago.getText().toString();
-        String regInsertados;
+       try{
+           String id_tp = id_tipoPago.getText().toString();
+           String n_tp = nombre_tipoPago.getText().toString();
+           String regInsertados;
 
-        TipoPago tipoPago = new TipoPago();
-        tipoPago.setId_TipoPago(Integer.parseInt(id_tp));
-        tipoPago.setNombre_TipoPago(n_tp);
-        helper.abrir();
-        regInsertados=helper.insertar(tipoPago);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+           TipoPago tipoPago = new TipoPago();
+           tipoPago.setId_TipoPago(Integer.parseInt(id_tp));
+           tipoPago.setNombre_TipoPago(n_tp);
+           helper.abrir();
+           regInsertados=helper.insertar(tipoPago);
+           helper.cerrar();
+           Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+       }catch (NumberFormatException ex){
+           Toast.makeText(this,"Escriba un ID valido "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+       }
     }
 
     public void limpiarTexto(View v)

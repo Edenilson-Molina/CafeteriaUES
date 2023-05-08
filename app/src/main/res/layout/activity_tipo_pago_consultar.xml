@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TipoPagoInsertarActivity">
+    tools:context=".TipoPagoConsultarActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout1"
+            android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -47,8 +47,26 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:layout_width="wrap_content"
+                android:onClick="consultarTipoPago"
+                android:text="@string/consultar"
+                android:textStyle="bold"
+                android:layout_marginEnd="5sp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:onClick="limpiarTxtConsultarTipoPago"
+                android:text="@string/limpiar"
+                android:textStyle="bold"
+                android:layout_marginEnd="5sp"/>
+        </TableRow>
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
+            android:id="@+id/textInputLayout_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -62,33 +80,16 @@
                 android:id="@+id/txtNombrePago"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
-
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <Button
-                android:layout_width="wrap_content"
-                android:onClick="insertarTipopago"
-                android:text="@string/insertar"
-                android:textStyle="bold"
-                android:layout_marginEnd="5sp"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:onClick="limpiarTexto"
-                android:textStyle="bold"
-                android:text="@string/limpiar" />
-        </TableRow>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
