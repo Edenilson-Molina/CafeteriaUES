@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
             EditId_Producto.setText(String.valueOf(detallePedido.getId_Producto()));
             EditCantidad_Producto.setText(String.valueOf(detallePedido.getCantidad_Producto()));
             EditSubtotal.setText(String.valueOf(detallePedido.getSubtotal()));
+            ocultarTeclado(v);
         }
     }
 
@@ -52,5 +54,14 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
         EditId_Producto.setText("");
         EditCantidad_Producto.setText("");
         EditSubtotal.setText("");
+    }
+
+    public void ocultarTeclado(View v)
+    {
+        if(v != null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),0);
+        }
     }
 }

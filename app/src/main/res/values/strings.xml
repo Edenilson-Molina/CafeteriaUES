@@ -29,8 +29,6 @@
     <string name="id_pedido">ID del Pedido</string>
 
 
-
-
     <!-- Tabla Producto -->
     <string name="texto_Producto">PRODUCTO</string>
     <string name="id_Producto">ID del Producto</string>
@@ -44,5 +42,11 @@
     <string name="id_TipoProducto">ID del Tipo Producto</string>
     <string name="nombre_TipoProducto">Nombre del Tipo Producto</string>
 
+    <!-- Tabla PrecioProducto -->
+    <string name="texto_PrecioProducto">PRECIO PRODUCTO</string>
+    <string name="id_PrecioProducto">ID de Precio Producto</string>
+    <string name="id_ListaPrecio">ID de Lista Precio</string>
+    <!--<string name="id_Producto">ID del Producto</string>-->
+    <string name="precio">Precio</string>
 
 </resources>

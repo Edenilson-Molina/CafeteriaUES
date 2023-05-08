@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class ControlDB {
@@ -16,7 +17,8 @@ public class ControlDB {
     private static final String[] campos_DetallePedido = new String[]{"id_DetallePedido", "id_Pedido", "id_Combo", "id_Producto", "cantidad_Producto", "subtotal"};
     private static final String[] campos_Producto = new String[]{"id_Producto","id_TipoProducto","nombre_Producto","estado_Producto","precioactual_Producto"};
     private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
-
+    private static final String[] campos_PrecioProducto = new String[] {"id_PrecioProducto","id_Producto","id_ListaPrecio","precio"};
+    private static final String[] campos_ListaPrecio = new String[] {"id_ListaPrecio","desde","hasta"};
 
     private final Context context;
     private DatabaseHelper DBHelper;
@@ -572,6 +574,7 @@ public class ControlDB {
     //
     //
     //
+
     public String insertar(TipoProducto tipoProducto) {
         String regInsertados = "Registro Insertado Nº= ";
         long contador = 0;
@@ -635,6 +638,68 @@ public class ControlDB {
             return null;
         }
     }
+
+    //
+    //
+    // METODOS PARA PRECIO PRODUCTO
+    //
+    //
+    //
+
+    public String insertar(PrecioProducto precioProducto) {
+        String regInsertado = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar existencia de un PrecioProducto con ese id y
+        // que las foraneas no se repitan
+        if (verificarIntegridad(precioProducto, 16)) {
+            regInsertado = "Error al Insertar el registro, Registro duplicado";
+        } else {
+            ContentValues precioProductoValues = new ContentValues();
+            precioProductoValues.put(campos_PrecioProducto[0], precioProducto.getId_PrecioProducto());
+            precioProductoValues.put(campos_PrecioProducto[1], precioProducto.getId_Producto());
+            precioProductoValues.put(campos_PrecioProducto[2], precioProducto.getId_ListaPrecio());
+            precioProductoValues.put(campos_PrecioProducto[3], precioProducto.getPrecio());
+            contador = db.insert("PrecioProducto", null, precioProductoValues);
+            regInsertado += contador;
+        }
+        return regInsertado;
+    }
+
+    public String eliminar(PrecioProducto precioProducto) {
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(precioProducto, 17)) {
+            contador += db.delete("PrecioProducto", "id_PrecioProducto='" + precioProducto.getId_PrecioProducto() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe";
+        }
+
+        return regAfectados;
+    }
+
+    public PrecioProducto consultarPrecioProducto(PrecioProducto precioProducto) {
+        // Verificar que exista el registro a consultar de PrecioProducto
+        if (verificarIntegridad(precioProducto, 17)) {
+            Cursor cursor = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",
+                    new String[]{String.valueOf(precioProducto.getId_PrecioProducto())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                PrecioProducto precioProductoConsulta = new PrecioProducto();
+                precioProductoConsulta.setId_Producto(cursor.getInt(1));
+                precioProductoConsulta.setId_ListaPrecio(cursor.getInt(2));
+                precioProductoConsulta.setPrecio(cursor.getFloat(3));
+                return precioProductoConsulta;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
 
 
@@ -864,6 +929,49 @@ public class ControlDB {
                     return true;
                 }
                 return false;
+            //
+            //
+            // INTEGRIDAD PARA PRECIO PRODUCTO
+            //
+            //
+            case 16:
+                // Verificar la existencia del Precio Producto
+                // y tambien sus id_Producto y id_ListaPrecio
+                PrecioProducto precioProducto16 = (PrecioProducto) dato;
+                String[] id_PrecioProducto16 = {String.valueOf(precioProducto16.getId_PrecioProducto())};
+                String[] id_ListaPrecio16 ={String.valueOf(precioProducto16.getId_ListaPrecio())};
+                abrir();
+                Cursor cursorPP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",id_PrecioProducto16, null, null, null);
+                Cursor cursor2PP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ?",id_ListaPrecio16, null, null, null);
+                cursor2PP16.moveToFirst();
+                if (cursorPP16.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                try{
+                    if ((cursor2PP16.getInt(1) == precioProducto16.getId_Producto()) &&
+                            (cursor2PP16.getInt(2) == precioProducto16.getId_ListaPrecio()))
+                    {
+                        return true;
+                    }
+                }catch (Exception e)
+                {
+                    return false;
+                }
+
+                return false;
+            case 17:
+                // Verificar la existencia del Precio Producto
+                PrecioProducto precioProducto17 = (PrecioProducto) dato;
+                String[] id_PrecioProducto17 = {String.valueOf(precioProducto17.getId_PrecioProducto())};
+                abrir();
+                Cursor cursorPP17 = db.query("PrecioProducto", null, "id_PrecioProducto = ?",id_PrecioProducto17, null, null, null);
+                if (cursorPP17.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+
+                return false;
 
             default:
                 return false;
@@ -894,6 +1002,11 @@ public class ControlDB {
         final String[] VECidProducto = {"1", "2", "3", "4", "5"};
         // DATOS PARA DETALLE_PEDIDO
 
+        // DATOS PARA LISTA_PRECIO
+        final String[] VECListaPrecio = {"1","2","3","4","5"};
+        final String[] VECDesde = {"06-05-2023","07-05-2023","08-05-2023","09-05-2023","10-05-2023"};
+        final String[] VECHasta = {"07-05-2023","08-05-2023","09-05-2023","10-05-2023","11-05-2023"};
+
 
 
         // ABRIR BD
@@ -904,6 +1017,8 @@ public class ControlDB {
         db.execSQL("DELETE FROM Producto");
         db.execSQL("DELETE FROM TipoProducto");
         db.execSQL("DELETE FROM ComboProducto");
+        db.execSQL("DELETE FROM PrecioProducto");
+        db.execSQL("DELETE FROM ListaPrecio");
 
 
 
@@ -944,6 +1059,14 @@ public class ControlDB {
             insertar(comboProducto);
         }
 
+        // LLENAR TABLA LISTA_PRECIO
+        for (int i = 0; i < 5; i++){
+            ContentValues listaPrecioValues = new ContentValues();
+            listaPrecioValues.put(campos_ListaPrecio[0], Integer.parseInt(VECListaPrecio[i]));
+            listaPrecioValues.put(campos_ListaPrecio[1], VECDesde[i]);
+            listaPrecioValues.put(campos_ListaPrecio[2], VECHasta[i]);
+            db.insert("ListaPrecio", null, listaPrecioValues);
+        }
 
 
         // CERRAR BD

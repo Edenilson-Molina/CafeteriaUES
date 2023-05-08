@@ -12,6 +12,21 @@
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
         <activity
+            android:name=".PrecioProductoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoProductoConsultarActivity"
             android:exported="false" />
         <activity

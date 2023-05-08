@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,11 +30,21 @@ public class ComboConsultarActivity extends AppCompatActivity {
             Toast.makeText(this, "Combo no registrado", Toast.LENGTH_LONG).show();
         else{
             editPrecioCombo.setText(String.valueOf(combo.getPrecio_Combo()));
+            ocultarTeclado(v);
         }
     }
 
     public void limpiarTextoConsultarCombo(View v){
         editIdCombo.setText("");
         editPrecioCombo.setText("");
+    }
+
+    public void ocultarTeclado(View v)
+    {
+        if(v != null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),0);
+        }
     }
 }
