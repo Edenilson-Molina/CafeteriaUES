@@ -77,47 +77,44 @@
 
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_6"
+        <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:checkedButton="@id/radio_combo"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-            android:hint="@string/id_combo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
+            <RadioButton
+                android:id="@+id/radio_combo"
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:text="@string/texto_combo" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_Combo"
-                android:inputType="number"
-                android:digits="0123456789"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
+            <RadioButton
+                android:id="@+id/radio_producto"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:text="@string/texto_Producto" />
+        </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="@string/id_Producto"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="@string/id_ProductoOrCombo"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_Producto"
-                android:inputType="number"
-                android:digits="0123456789"
+                android:id="@+id/id_ProductoOrCombo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
 

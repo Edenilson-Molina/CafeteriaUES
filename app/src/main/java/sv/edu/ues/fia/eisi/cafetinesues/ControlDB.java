@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.Objects;
@@ -192,6 +193,47 @@ public class ControlDB {
                         "CONSTRAINT FK_UBICACION_FACULTAD FOREIGN KEY (ID_FACULTAD) REFERENCES FACULTAD(ID_FACULTAD) ON DELETE RESTRICT," +
                         "CONSTRAINT FK_UBICACION_TIPOUBICACION FOREIGN KEY (ID_TIPOUBICACION) REFERENCES TIPOUBICACION(ID_TIPOUBICACION) ON DELETE RESTRICT);");
 
+                //
+                //
+                // T R I G G E R S
+                //
+                //
+
+                // PARA EVITAR ELIMINAR UN COMBO SI TIENE COMBOPRODUCTO ASOCIADOS
+                db.execSQL("CREATE TRIGGER integridad_comboproducto_delete_combo " +
+                        "BEFORE DELETE ON COMBO " +
+                        "FOR EACH ROW " +
+                        "BEGIN " +
+                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen ComboProducto asociados') " +
+                        "FROM COMBOPRODUCTO " +
+                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                        "END;");
+
+                // PARA EVITAR ELIMINAR UN COMBO SI TIENE DETALLEPEDIDOS ASOCIADOS
+                db.execSQL("CREATE TRIGGER integridad_detallepedido_delete_combo " +
+                        "BEFORE DELETE ON COMBO " +
+                        "FOR EACH ROW " +
+                        "BEGIN " +
+                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen DetallePedido asociados') " +
+                        "FROM DETALLEPEDIDO " +
+                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                        "END;");
+
+                // ACTUALIZAR EL PRECIO DEL COMBO LUEGO DE INSERTAR UN NUEVO COMBO_PRODUCTO
+                db.execSQL("CREATE TRIGGER actualizar_precio_combo_insert " +
+                        "AFTER INSERT ON COMBOPRODUCTO " +
+                        "BEGIN " +
+                        "UPDATE COMBO " +
+                        "SET PRECIO_COMBO = ( " +
+                        "SELECT SUM(PRODUCTO.PRECIOACTUAL_PRODUCTO) " +
+                        "FROM COMBOPRODUCTO " +
+                        "JOIN PRODUCTO ON COMBOPRODUCTO.ID_PRODUCTO = PRODUCTO.ID_PRODUCTO " +
+                        "WHERE COMBOPRODUCTO.ID_COMBO = COMBO.ID_COMBO) " +
+                        "WHERE COMBO.ID_COMBO = NEW.ID_COMBO; " +
+                        "END;");
+
+
+
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -256,7 +298,12 @@ public class ControlDB {
         int contador = 0;
         //Verificar si existe el registro a eliminar
         if (verificarIntegridad(combo, 1)) {
-            contador += db.delete("Combo", "id_Combo='" + combo.getId_Combo() + "'", null);
+            try{
+                contador += db.delete("Combo", "id_Combo='" + combo.getId_Combo() + "'", null);
+            } catch (android.database.sqlite.SQLiteConstraintException e){
+                e.printStackTrace();
+                regAfectados = "No se puede eliminar el registro ya que existe una dependencia";
+            }
         }
         regAfectados += contador;
         return regAfectados;
@@ -366,12 +413,11 @@ public class ControlDB {
             detallePedidoValues.put("id_DetallePedido", detallePedido.getId_DetallePedido());
             detallePedidoValues.put("id_Pedido", detallePedido.getId_Pedido());
 
-            // EL CAMPO QUE VENGA COMO "0", SERA INSERTADO COMO NULL
+            // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
             if(detallePedido.getId_Combo() == 0) {
-                detallePedidoValues.put("id_Combo", (Integer) null);
-            }
-            if(detallePedido.getId_Producto() == 0){
-                detallePedidoValues.put("id_Producto", (Integer) null);
+                detallePedidoValues.put("id_Producto", detallePedido.getId_Producto());
+            } else {
+                detallePedidoValues.put("id_Combo", detallePedido.getId_Combo());
             }
 
             detallePedidoValues.put("cantidad_Producto", detallePedido.getCantidad_Producto());
@@ -391,12 +437,11 @@ public class ControlDB {
             ContentValues cv = new ContentValues();
             cv.put("id_Pedido", detallePedido.getId_Pedido());
 
-            // EL CAMPO QUE VENGA COMO "0", SERA INGRESADO COMO NULL
+            // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
             if(detallePedido.getId_Combo() == 0) {
-                cv.put("id_Combo", (Integer) null);
-            }
-            if(detallePedido.getId_Producto() == 0){
-                cv.put("id_Producto", (Integer) null);
+                cv.put("id_Producto", detallePedido.getId_Producto());
+            } else {
+                cv.put("id_Combo", detallePedido.getId_Combo());
             }
 
             cv.put("cantidad_Producto", detallePedido.getCantidad_Producto());
@@ -1138,12 +1183,14 @@ public class ControlDB {
         abrir();
 
         // ELIMINAR REGISTROS
-        db.execSQL("DELETE FROM Combo");
-        db.execSQL("DELETE FROM Producto");
         db.execSQL("DELETE FROM TipoProducto");
         db.execSQL("DELETE FROM ComboProducto");
         db.execSQL("DELETE FROM PrecioProducto");
         db.execSQL("DELETE FROM ListaPrecio");
+        db.execSQL("DELETE FROM Combo");
+        db.execSQL("DELETE FROM Producto");
+
+
 
 
 

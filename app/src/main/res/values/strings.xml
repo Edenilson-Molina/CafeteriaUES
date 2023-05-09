@@ -23,6 +23,7 @@
     <string name="id_detalle_pedido">ID del DetallePedido</string>
     <string name="cantidad_detalle_pedido">Cantidad del Producto/Combo elegido</string>
     <string name="subtotal_detalle_pedido">Subtotal</string>
+    <string name="id_ProductoOrCombo">ID del Producto o Combo</string>
 
     <!-- Tabla Pedido -->
     <string name="texto_pedido">PEDIDO</string>
