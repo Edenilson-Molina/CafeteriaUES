@@ -52,5 +52,8 @@
     <string name="id_TipoProducto">ID del tipo producto</string>
     <string name="nombre_TipoProducto">Nombre del tipo producto</string>
 
-
+    <!-- Tabla Encargado Local -->
+    <string name="texto_EncargadoLocal">ENCARGADO LOCAL</string>
+    <string name="id_EncargadoLocal">ID del encargado</string>
+    <string name="nombre_EncargadoLocal">Nombre del encargado</string>
 </resources>

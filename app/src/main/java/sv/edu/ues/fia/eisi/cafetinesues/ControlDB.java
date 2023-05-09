@@ -19,6 +19,8 @@ public class ControlDB {
     private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
 
     private static final String[] Campos_Empleado = new String[] {"id_Empleado","id_Local", "nombre_Empleado", "tipo_Empleado"};
+
+    private static final String[] Campos_EncargadoLocal = new String[]{"id_EncargadoLocal","nombre_EncargadoLocal"};
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -585,7 +587,7 @@ public class ControlDB {
             resultado = "Registro  Actualizado Correctamente";
         }else{
             if(!(existenciaEmpleado)){
-                resultado = "El Empleado ya existe";
+                resultado = "El Empleado no existe";
                 if(!(existenciaLocal)){
                     if(resultado.isEmpty()){
                         resultado = "El tipo de producto no existe";
@@ -626,6 +628,75 @@ public class ControlDB {
             }
 
         }else {
+            return null;
+        }
+    }
+    //
+    // METODOS PARA ENCARGADOLOCAL
+    //
+    //
+    //
+    public String Insertar (EncargadoLocal encargadoLocal){
+        String resultado = "";
+        long contador = 0;
+        boolean existenciaEncargado = verificarIntegridad(encargadoLocal,43);
+        if(!existenciaEncargado){
+            ContentValues encargadoValues = new ContentValues();
+            encargadoValues.put(Campos_EncargadoLocal[0],encargadoLocal.getId_EncargadoLocal());
+            encargadoValues.put(Campos_EncargadoLocal[1],encargadoLocal.getNombre_EncargadoLocal());
+            contador = db.insert("EncargadoLocal", null, encargadoValues);
+            resultado = "Registro Insertado N°="+ contador;
+        }else if(existenciaEncargado){
+            resultado = "El encargado ya existe";
+
+        }
+        return resultado;
+
+    }
+
+    public String Actualizar (EncargadoLocal encargadoLocal){
+        String resultado="";
+        long contador =0;
+        boolean existenciaEncargado = verificarIntegridad(encargadoLocal,43);
+        if(existenciaEncargado){
+            String[] id ={String.valueOf(encargadoLocal.getId_EncargadoLocal())};
+            ContentValues encargadoUpdate = new ContentValues();
+            encargadoUpdate.put(Campos_EncargadoLocal[1], encargadoLocal.getNombre_EncargadoLocal());
+            contador = db.update("EncargadoLocal", encargadoUpdate,"id_EncargadoLocal=?", id);
+            resultado = "Registro Actualizado Correctamente";
+        }else if(!existenciaEncargado){
+            resultado = "El encargado no existe";
+        }
+        return resultado;
+    }
+
+    public String Eliminar(EncargadoLocal encargadoLocal){
+        String resultado = "";
+        long contador = 0;
+        boolean existenciaEncargado = verificarIntegridad(encargadoLocal,43);
+        if (existenciaEncargado){
+            contador = db.delete("EncargadoLocal", "id_EncargadoLocal='"+encargadoLocal.getId_EncargadoLocal()+"'", null);
+            resultado = "Filas afectadas N° ="+ contador;
+        }else{
+            resultado = "No existe ese encargado";
+        }
+        return  resultado;
+    }
+
+    public EncargadoLocal consultarEncargado(EncargadoLocal encargadoLocal){
+        if(verificarIntegridad(encargadoLocal,43)){
+            Cursor cursor = db.query("EncargadoLocal",Campos_EncargadoLocal,"id_EncargadoLocal=?",
+                    new String[]{String.valueOf(encargadoLocal.getId_EncargadoLocal())},null,null,null);
+            if(cursor.moveToFirst()){
+                EncargadoLocal encargadoConsulta = new EncargadoLocal();
+                encargadoConsulta.setId_EncargadoLocal(cursor.getInt(0));
+                encargadoConsulta.setNombre_EncargadoLocal(cursor.getString(1));
+                return encargadoConsulta;
+            }else {
+                return null;
+            }
+        }
+        else{
             return null;
         }
     }
@@ -777,6 +848,21 @@ public class ControlDB {
                     return true;
                 }
                 return false;
+            //
+            //
+            // INTEGRIDAD PARA EMPLEADO
+            //
+            //
+            case 43:
+                EncargadoLocal encargadoLocal = (EncargadoLocal) dato;
+                String[] id_EncargadoLocal = {String.valueOf(encargadoLocal.getId_EncargadoLocal())};
+                abrir();
+                Cursor cursor43 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?", id_EncargadoLocal,null,null,null);
+                if(cursor43.moveToFirst()){
+                    return true;
+                }
+                return true;
+
             default:
                 return false;
             //
