@@ -713,6 +713,21 @@ public class ControlDB {
         return regInsertado;
     }
 
+    public String actualizar(PrecioProducto precioProducto){
+        String registro = "";
+        if(verificarIntegridad(precioProducto,18)){
+            String[] id_precioProducto = {String.valueOf(precioProducto.getId_PrecioProducto())};
+            ContentValues precioProductoUpdate = new ContentValues();
+            precioProductoUpdate.put(campos_PrecioProducto[1],precioProducto.getId_Producto());
+            precioProductoUpdate.put(campos_PrecioProducto[2],precioProducto.getId_ListaPrecio());
+            precioProductoUpdate.put(campos_PrecioProducto[3],precioProducto.getPrecio());
+            db.update("PrecioProducto", precioProductoUpdate, "id_PrecioProducto = ?", id_precioProducto);
+            return "ID: " + precioProducto.getId_PrecioProducto() + "\nActualizado Satisfactoriamente";
+        }else {
+            return "No existe o\nForaneas repetidas";
+        }
+    }
+
     public String eliminar(PrecioProducto precioProducto) {
         String regAfectados = "";
         int contador = 0;
@@ -1089,24 +1104,14 @@ public class ControlDB {
                 // y tambien sus id_Producto y id_ListaPrecio
                 PrecioProducto precioProducto16 = (PrecioProducto) dato;
                 String[] id_PrecioProducto16 = {String.valueOf(precioProducto16.getId_PrecioProducto())};
-                String[] id_ListaPrecio16 ={String.valueOf(precioProducto16.getId_ListaPrecio())};
+                String[] integridad16 ={String.valueOf(precioProducto16.getId_ListaPrecio()),String.valueOf(precioProducto16.getId_Producto())};
                 abrir();
                 Cursor cursorPP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",id_PrecioProducto16, null, null, null);
-                Cursor cursor2PP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ?",id_ListaPrecio16, null, null, null);
-                cursor2PP16.moveToFirst();
-                if (cursorPP16.moveToFirst()) {
+                Cursor cursor2PP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?",integridad16, null, null, null);
+
+                if (cursorPP16.moveToFirst() || cursor2PP16.moveToFirst()) {
                     // Ya existe
                     return true;
-                }
-                try{
-                    if ((cursor2PP16.getInt(1) == precioProducto16.getId_Producto()) &&
-                            (cursor2PP16.getInt(2) == precioProducto16.getId_ListaPrecio()))
-                    {
-                        return true;
-                    }
-                }catch (Exception e)
-                {
-                    return false;
                 }
 
                 return false;
@@ -1120,7 +1125,29 @@ public class ControlDB {
                     // Ya existe
                     return true;
                 }
+            case 18:
+                // Verificar la existencia del Precio Producto
+                // y tambien sus id_Producto y id_ListaPrecio
+                PrecioProducto precioProducto18 = (PrecioProducto) dato;
+                String[] id_PrecioProducto18 = {String.valueOf(precioProducto18.getId_PrecioProducto())};
+                String[] integridad18 ={String.valueOf(precioProducto18.getId_ListaPrecio()),String.valueOf(precioProducto18.getId_Producto())};
+                abrir();
+                Cursor cursorPP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",id_PrecioProducto18, null, null, null);
+                Cursor cursor2PP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?",integridad18, null, null, null);
 
+                if (cursorPP18.moveToFirst()) {
+
+                    if(!(cursor2PP18.moveToFirst())||(cursor2PP18.getInt(0) == cursorPP18.getInt(0)))
+                    {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+
+                }else{
+                    return false;
+                }
             case 21:
                 //validar que exista ubicacion
                 //falta crear clase ubicacion
