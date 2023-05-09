@@ -19,6 +19,9 @@ public class ControlDB {
     private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
     private static final String[] campos_PrecioProducto = new String[] {"id_PrecioProducto","id_Producto","id_ListaPrecio","precio"};
     private static final String[] campos_ListaPrecio = new String[] {"id_ListaPrecio","desde","hasta"};
+    private static final String[] campos_Cliente = new String[] {"id_Cliente","nombres_Cliente","apellidos_Cliente","fecha_nacimiento","id_Ubicacion"};
+    private static final String[] campos_TipoPago = new String[] {"id_TipoPago","nombre_TipoPago"};
+
 
     private final Context context;
     private DatabaseHelper DBHelper;
@@ -700,6 +703,108 @@ public class ControlDB {
         }
     }
 
+    
+    //
+    //
+    // METODOS PARA CLIENTE
+    //
+    //
+    //
+    public String insertar(Cliente cliente) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(cliente, 21)) {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues clienteValues = new ContentValues();
+            clienteValues.put(campos_Cliente[0],cliente.getId_cliente());
+            clienteValues.put(campos_Cliente[1],cliente.getNombres());
+            clienteValues.put(campos_Cliente[2],cliente.getApellidos());
+            clienteValues.put(campos_Cliente[3],cliente.getFecha_nacimiento());
+            clienteValues.put(campos_Cliente[4],cliente.getId_ubicacion());
+            contador = db.insert("Cliente", null, clienteValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+    public String eliminar(Cliente cliente){
+        String regInsertados = "Registro Eliminado Nº= ";
+        return  regInsertados;
+    }
+
+    public String actualizar(Cliente cliente){
+        String regInsertados = "Registro Actualizado Nº= ";
+        return  regInsertados;
+    }
+
+    //
+    //
+    // METODOS PARA TIPOPAGO
+    //
+    //
+    //
+
+    public String insertar(TipoPago tipoPago) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(tipoPago, 21)) {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues tipoPagoValues = new ContentValues();
+            tipoPagoValues.put(campos_TipoPago[0],tipoPago.getId_TipoPago());
+            tipoPagoValues.put(campos_TipoPago[1],tipoPago.getNombre_TipoPago());
+            contador = db.insert("TipoPago", null, tipoPagoValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+    public String eliminar(TipoPago tipoPago){
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(tipoPago, 21)) {
+            contador += db.delete("TipoPago", "id_TipoPago='" + tipoPago.getId_TipoPago() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe o\nEsta asociado";
+        }
+
+        return regAfectados;
+    }
+
+    public String actualizar(TipoPago tipoPago){
+        if (verificarIntegridad(tipoPago, 21)) {
+            String[] id = { String.valueOf(tipoPago.getId_TipoPago())};
+            ContentValues cv = new ContentValues();
+            cv.put("nombre_TipoPago", tipoPago.getNombre_TipoPago());
+            db.update("TipoPago", cv, "id_TipoPago = ?", id);
+            return "Registro Actualizado Correctamente";
+        } else {
+            return "Registro con ID " + tipoPago.getId_TipoPago() + " no existe";
+        }
+    }
+
+    public TipoPago consultarTipoPago(String id_tp){
+        String[] id = {id_tp};
+
+        Cursor cursor = db.query("TipoPago", campos_TipoPago, "id_TipoPago = ?",
+                id, null, null, null);
+        if (cursor.moveToFirst()) {
+            TipoPago tipoPago = new TipoPago();
+            tipoPago.setNombre_TipoPago(cursor.getString(1));
+            return tipoPago;
+        } else {
+            return null;
+        }
+    }
+    //
+    //
+    //
+
     // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
 
 
@@ -971,6 +1076,26 @@ public class ControlDB {
                     return true;
                 }
 
+            case 21:
+                //validar que exista ubicacion
+                //falta crear clase ubicacion
+                //Ubicacion ubicacion = (Ubicacion) dato;
+                //String[] idu = { ubicacion.getCodmateria() };
+                //abrir();
+                //Cursor cm = db.query("materia", null, "id_ubicacion = ?", idu, null,
+                //                        null, null);
+                //if (cm.moveToFirst()) {
+                    // Se encontro Materia
+                   // return true;
+               // }
+                TipoPago tipoPago = (TipoPago) dato;
+                String[] id_tipoPago = {String.valueOf(tipoPago.getId_TipoPago())};
+                abrir();
+                Cursor cursorIP21 = db.query("TipoPago", null, "id_TipoPago = ?",id_tipoPago, null, null, null);
+                if (cursorIP21.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
                 return false;
 
             default:

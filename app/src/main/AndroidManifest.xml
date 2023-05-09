@@ -27,6 +27,24 @@
             android:name=".PrecioProductoMainActivity"
             android:exported="false" />
         <activity
+            android:name=".TipoPagoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteInsertarActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoProductoConsultarActivity"
             android:exported="false" />
         <activity

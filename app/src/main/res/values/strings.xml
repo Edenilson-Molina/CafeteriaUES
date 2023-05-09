@@ -48,5 +48,18 @@
     <string name="id_ListaPrecio">ID de Lista Precio</string>
     <!--<string name="id_Producto">ID del Producto</string>-->
     <string name="precio">Precio</string>
+    <!-- Tabla Cliente -->
+    <string name="texto_cliente">CLIENTE</string>
+    <string name="texto_id_cliente">Id Cliente</string>
+    <string name="texto_nombre">Nombres</string>
+    <string name="texto_apellido">Apellidos</string>
+    <string name="texto_fecha_nacimiento">Fecha de Nacimiento</string>
+    <string name="texto_ubicacion">ID Ubicacion</string>
+
+    <!-- Tabla TipoPago -->
+    <string name="texto_TipoPago">Tipo Pago</string>
+    <string name="texto_id_tipoPago">Id TipoPago</string>
+    <string name="texto_nombreTipoPago">Nombre Pago</string>
+
 
 </resources>
