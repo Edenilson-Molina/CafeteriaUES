@@ -700,22 +700,29 @@ public class ControlDB {
         // Verificar existencia de un PrecioProducto con ese id y
         // que las foraneas no se repitan
         if (verificarIntegridad(precioProducto, 16)) {
-            regInsertado = "Error al Insertar el registro, Registro duplicado";
+            regInsertado = "Error al Insertar el registro";
         } else {
-            ContentValues precioProductoValues = new ContentValues();
-            precioProductoValues.put(campos_PrecioProducto[0], precioProducto.getId_PrecioProducto());
-            precioProductoValues.put(campos_PrecioProducto[1], precioProducto.getId_Producto());
-            precioProductoValues.put(campos_PrecioProducto[2], precioProducto.getId_ListaPrecio());
-            precioProductoValues.put(campos_PrecioProducto[3], precioProducto.getPrecio());
-            contador = db.insert("PrecioProducto", null, precioProductoValues);
-            regInsertado += contador;
+            if (verificarIntegridad(precioProducto,19))
+            {
+                ContentValues precioProductoValues = new ContentValues();
+                precioProductoValues.put(campos_PrecioProducto[0], precioProducto.getId_PrecioProducto());
+                precioProductoValues.put(campos_PrecioProducto[1], precioProducto.getId_Producto());
+                precioProductoValues.put(campos_PrecioProducto[2], precioProducto.getId_ListaPrecio());
+                precioProductoValues.put(campos_PrecioProducto[3], precioProducto.getPrecio());
+                contador = db.insert("PrecioProducto", null, precioProductoValues);
+                regInsertado += contador;
+            }else{
+                regInsertado = "Verifique las foraneas";
+
+            }
+
         }
         return regInsertado;
     }
 
     public String actualizar(PrecioProducto precioProducto){
         String registro = "";
-        if(verificarIntegridad(precioProducto,18)){
+        if(verificarIntegridad(precioProducto,18) && verificarIntegridad(precioProducto,19)){
             String[] id_precioProducto = {String.valueOf(precioProducto.getId_PrecioProducto())};
             ContentValues precioProductoUpdate = new ContentValues();
             precioProductoUpdate.put(campos_PrecioProducto[1],precioProducto.getId_Producto());
@@ -1148,6 +1155,19 @@ public class ControlDB {
                 }else{
                     return false;
                 }
+            case 19:
+                // Verificar la existencia de producto y listaProducto
+                PrecioProducto precioProducto19 = (PrecioProducto) dato;
+                String[] producto19 = {String.valueOf(precioProducto19.getId_Producto())};
+                String[] listaPrecio19 = {String.valueOf(precioProducto19.getId_ListaPrecio())};
+                abrir();
+                Cursor cursorP19 = db.query("Producto", null, "id_Producto = ?",producto19, null, null, null);
+                Cursor cursorLP19 = db.query("ListaPrecio", null, "id_ListaPrecio = ?",listaPrecio19, null, null, null);
+                if (cursorP19.moveToFirst() && cursorLP19.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
             case 21:
                 //validar que exista ubicacion
                 //falta crear clase ubicacion
