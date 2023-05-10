@@ -42,5 +42,11 @@
     <string name="id_TipoProducto">ID del Tipo Producto</string>
     <string name="nombre_TipoProducto">Nombre del Tipo Producto</string>
 
+    <!-- Tabla Facultad -->
+    <string name="texto_Facultad">FACULTAD</string>
+    <string name="id_Facultad">ID de la Facultad</string>
+    <string name="nombre_Facultad">Nombre de la Facultad</string>
+
+
 
 </resources>

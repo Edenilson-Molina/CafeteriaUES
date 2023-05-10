@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="FACULTAD"
+            android:text="@string/texto_Facultad"
             android:textSize="20sp"
             android:textStyle="bold" />
         <com.google.android.material.textfield.TextInputLayout
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Código Facultad"
+            android:hint="@string/id_Facultad"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Nombre Facultad"
+            android:hint="@string/nombre_Facultad"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -70,7 +70,7 @@
             android:gravity="center">
             <Button
                 android:layout_width="wrap_content"
-                android:onClick="insertarProducto"
+                android:onClick="insertarFacultad"
                 android:text="Insertar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
