@@ -1398,7 +1398,7 @@ public class ControlDB {
                 return false;
             //
             //
-            // INTEGRIDAD PARA EMPLEADO
+            // INTEGRIDAD PARA ENCARGADOLOCAL
             //
             //
             case 43:
