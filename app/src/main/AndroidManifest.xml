@@ -14,6 +14,21 @@
 
 
         <activity
+            android:name=".LocalMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalInsertarActivity"
+            android:exported="false" />
+        <activity
             android:name=".EncargadoLocalMainActivity"
             android:exported="false" />
         <activity

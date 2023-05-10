@@ -30,6 +30,8 @@ public class ControlDB {
     private static final String[] Campos_Empleado = new String[] {"id_Empleado","id_Local", "nombre_Empleado", "tipo_Empleado"};
 
     private static final String[] Campos_EncargadoLocal = new String[]{"id_EncargadoLocal","nombre_EncargadoLocal"};
+
+    private static final String[] Campos_Local = new String[]{"id_Local","id_Ubicacion", "id_EncargadoLocal", "nombre_Local"};
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -1037,6 +1039,101 @@ public class ControlDB {
             return null;
         }
     }
+    //
+    // METODOS PARA LOCAL
+    //
+    public String Insertar(Local local){
+        String resultado = "";
+        long contador;
+
+        Ubicacion ubicacion = new Ubicacion();
+        EncargadoLocal encargadoLocal = new EncargadoLocal();
+
+        ubicacion.setId_Ubicacion(local.getId_Ubicacion());
+        encargadoLocal.setId_EncargadoLocal(local.getId_EncargadoLocal());
+        boolean existenciaLocal = verificarIntegridad(local,45);
+        boolean existenciaRelaciones = verificarIntegridad(local, 44);
+        if(!(existenciaLocal)&&(existenciaRelaciones)){
+            ContentValues localValues = new ContentValues();
+            localValues.put(Campos_Local[0],local.getId_Local());
+            localValues.put(Campos_Local[1], local.getId_Ubicacion());
+            localValues.put(Campos_Local[2], local.getId_EncargadoLocal());
+            localValues.put(Campos_Local[3], local.getNombre_Local());
+            contador = db.insert("Local", null, localValues);
+            resultado = "Registro insertado N°= "+contador;
+        }else if(existenciaLocal) {
+            resultado = "El local ya existe";
+            if(!existenciaRelaciones){
+                if(resultado.isEmpty()){
+                    resultado = "No existe el encargado o/y ubicacion";
+                }
+            }
+        }
+        return resultado;
+    }
+    public String Actualizar(Local local){
+        String resultado = "";
+        long contador;
+
+        Ubicacion ubicacion = new Ubicacion();
+        EncargadoLocal encargadoLocal = new EncargadoLocal();
+
+        ubicacion.setId_Ubicacion(local.getId_Ubicacion());
+        encargadoLocal.setId_EncargadoLocal(local.getId_EncargadoLocal());
+        boolean existenciaLocal = verificarIntegridad(local,45);
+        boolean existenciaRelaciones = verificarIntegridad(local, 44);
+
+        if((existenciaLocal)&&(existenciaRelaciones)){
+            String[] id = {String.valueOf(local.getId_Local())};
+            ContentValues localUpdate = new ContentValues();
+            localUpdate.put(Campos_Local[1], local.getId_Ubicacion());
+            localUpdate.put(Campos_Local[2], local.getId_EncargadoLocal());
+            localUpdate.put(Campos_Local[3], local.getNombre_Local());
+            contador = db.update("Local", localUpdate,"id_local=?",id);
+            resultado = "Registro actualizado correctamente";
+        }else if(!existenciaLocal){
+            resultado = "El local no existe";
+            if(!existenciaRelaciones){
+                resultado = "La ubicacion o/y el encargado no existe";
+            }
+
+        }
+        return resultado;
+
+
+    }
+    public String Eliminar (Local local){
+        String resultado = "";
+        long contador;
+        boolean existenciaLocal = verificarIntegridad(local,45);
+        boolean existenciaRelaciones = verificarIntegridad(local, 44);
+        if(existenciaLocal&& existenciaRelaciones){
+            contador = db.delete("Local", "id_local='"+local.getId_Local()+"'", null);
+            resultado = "Filas afectadas  N° ="+ contador;
+        }else{
+            resultado = "No existe el local";
+        }
+        return resultado;
+    }
+    public Local Consultar(Local local){
+        if(verificarIntegridad(local,45)){
+            Cursor cursor = db.query("Local",Campos_Local,"id_Local=?",new String[]{String.valueOf(local.getId_Local())}, null,null,null);
+            if(cursor.moveToFirst()){
+                Local localConsulta = new Local();
+                localConsulta.setId_Local(cursor.getInt(0));
+                localConsulta.setId_Ubicacion(cursor.getInt(1));
+                localConsulta.setId_EncargadoLocal(cursor.getInt(2));
+                localConsulta.setNombre_Local(cursor.getString(3));
+                return localConsulta;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
+    }
+    //
+    //
     // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
 
 
@@ -1305,7 +1402,39 @@ public class ControlDB {
                 if(cursor43.moveToFirst()){
                     return true;
                 }
-                return true;
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA LOCAL
+            //
+            //
+            case 44:
+                //existencia de local en relaciones
+
+                Local local = (Local) dato;
+
+                String[] id_Local = {String.valueOf(local.getId_Local())};
+                String[] id_EncargadoLoc = {String.valueOf(local.getId_EncargadoLocal())};
+                String[] id_Ubicacion ={String.valueOf(local.getId_Ubicacion())};
+
+                abrir();
+                Cursor cursorEN2 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?",id_EncargadoLoc, null, null,null);
+                Cursor cursorU1 = db.query("Ubicacion", null, "id_Ubicacion=?",id_Ubicacion, null,null,null);
+                Cursor cursorL2 = db.query("Local", null, "id_Local=?", id_Local,null,null,null);
+                if(cursorEN2.moveToFirst() || cursorU1.moveToFirst() || cursorL2.moveToFirst()){
+                    return true;
+                }
+                return false;
+            case 45:
+                //existencia de Local
+                Local local1 = (Local) dato;
+                String [] id_Local2 = {String.valueOf(local1.getId_Local())};
+                abrir();
+                Cursor cursorL3 = db.query("Local", null, "id_Local=?", id_Local2, null, null, null);
+                if( cursorL3.moveToFirst()){
+                    return true;
+                }
+                return false;
 
             //
             //

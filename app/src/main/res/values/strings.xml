@@ -71,4 +71,8 @@
     <string name="texto_EncargadoLocal">ENCARGADO LOCAL</string>
     <string name="id_EncargadoLocal">ID del encargado</string>
     <string name="nombre_EncargadoLocal">Nombre del encargado</string>
+    <!-- Tabla Encargado Local -->
+    <string name="texto_Local">LOCAL</string>
+    <string name="id_Ubicacion">ID de la Ubicacion</string>
+    <string name="nombre_Local">Nombre del Local</string>
 </resources>
