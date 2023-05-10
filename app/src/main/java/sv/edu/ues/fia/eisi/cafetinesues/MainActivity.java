@@ -16,7 +16,7 @@ public class MainActivity extends ListActivity {
     // AGREGAR DEMAS MENUS, Y SU CORRESPONDIENTE ACTIVITY, EN CADA STRING
     String[] menu = {"Tabla Combo", "Tabla ComboProducto","Tabla DetallePedido","Tabla TipoProducto","Tabla Producto","Tabla Empleado", "Tabla EncargadoLocal","Tabla PrecioProducto","Tabla TipoPago", "Tabla Local", "Llenar BD"};
     String[] activities = {"ComboMenuActivity", "ComboProductoMenuActivity","DetallePedidoMenuActivity",
-                           "TipoProductoMainActivity","ProductoMainActivity","EmpleadoMainActivity","EncargadoLocalMainActivity","PrecioProductoMainActivity","TipoPagoMenuActivity, LocalMainActivity"};
+                           "TipoProductoMainActivity","ProductoMainActivity","EmpleadoMainActivity","EncargadoLocalMainActivity","PrecioProductoMainActivity","TipoPagoMenuActivity", "LocalMainActivity"};
 
 
     ControlDB DBhelper;
