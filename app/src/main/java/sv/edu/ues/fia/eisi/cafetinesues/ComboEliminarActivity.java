@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class ComboEliminarActivity extends AppCompatActivity {
     EditText editIdCombo;
-    EditText editPrecioCombo;
+    //EditText editPrecioCombo;
     ControlDB helper;
 
     @Override
@@ -18,14 +18,18 @@ public class ComboEliminarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_combo_eliminar);
         helper = new ControlDB(this);
         editIdCombo = (EditText) findViewById(R.id.id_Combo);
-        editPrecioCombo = (EditText) findViewById(R.id.precio_Combo);
+        //editPrecioCombo = (EditText) findViewById(R.id.precio_Combo);
     }
 
     public void eliminarCombo(View v){
         String regEliminadas;
         Combo combo = new Combo();
-        combo.setId_Combo(Integer.parseInt(editIdCombo.getText().toString()));
-        combo.setPrecio_Combo(Float.parseFloat(editPrecioCombo.getText().toString()));
+        try{
+            combo.setId_Combo(Integer.parseInt(editIdCombo.getText().toString()));
+            //combo.setPrecio_Combo(Float.parseFloat(editPrecioCombo.getText().toString()));
+        }catch (Exception e){
+            Toast.makeText(this, "Error en los datos ingresados", Toast.LENGTH_SHORT).show();
+        }
         helper.abrir();
         regEliminadas = helper.eliminar(combo);
         helper.cerrar();
@@ -34,6 +38,6 @@ public class ComboEliminarActivity extends AppCompatActivity {
 
     public void limpiarTextoEliminarCombo(View v){
         editIdCombo.setText("");
-        editPrecioCombo.setText("");
+        //editPrecioCombo.setText("");
     }
 }

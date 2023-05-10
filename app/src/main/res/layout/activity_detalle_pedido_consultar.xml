@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ComboProductoConsultarActivity">
+    tools:context=".DetallePedidoConsultarActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/texto_combo_producto"
+            android:text="@string/texto_detalle_pedido"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,13 +33,13 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="@string/id_combo_producto"
+            android:hint="@string/id_detalle_pedido"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_ComboProductoConsulta"
+                android:id="@+id/id_DetallePedido"
                 android:inputType="number"
                 android:digits="0123456789"
                 android:layout_width="match_parent"
@@ -57,13 +57,13 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="5sp"
-                android:onClick="consultarComboProducto"
+                android:onClick="consultarDetallePedido"
                 android:text="@string/consultar"
                 android:textStyle="bold" />
 
             <Button
                 android:layout_width="wrap_content"
-                android:onClick="limpiarTextoConsultarComboProducto"
+                android:onClick="limpiarTextoConsultarDetallePedido"
                 android:text="@string/limpiar"
                 android:textStyle="bold" />
         </TableRow>
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="100dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,20 +92,19 @@
             android:textStyle="bold" />
 
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_5"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="@string/id_combo"
+            android:hint="@string/id_pedido"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_Combo"
+                android:id="@+id/id_Pedido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -114,21 +113,63 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@id/radio_combo"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
+            <RadioButton
+                android:id="@+id/radio_combo"
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:text="@string/texto_combo" />
+
+            <RadioButton
+                android:id="@+id/radio_producto"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:text="@string/texto_Producto" />
+        </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_6"
+            android:id="@+id/textInputLayout_7"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="@string/id_Producto"
+            android:hint="@string/id_ProductoOrCombo"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_Producto"
+                android:id="@+id/id_ProductoOrCombo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:inputType="number">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_10"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="@string/cantidad_detalle_pedido"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cantidad_Producto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -137,8 +178,29 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_11"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="@string/subtotal_detalle_pedido"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/subtotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

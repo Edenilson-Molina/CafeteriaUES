@@ -11,6 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
+
+
         <activity
             android:name=".EncargadoLocalMainActivity"
             android:exported="false" />
@@ -42,6 +44,39 @@
             android:name=".EmpleadoActualizarActivity"
             android:exported="false" />
         <activity
+            android:name=".PrecioProductoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteInsertarActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoProductoConsultarActivity"
             android:exported="false" />
         <activity
@@ -55,6 +90,21 @@
             android:exported="false" />
         <activity
             android:name=".TipoProductoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoActualizarActivity"
             android:exported="false" />
         <activity
             android:name=".ComboProductoInsertarActivity"

@@ -1,5 +1,7 @@
 package sv.edu.ues.fia.eisi.cafetinesues;
 
+import androidx.annotation.Nullable;
+
 public class DetallePedido {
     private int id_DetallePedido;
     private int id_Pedido;

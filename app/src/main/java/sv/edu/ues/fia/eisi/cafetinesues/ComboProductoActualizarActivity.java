@@ -3,9 +3,9 @@ package sv.edu.ues.fia.eisi.cafetinesues;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.service.controls.Control;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ComboProductoActualizarActivity extends AppCompatActivity {
 
@@ -32,6 +32,7 @@ public class ComboProductoActualizarActivity extends AppCompatActivity {
         helper.abrir();
         String estado = helper.actualizar(comboProducto);
         helper.cerrar();
+        Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
     }
 
     public void limpiarTextoActualizarComboProducto(View v){

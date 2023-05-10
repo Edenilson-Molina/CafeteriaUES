@@ -6,17 +6,26 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Date;
+import java.util.Objects;
 
 public class ControlDB {
     // CAMPOS DE CADA TABLA
     private static final String[] campos_Combo = new String[]{"id_Combo", "precio_Combo"};
     private static final String[] campos_ComboProducto = new String[]{"id_ComboProducto", "id_Combo", "id_Producto"};
+    private static final String[] campos_DetallePedido = new String[]{"id_DetallePedido", "id_Pedido", "id_Combo", "id_Producto", "cantidad_Producto", "subtotal"};
     private static final String[] campos_Producto = new String[]{"id_Producto","id_TipoProducto","nombre_Producto","estado_Producto","precioactual_Producto"};
     private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
+    private static final String[] campos_PrecioProducto = new String[] {"id_PrecioProducto","id_Producto","id_ListaPrecio","precio"};
+    private static final String[] campos_ListaPrecio = new String[] {"id_ListaPrecio","desde","hasta"};
+    private static final String[] campos_Cliente = new String[] {"id_Cliente","nombres_Cliente","apellidos_Cliente","fecha_nacimiento","id_Ubicacion"};
+    private static final String[] campos_TipoPago = new String[] {"id_TipoPago","nombre_TipoPago"};
+
 
     private static final String[] Campos_Empleado = new String[] {"id_Empleado","id_Local", "nombre_Empleado", "tipo_Empleado"};
 
@@ -190,8 +199,48 @@ public class ControlDB {
                         "CONSTRAINT FK_UBICACION_FACULTAD FOREIGN KEY (ID_FACULTAD) REFERENCES FACULTAD(ID_FACULTAD) ON DELETE RESTRICT," +
                         "CONSTRAINT FK_UBICACION_TIPOUBICACION FOREIGN KEY (ID_TIPOUBICACION) REFERENCES TIPOUBICACION(ID_TIPOUBICACION) ON DELETE RESTRICT);");
 
-            }catch(SQLException e){
+                //
+                //
+                // T R I G G E R S
+                //
+                //
 
+                // PARA EVITAR ELIMINAR UN COMBO SI TIENE COMBOPRODUCTO ASOCIADOS
+                db.execSQL("CREATE TRIGGER integridad_comboproducto_delete_combo " +
+                        "BEFORE DELETE ON COMBO " +
+                        "FOR EACH ROW " +
+                        "BEGIN " +
+                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen ComboProducto asociados') " +
+                        "FROM COMBOPRODUCTO " +
+                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                        "END;");
+
+                // PARA EVITAR ELIMINAR UN COMBO SI TIENE DETALLEPEDIDOS ASOCIADOS
+                db.execSQL("CREATE TRIGGER integridad_detallepedido_delete_combo " +
+                        "BEFORE DELETE ON COMBO " +
+                        "FOR EACH ROW " +
+                        "BEGIN " +
+                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen DetallePedido asociados') " +
+                        "FROM DETALLEPEDIDO " +
+                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                        "END;");
+
+                // ACTUALIZAR EL PRECIO DEL COMBO LUEGO DE INSERTAR UN NUEVO COMBO_PRODUCTO
+                db.execSQL("CREATE TRIGGER actualizar_precio_combo_insert " +
+                        "AFTER INSERT ON COMBOPRODUCTO " +
+                        "BEGIN " +
+                        "UPDATE COMBO " +
+                        "SET PRECIO_COMBO = ( " +
+                        "SELECT SUM(PRODUCTO.PRECIOACTUAL_PRODUCTO) " +
+                        "FROM COMBOPRODUCTO " +
+                        "JOIN PRODUCTO ON COMBOPRODUCTO.ID_PRODUCTO = PRODUCTO.ID_PRODUCTO " +
+                        "WHERE COMBOPRODUCTO.ID_COMBO = COMBO.ID_COMBO) " +
+                        "WHERE COMBO.ID_COMBO = NEW.ID_COMBO; " +
+                        "END;");
+
+
+
+            }catch(SQLException e){
                 e.printStackTrace();
             }
         }
@@ -255,7 +304,12 @@ public class ControlDB {
         int contador = 0;
         //Verificar si existe el registro a eliminar
         if (verificarIntegridad(combo, 1)) {
-            contador += db.delete("Combo", "id_Combo='" + combo.getId_Combo() + "'", null);
+            try{
+                contador += db.delete("Combo", "id_Combo='" + combo.getId_Combo() + "'", null);
+            } catch (android.database.sqlite.SQLiteConstraintException e){
+                e.printStackTrace();
+                regAfectados = "No se puede eliminar el registro ya que existe una dependencia";
+            }
         }
         regAfectados += contador;
         return regAfectados;
@@ -306,7 +360,7 @@ public class ControlDB {
     public String actualizar(ComboProducto comboProducto) {
         // Verificar si existe el registro a actualizar
         // En este caso nos interesa que SI exista
-        if (verificarIntegridad(comboProducto, 3)) {
+        if (verificarIntegridad(comboProducto, 4)) {
             String[] id = {String.valueOf(comboProducto.getId_ComboProducto())};
             ContentValues cv = new ContentValues();
             cv.put("id_Combo", comboProducto.getId_Combo());
@@ -322,7 +376,7 @@ public class ControlDB {
         String regAfectados = "filas afectadas= ";
         int contador = 0;
         //Verificar si existe el registro a eliminar
-        if (verificarIntegridad(comboProducto, 3)) {
+        if (verificarIntegridad(comboProducto.getId_ComboProducto(), 5)) {
             contador += db.delete("ComboProducto", "id_ComboProducto='" + comboProducto.getId_ComboProducto() + "'", null);
         }
         regAfectados += contador;
@@ -332,7 +386,7 @@ public class ControlDB {
     public ComboProducto consultarComboProducto(int id_ComboProducto) {
         String[] id = {String.valueOf(id_ComboProducto)};
         // Verificar que exista el registro a consultarCombo
-        if (verificarIntegridad(id_ComboProducto, 4)) {
+        if (verificarIntegridad(id_ComboProducto, 5)) {
             Cursor cursor = db.query("ComboProducto", campos_ComboProducto, "id_ComboProducto = ?", id, null, null, null);
             if (cursor.moveToFirst()) {
                 ComboProducto comboProducto = new ComboProducto();
@@ -347,6 +401,110 @@ public class ControlDB {
             return null;
         }
     }
+    //
+    //
+    //
+    // METODOS PARA DETALLEPEDIDO
+    //
+    //
+    //
+    public String insertar(DetallePedido detallePedido) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(detallePedido, 6)) {
+            regInsertados = "ID ya existente o Combo/Producto inexistente";
+        } else {
+            ContentValues detallePedidoValues = new ContentValues();
+            detallePedidoValues.put("id_DetallePedido", detallePedido.getId_DetallePedido());
+            detallePedidoValues.put("id_Pedido", detallePedido.getId_Pedido());
+
+            // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
+            if(detallePedido.getId_Combo() == 0) {
+                detallePedidoValues.put("id_Producto", detallePedido.getId_Producto());
+            } else {
+                detallePedidoValues.put("id_Combo", detallePedido.getId_Combo());
+            }
+
+            detallePedidoValues.put("cantidad_Producto", detallePedido.getCantidad_Producto());
+            detallePedidoValues.put("subtotal", detallePedido.getSubtotal());
+            contador = db.insert("DetallePedido", null, detallePedidoValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+
+    public String actualizar(DetallePedido detallePedido) {
+        // Verificar si existe el registro a actualizar
+        // En este caso nos interesa que SI exista
+        // Al igual verificar que el Combo o Producto exista
+        if (verificarIntegridad(detallePedido, 7)) {
+            String[] id = {String.valueOf(detallePedido.getId_DetallePedido())};
+            ContentValues cv = new ContentValues();
+            cv.put("id_Pedido", detallePedido.getId_Pedido());
+
+            // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
+            if(detallePedido.getId_Combo() == 0) {
+                cv.put("id_Producto", detallePedido.getId_Producto());
+            } else {
+                cv.put("id_Combo", detallePedido.getId_Combo());
+            }
+
+            cv.put("cantidad_Producto", detallePedido.getCantidad_Producto());
+            cv.put("subtotal", detallePedido.getSubtotal());
+            db.update("DetallePedido", cv, "id_DetallePedido = ?", id);
+            return "Registro Actualizado Correctamente";
+        } else {
+            return "Error en los datos ingresados";
+        }
+    }
+
+    public String eliminar(DetallePedido detallePedido) {
+        String regAfectados = "filas afectadas= ";
+        int contador = 0;
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(detallePedido.getId_DetallePedido(), 8)) {
+            contador += db.delete("DetallePedido", "id_DetallePedido='" + detallePedido.getId_DetallePedido() + "'", null);
+        }
+        regAfectados += contador;
+        return regAfectados;
+    }
+
+    public DetallePedido consultarDetallePedido(int id_DetallePedido) {
+        String[] id = {String.valueOf(id_DetallePedido)};
+        // Verificar que exista el registro a consultarCombo
+        if (verificarIntegridad(id_DetallePedido, 8)) {
+            Cursor cursor = db.query("DetallePedido", campos_DetallePedido, "id_DetallePedido = ?", id, null, null, null);
+            if (cursor.moveToFirst()) {
+                DetallePedido detallePedido = new DetallePedido();
+                detallePedido.setId_DetallePedido(cursor.getInt(0));
+                detallePedido.setId_Pedido(cursor.getInt(1));
+
+                // VERIFICAMOS CUAL VALOR VIENE COMO NULL, PARA MANEJARLO COMO "0" EN EL OBJETO
+                Integer combo = cursor.getInt(2);
+                if(Objects.isNull(combo)){
+                    detallePedido.setId_Combo(0);
+                } else {
+                    detallePedido.setId_Combo(cursor.getInt(2));
+                }
+                Integer prod = cursor.getInt(3);
+                if(Objects.isNull(prod)){
+                    detallePedido.setId_Producto(0);
+                } else {
+                    detallePedido.setId_Producto(cursor.getInt(3));
+                }
+                detallePedido.setId_Producto(cursor.getInt(3));
+                detallePedido.setCantidad_Producto(cursor.getInt(4));
+                detallePedido.setSubtotal(cursor.getFloat(5));
+                return detallePedido;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
 
     //
     //
@@ -470,6 +628,7 @@ public class ControlDB {
     //
     //
     //
+
     public String insertar(TipoProducto tipoProducto) {
         String regInsertados = "Registro Insertado Nº= ";
         long contador = 0;
@@ -535,6 +694,184 @@ public class ControlDB {
     }
 
     //
+    //
+    // METODOS PARA PRECIO PRODUCTO
+    //
+    //
+    //
+
+    public String insertar(PrecioProducto precioProducto) {
+        String regInsertado = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar existencia de un PrecioProducto con ese id y
+        // que las foraneas no se repitan
+        if (verificarIntegridad(precioProducto, 16)) {
+            regInsertado = "Error al Insertar el registro, Registro duplicado";
+        } else {
+            ContentValues precioProductoValues = new ContentValues();
+            precioProductoValues.put(campos_PrecioProducto[0], precioProducto.getId_PrecioProducto());
+            precioProductoValues.put(campos_PrecioProducto[1], precioProducto.getId_Producto());
+            precioProductoValues.put(campos_PrecioProducto[2], precioProducto.getId_ListaPrecio());
+            precioProductoValues.put(campos_PrecioProducto[3], precioProducto.getPrecio());
+            contador = db.insert("PrecioProducto", null, precioProductoValues);
+            regInsertado += contador;
+        }
+        return regInsertado;
+    }
+
+    public String actualizar(PrecioProducto precioProducto){
+        String registro = "";
+        if(verificarIntegridad(precioProducto,18)){
+            String[] id_precioProducto = {String.valueOf(precioProducto.getId_PrecioProducto())};
+            ContentValues precioProductoUpdate = new ContentValues();
+            precioProductoUpdate.put(campos_PrecioProducto[1],precioProducto.getId_Producto());
+            precioProductoUpdate.put(campos_PrecioProducto[2],precioProducto.getId_ListaPrecio());
+            precioProductoUpdate.put(campos_PrecioProducto[3],precioProducto.getPrecio());
+            db.update("PrecioProducto", precioProductoUpdate, "id_PrecioProducto = ?", id_precioProducto);
+            return "ID: " + precioProducto.getId_PrecioProducto() + "\nActualizado Satisfactoriamente";
+        }else {
+            return "No existe o\nForaneas repetidas";
+        }
+    }
+
+    public String eliminar(PrecioProducto precioProducto) {
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(precioProducto, 17)) {
+            contador += db.delete("PrecioProducto", "id_PrecioProducto='" + precioProducto.getId_PrecioProducto() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe";
+        }
+
+        return regAfectados;
+    }
+
+    public PrecioProducto consultarPrecioProducto(PrecioProducto precioProducto) {
+        // Verificar que exista el registro a consultar de PrecioProducto
+        if (verificarIntegridad(precioProducto, 17)) {
+            Cursor cursor = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",
+                    new String[]{String.valueOf(precioProducto.getId_PrecioProducto())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                PrecioProducto precioProductoConsulta = new PrecioProducto();
+                precioProductoConsulta.setId_Producto(cursor.getInt(1));
+                precioProductoConsulta.setId_ListaPrecio(cursor.getInt(2));
+                precioProductoConsulta.setPrecio(cursor.getFloat(3));
+                return precioProductoConsulta;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+
+    //
+    //
+    // METODOS PARA CLIENTE
+    //
+    //
+    //
+    public String insertar(Cliente cliente) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(cliente, 21)) {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues clienteValues = new ContentValues();
+            clienteValues.put(campos_Cliente[0],cliente.getId_cliente());
+            clienteValues.put(campos_Cliente[1],cliente.getNombres());
+            clienteValues.put(campos_Cliente[2],cliente.getApellidos());
+            clienteValues.put(campos_Cliente[3],cliente.getFecha_nacimiento());
+            clienteValues.put(campos_Cliente[4],cliente.getId_ubicacion());
+            contador = db.insert("Cliente", null, clienteValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+    public String eliminar(Cliente cliente){
+        String regInsertados = "Registro Eliminado Nº= ";
+        return  regInsertados;
+    }
+
+    public String actualizar(Cliente cliente){
+        String regInsertados = "Registro Actualizado Nº= ";
+        return  regInsertados;
+    }
+
+    //
+    //
+    // METODOS PARA TIPOPAGO
+    //
+    //
+    //
+
+    public String insertar(TipoPago tipoPago) {
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(tipoPago, 21)) {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues tipoPagoValues = new ContentValues();
+            tipoPagoValues.put(campos_TipoPago[0],tipoPago.getId_TipoPago());
+            tipoPagoValues.put(campos_TipoPago[1],tipoPago.getNombre_TipoPago());
+            contador = db.insert("TipoPago", null, tipoPagoValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+    }
+    public String eliminar(TipoPago tipoPago){
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(tipoPago, 21)) {
+            contador += db.delete("TipoPago", "id_TipoPago='" + tipoPago.getId_TipoPago() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe o\nEsta asociado";
+        }
+
+        return regAfectados;
+    }
+
+    public String actualizar(TipoPago tipoPago){
+        if (verificarIntegridad(tipoPago, 21)) {
+            String[] id = { String.valueOf(tipoPago.getId_TipoPago())};
+            ContentValues cv = new ContentValues();
+            cv.put("nombre_TipoPago", tipoPago.getNombre_TipoPago());
+            db.update("TipoPago", cv, "id_TipoPago = ?", id);
+            return "Registro Actualizado Correctamente";
+        } else {
+            return "Registro con ID " + tipoPago.getId_TipoPago() + " no existe";
+        }
+    }
+
+    public TipoPago consultarTipoPago(String id_tp){
+        String[] id = {id_tp};
+
+        Cursor cursor = db.query("TipoPago", campos_TipoPago, "id_TipoPago = ?",
+                id, null, null, null);
+        if (cursor.moveToFirst()) {
+            TipoPago tipoPago = new TipoPago();
+            tipoPago.setNombre_TipoPago(cursor.getString(1));
+            return tipoPago;
+        } else {
+            return null;
+        }
+    }
+    //
+    //
+    //
+
+    //
     // METODOS PARA EMPLEADO
     //
     //
@@ -560,7 +897,7 @@ public class ControlDB {
                 resultado = "El Empleado ya existe";
                 if(!(existenciaEmpleado)){
                     if(resultado.isEmpty()){
-                        resultado = "No eciste el Empleado";
+                        resultado = "No existe el Empleado";
                     }
                     else {
                         resultado += "y\nNo existe el Local";
@@ -741,6 +1078,8 @@ public class ControlDB {
             //
             //
             case 3:
+                // PARA INSERTAR
+                //
                 // Verificar si ya existe ese COMBO_PRODUCTO y si existen  el Combo y Producto especificado
                 ComboProducto comboProducto = (ComboProducto)dato;
                 String[] id1c = {String.valueOf(comboProducto.getId_ComboProducto())};
@@ -750,17 +1089,122 @@ public class ControlDB {
                 Cursor cursor1c = db.query("ComboProducto", null, "id_ComboProducto = ?", id1c, null, null, null);
                 Cursor cursor2c = db.query("Combo", null, "id_Combo = ?", id2c, null, null, null);
                 Cursor cursor3c = db.query("Producto", null, "id_Producto = ?", id3c, null, null, null);
-                if(cursor1c.moveToFirst() && cursor2c.moveToFirst() && cursor3c.moveToFirst()){
-                    //Se encontraron datos
+                if(cursor1c.moveToFirst()){
+                    // ID duplicado, no se debe insertar
+                    return true;
+                }
+                if (cursor2c.moveToFirst() && cursor3c.moveToFirst()){
+                    //Se encontraron los ID's, se puede insertar
+                    return false;
+                }
+                return true;
+            case 4:
+                // PARA ACTUALIZAR
+                //
+                // Verificar si ya existe ese COMBO_PRODUCTO y si existen  el Combo y Producto especificado
+                ComboProducto comboProducto1 = (ComboProducto)dato;
+                String[] id1cQ = {String.valueOf(comboProducto1.getId_ComboProducto())};
+                String[] id2cQ = {String.valueOf(comboProducto1.getId_Combo())};
+                String[] id3cQ = {String.valueOf(comboProducto1.getId_Producto())};
+                abrir();
+                Cursor cursor1cQ = db.query("ComboProducto", null, "id_ComboProducto = ?", id1cQ, null, null, null);
+                Cursor cursor2cQ = db.query("Combo", null, "id_Combo = ?", id2cQ, null, null, null);
+                Cursor cursor3cQ = db.query("Producto", null, "id_Producto = ?", id3cQ, null, null, null);
+                if(cursor1cQ.moveToFirst() && cursor2cQ.moveToFirst() && cursor3cQ.moveToFirst()){
+                    // LOS 3 ID'S EXISTEN, SE PUEDE ACTUALIZAR
                     return true;
                 }
                 return false;
-            case 4:
+            case 5:
                 // Verificar si existe ese id_ComboProducto
                 String[] id2cc = {String.valueOf(dato)};
                 abrir();
                 Cursor cursor2cc = db.query("ComboProducto", null, "id_ComboProducto = ?", id2cc, null, null, null);
                 if (cursor2cc.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA DETALLE_PEDIDO
+            //
+            //
+            case 6:
+                // Verificar si ya existe ese DETALLE_PEDIDO y si existen  el Pedido, Combo y Producto especificado
+                DetallePedido detallePedido = (DetallePedido)dato;
+                String[] id1d = {String.valueOf(detallePedido.getId_DetallePedido())};
+                String[] id2d = {String.valueOf(detallePedido.getId_Pedido())};
+
+                abrir();
+
+                Cursor cursor1d = db.query("DetallePedido", null, "id_DetallePedido = ?", id1d, null, null, null);
+                Cursor cursor2d = db.query("Pedido", null, "id_Pedido = ?", id2d, null, null, null);
+
+                // PRIMERO VERIFICAMOS SI ESE ID YA EXISTE EN LA BDD
+                if (cursor1d.moveToFirst()) {
+                    // Ya existe ese DetallePedido, no se puede insertar
+                    return true;
+                }
+
+                // AHORA VERIFICAMOS PRIMERO CUAL CAMPO ES "0"
+                // Y PARA EL QUE NO ES "0", VERIFICAR SI EXISTE
+                if(detallePedido.getId_Combo() == 0){
+                    String[] id4d = {String.valueOf(detallePedido.getId_Producto())};
+                    Cursor cursor4d = db.query("Producto", null, "id_Producto = ?", id4d, null, null, null);
+                    if (cursor2d.moveToFirst() && cursor4d.moveToFirst())   {
+                        //Se encontraron datos, por lo que esta CORRECTO
+                        return false;
+                    }
+                } else {
+                    String[] id3d = {String.valueOf(detallePedido.getId_Combo())};
+                    Cursor cursor3d = db.query("Combo", null, "id_Combo = ?", id3d, null, null, null);
+                    if (cursor2d.moveToFirst() && cursor3d.moveToFirst())   {
+                        //Se encontraron datos, por lo que esta CORRECTO
+                        return false;
+                    }
+
+                }
+                return true;
+
+            //Para actualizar DetallePedido
+            case 7:
+                // Verificar si ya existe ese DETALLE_PEDIDO y si existen  el Pedido, Combo y Producto especificado
+                DetallePedido detallePedido1 = (DetallePedido)dato;
+                String[] id1d1 = {String.valueOf(detallePedido1.getId_DetallePedido())};
+                String[] id2d1 = {String.valueOf(detallePedido1.getId_Pedido())};
+
+                abrir();
+
+                Cursor cursor1d1 = db.query("DetallePedido", null, "id_DetallePedido = ?", id1d1, null, null, null);
+                Cursor cursor2d1 = db.query("Pedido", null, "id_Pedido = ?", id2d1, null, null, null);
+
+                // AHORA VERIFICAMOS PRIMERO CUAL CAMPO ES "0"
+                // Y PARA EL QUE NO ES "0", VERIFICAR SI EXISTE
+                if(detallePedido1.getId_Combo() == 0){
+                    String[] id4d = {String.valueOf(detallePedido1.getId_Producto())};
+                    Cursor cursor4d = db.query("Producto", null, "id_Producto = ?", id4d, null, null, null);
+                    if (cursor1d1.moveToFirst() && cursor2d1.moveToFirst() && cursor4d.moveToFirst())   {
+                        //Se encontraron datos, por lo que esta CORRECTO
+                        return true;
+                    }
+                } else {
+                    String[] id3d = {String.valueOf(detallePedido1.getId_Combo())};
+                    Cursor cursor3d = db.query("Combo", null, "id_Combo = ?", id3d, null, null, null);
+                    if (cursor1d1.moveToFirst() && cursor2d1.moveToFirst() && cursor3d.moveToFirst())   {
+                        //Se encontraron datos, por lo que esta CORRECTO
+                        return true;
+                    }
+
+                }
+                return false;
+            //Para eliminar DetallePedido
+            case 8:
+                // Verificar si existe ese id_DetallePedido
+                String[] iddp = {String.valueOf(dato)};
+                abrir();
+                Cursor cursordp = db.query("DetallePedido", null, "id_DetallePedido = ?", iddp, null, null, null);
+                if (cursordp.moveToFirst()) {
                     // Ya existe
                     return true;
                 }
@@ -842,9 +1286,9 @@ public class ControlDB {
                 Empleado empleado1 = (Empleado) dato;
                 String []  id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
                 abrir();
-                Cursor cursorE1 = db.query("Envio",null,"id_Empleado=?" ,id_Empleado1,null, null,null);
+                Cursor cursorE1 = db.query("Empleado",null,"id_Empleado=?" ,id_Empleado1,null, null,null);
                 Cursor cursorL1 = db.query("Local",null, "id_Empleado=?",id_Empleado1, null,null,null);
-                if (cursorE1.moveToFirst() || cursorL1.moveToFirst()){
+                if (cursorE1.moveToFirst() && cursorL1.moveToFirst()){
                     return true;
                 }
                 return false;
@@ -863,13 +1307,84 @@ public class ControlDB {
                 }
                 return true;
 
+            //
+            //
+            // INTEGRIDAD PARA PRECIO PRODUCTO
+            //
+            //
+            case 16:
+                // Verificar la existencia del Precio Producto
+                // y tambien sus id_Producto y id_ListaPrecio
+                PrecioProducto precioProducto16 = (PrecioProducto) dato;
+                String[] id_PrecioProducto16 = {String.valueOf(precioProducto16.getId_PrecioProducto())};
+                String[] integridad16 ={String.valueOf(precioProducto16.getId_ListaPrecio()),String.valueOf(precioProducto16.getId_Producto())};
+                abrir();
+                Cursor cursorPP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",id_PrecioProducto16, null, null, null);
+                Cursor cursor2PP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?",integridad16, null, null, null);
+
+                if (cursorPP16.moveToFirst() || cursor2PP16.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+
+                return false;
+            case 17:
+                // Verificar la existencia del Precio Producto
+                PrecioProducto precioProducto17 = (PrecioProducto) dato;
+                String[] id_PrecioProducto17 = {String.valueOf(precioProducto17.getId_PrecioProducto())};
+                abrir();
+                Cursor cursorPP17 = db.query("PrecioProducto", null, "id_PrecioProducto = ?",id_PrecioProducto17, null, null, null);
+                if (cursorPP17.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+            case 18:
+                // Verificar la existencia del Precio Producto
+                // y tambien sus id_Producto y id_ListaPrecio
+                PrecioProducto precioProducto18 = (PrecioProducto) dato;
+                String[] id_PrecioProducto18 = {String.valueOf(precioProducto18.getId_PrecioProducto())};
+                String[] integridad18 ={String.valueOf(precioProducto18.getId_ListaPrecio()),String.valueOf(precioProducto18.getId_Producto())};
+                abrir();
+                Cursor cursorPP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",id_PrecioProducto18, null, null, null);
+                Cursor cursor2PP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?",integridad18, null, null, null);
+
+                if (cursorPP18.moveToFirst()) {
+
+                    if(!(cursor2PP18.moveToFirst())||(cursor2PP18.getInt(0) == cursorPP18.getInt(0)))
+                    {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+
+                }else{
+                    return false;
+                }
+            case 21:
+                //validar que exista ubicacion
+                //falta crear clase ubicacion
+                //Ubicacion ubicacion = (Ubicacion) dato;
+                //String[] idu = { ubicacion.getCodmateria() };
+                //abrir();
+                //Cursor cm = db.query("materia", null, "id_ubicacion = ?", idu, null,
+                //                        null, null);
+                //if (cm.moveToFirst()) {
+                    // Se encontro Materia
+                   // return true;
+               // }
+                TipoPago tipoPago = (TipoPago) dato;
+                String[] id_tipoPago = {String.valueOf(tipoPago.getId_TipoPago())};
+                abrir();
+                Cursor cursorIP21 = db.query("TipoPago", null, "id_TipoPago = ?",id_tipoPago, null, null, null);
+                if (cursorIP21.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+
             default:
                 return false;
-            //
-            //
-            // Demas casos para las demas tablas
-            //
-
         }
     }
 
@@ -882,13 +1397,40 @@ public class ControlDB {
         // DATOS PARA COMBO
         final String[] VECcombo = {"1", "2", "3", "4", "5"};
         final String[] VECprecio = {"1.00", "2.00", "3.00", "4.00", "5.00"};
+        //DATOS PARA PRODUCTO
+        final String[] VECproducto = {"1", "2", "3", "4", "5"};
+        final String[] VECnombre = {"Producto1", "Producto2", "Producto3", "Producto4", "Producto5"};
+        final String[] VECestado_producto = {"Estado1", "Estado2", "Estado3", "Estado4", "Estado5"};
+        final String[] VECprecioActualProducto = {"1.00", "2.00", "3.00", "4.00", "5.00"};
+        final String[] VECidTipoProducto = {"1", "2", "3", "4", "5"};
+        //DATOS PARA TIPO PRODUCTO
+        final String[] VECtipoProducto = {"1", "2", "3", "4", "5"};
+        final String[] VECnombreTipoProducto = {"TipoProducto1", "TipoProducto2", "TipoProducto3", "TipoProducto4", "TipoProducto5"};
+        // DATOS PARA COMBO_PRODUCTO
+        final String[] VECComboProducto = {"1", "2", "3", "4", "5"};
+        final String[] VECidCombo = {"1", "2", "3", "4", "5"};
+        final String[] VECidProducto = {"1", "2", "3", "4", "5"};
+        // DATOS PARA DETALLE_PEDIDO
+
+        // DATOS PARA LISTA_PRECIO
+        final String[] VECListaPrecio = {"1","2","3","4","5"};
+        final String[] VECDesde = {"06-05-2023","07-05-2023","08-05-2023","09-05-2023","10-05-2023"};
+        final String[] VECHasta = {"07-05-2023","08-05-2023","09-05-2023","10-05-2023","11-05-2023"};
+
 
 
         // ABRIR BD
         abrir();
 
         // ELIMINAR REGISTROS
+        db.execSQL("DELETE FROM TipoProducto");
+        db.execSQL("DELETE FROM ComboProducto");
+        db.execSQL("DELETE FROM PrecioProducto");
+        db.execSQL("DELETE FROM ListaPrecio");
         db.execSQL("DELETE FROM Combo");
+        db.execSQL("DELETE FROM Producto");
+
+
 
 
 
@@ -901,6 +1443,42 @@ public class ControlDB {
             insertar(combo);
         }
 
+        // LLENAR TABLA TIPO PRODUCTO
+        TipoProducto tipoProducto = new TipoProducto();
+        for (int i = 0; i < 5; i++) {
+            tipoProducto.setId_TipoProducto(Integer.parseInt(VECtipoProducto[i]));
+            tipoProducto.setNombre_TipoProducto(VECnombreTipoProducto[i]);
+            insertar(tipoProducto);
+        }
+
+        // LLENAR TABLA PRODUCTO
+        Producto producto = new Producto();
+        for (int i = 0; i < 5; i++) {
+            producto.setCodigo_Producto(Integer.parseInt(VECproducto[i]));
+            producto.setNombre_Producto(VECnombre[i]);
+            producto.setEstado_Producto(VECestado_producto[i]);
+            producto.setPrecioactual_Producto(Float.parseFloat(VECprecioActualProducto[i]));
+            producto.setCodigo_TipoProducto(Integer.parseInt(VECidTipoProducto[i]));
+            insertar(producto);
+        }
+
+        // LLENAR TABLA COMBO_PRODUCTO
+        ComboProducto comboProducto = new ComboProducto();
+        for (int i = 0; i < 5; i++) {
+            comboProducto.setId_ComboProducto(Integer.parseInt(VECComboProducto[i]));
+            comboProducto.setId_Combo(Integer.parseInt(VECidCombo[i]));
+            comboProducto.setId_Producto(Integer.parseInt(VECidProducto[i]));
+            insertar(comboProducto);
+        }
+
+        // LLENAR TABLA LISTA_PRECIO
+        for (int i = 0; i < 5; i++){
+            ContentValues listaPrecioValues = new ContentValues();
+            listaPrecioValues.put(campos_ListaPrecio[0], Integer.parseInt(VECListaPrecio[i]));
+            listaPrecioValues.put(campos_ListaPrecio[1], VECDesde[i]);
+            listaPrecioValues.put(campos_ListaPrecio[2], VECHasta[i]);
+            db.insert("ListaPrecio", null, listaPrecioValues);
+        }
 
 
         // CERRAR BD

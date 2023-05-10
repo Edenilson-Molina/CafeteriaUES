@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/combo_consulta"
+            android:text="@string/texto_combo"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -33,13 +33,15 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="@string/codigo_consulta_combo"
+            android:hint="@string/id_combo"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_ComboConsulta"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -95,7 +97,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="@string/precio_del_combo"
+            android:hint="@string/precio_combo"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             tools:ignore="MissingConstraints">
