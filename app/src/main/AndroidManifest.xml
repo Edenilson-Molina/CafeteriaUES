@@ -92,6 +92,21 @@
             android:name=".ClienteInsertarActivity"
             android:exported="false" />
         <activity
+            android:name=".FacultadMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadActualizarActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoProductoConsultarActivity"
             android:exported="false" />
         <activity

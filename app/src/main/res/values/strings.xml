@@ -67,6 +67,14 @@
     <string name="texto_id_tipoPago">Id TipoPago</string>
     <string name="texto_nombreTipoPago">Nombre Pago</string>
 
+    <!-- Tabla Facultad -->
+    <string name="texto_Facultad">FACULTAD</string>
+    <string name="id_Facultad">ID de la Facultad</string>
+    <string name="nombre_Facultad">Nombre de la Facultad</string>
+
+
+
+
     <!-- Tabla Encargado Local -->
     <string name="texto_EncargadoLocal">ENCARGADO LOCAL</string>
     <string name="id_EncargadoLocal">ID del encargado</string>

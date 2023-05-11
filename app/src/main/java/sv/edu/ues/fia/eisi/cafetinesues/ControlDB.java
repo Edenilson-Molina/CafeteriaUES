@@ -2,6 +2,7 @@ package sv.edu.ues.fia.eisi.cafetinesues;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,6 +27,7 @@ public class ControlDB {
     private static final String[] campos_Cliente = new String[] {"id_Cliente","nombres_Cliente","apellidos_Cliente","fecha_nacimiento","id_Ubicacion"};
     private static final String[] campos_TipoPago = new String[] {"id_TipoPago","nombre_TipoPago"};
 
+    private static final String[] campos_Facultad = new String[] {"id_Facultad", "nombre_Facultad"};
 
     private static final String[] Campos_Empleado = new String[] {"id_Empleado","id_Local", "nombre_Empleado", "tipo_Empleado"};
 
@@ -695,6 +697,7 @@ public class ControlDB {
         }
     }
 
+
     //
     //
     // METODOS PARA PRECIO PRODUCTO
@@ -1141,6 +1144,72 @@ public class ControlDB {
     }
     //
     //
+
+    //Metodos para FACULTAD
+
+    public String Insertar(Facultad facultad ){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (!exitenciaFacultad) {
+            ContentValues facutadInsertar = new ContentValues();
+            facutadInsertar.put(campos_Facultad[0],facultad.getId_Faculdad());
+            facutadInsertar.put(campos_Facultad[1],facultad.getNombre_Facultad());
+
+            contador=db.insert("Facultad", null, facutadInsertar);
+            resultadoF = "Facultad Insertada";
+        }
+        else if (exitenciaFacultad){
+            resultadoF = "La Falcutad ya existe";
+        }
+        return resultadoF;
+    }
+
+    public String Actualizar(Facultad facultad){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (exitenciaFacultad){
+            ContentValues facultadActualizar = new ContentValues();
+            String[] id = {String.valueOf(facultad.getId_Faculdad())};
+            facultadActualizar.put(campos_Facultad[1],facultad.getNombre_Facultad());
+
+            contador = db.update("Facultad", facultadActualizar, "id_Facultad=?", id);
+            resultadoF="Registro Actualizado Correctamente";
+        } else if (!exitenciaFacultad) {
+            resultadoF="Registro no existe, no se puede actualizar";
+        }
+        return resultadoF;
+    }
+
+    public String Eliminar(Facultad facultad){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (exitenciaFacultad){
+            contador=db.delete("Facultad", "id_Facultad='" + facultad.getId_Faculdad() + "'", null);
+            resultadoF="Se elimino correctamente";
+        } else if (!exitenciaFacultad) {
+            resultadoF="Registro no existe, no se puede eliminar";
+        }
+        return resultadoF;
+    }
+
+    public Facultad consultarFacultad(Facultad facultad){
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (exitenciaFacultad){
+            Cursor cursor = db.query("Facultad", campos_Facultad, "id_Facultad=?", new String[]{String.valueOf(facultad.getId_Faculdad())},null,null,null );
+            if (cursor.moveToFirst()){
+                Facultad facultadConsultar = new Facultad();
+                facultadConsultar.setId_Faculdad(cursor.getInt(0));
+                facultadConsultar.setNombre_Facultad(cursor.getString(1));
+                return facultadConsultar;
+            }else {return null;}
+        }
+        else {return null;}
+
+    }
+
     // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
 
 
@@ -1532,8 +1601,24 @@ public class ControlDB {
                 }
                 return false;
 
+            case 31:
+                //Verificar la exitencia de Facultad
+                Facultad facultad = (Facultad) dato;
+                String[] id_Facutad ={String.valueOf(facultad.getId_Faculdad())};
+                abrir();
+                Cursor cursorP31 = db.query("Facultad", null, "id_Facultad = ?", id_Facutad, null, null, null);
+                if (cursorP31.moveToFirst()){
+                    //Ya existe
+                    return true;
+                }
+                return false;
+
+
+
             default:
                 return false;
+
+
         }
     }
 
