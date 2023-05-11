@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClienteInsertarActivity">
-
+    tools:context=".ClienteConsultarActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,13 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/texto_cliente"
             android:textSize="20sp"
             android:textStyle="bold" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout1"
             android:layout_width="match_parent"
@@ -48,8 +47,27 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:layout_width="wrap_content"
+                android:onClick="consultarCliente"
+                android:text="@string/consultar"
+                android:textStyle="bold"
+                android:layout_marginEnd="5sp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:onClick="limpiarTextoConsultarCliente"
+                android:textStyle="bold"
+                android:text="@string/limpiar" />
+        </TableRow>
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
+            android:id="@+id/textInputLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -63,14 +81,14 @@
                 android:id="@+id/textInputNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_2"
+            android:id="@+id/textInputLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -84,14 +102,14 @@
                 android:id="@+id/textInputApellido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_3"
+            android:id="@+id/textInputLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -104,18 +122,19 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputFechaNacimiento"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:id="@+id/TextInputLayout5"
             android:hint="@string/texto_ubicacion"
+
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -124,30 +143,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtidubicacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number">
-
+                android:layout_height="wrap_content">
 
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <Button
-                android:layout_width="wrap_content"
-                android:onClick="insertarCliente"
-                android:text="@string/insertar"
-                android:textStyle="bold"
-                android:layout_marginEnd="5sp"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:onClick="limpiarTextoClienteInsertar"
-                android:textStyle="bold"
-                android:text="@string/limpiar" />
-        </TableRow>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,6 +74,18 @@
             android:name=".PrecioProductoMainActivity"
             android:exported="false" />
         <activity
+            android:name=".ClienteActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoPagoActualizarActivity"
             android:exported="false" />
         <activity

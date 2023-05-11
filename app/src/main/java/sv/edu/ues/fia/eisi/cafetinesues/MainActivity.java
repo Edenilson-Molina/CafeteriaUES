@@ -15,9 +15,9 @@ public class MainActivity extends ListActivity {
 
     // AGREGAR DEMAS MENUS, Y SU CORRESPONDIENTE ACTIVITY, EN CADA STRING
 
-    String[] menu = {"Tabla Combo", "Tabla ComboProducto","Tabla DetallePedido","Tabla TipoProducto","Tabla Producto","Tabla Empleado", "Tabla EncargadoLocal","Tabla PrecioProducto","Tabla TipoPago", "Tabla Local","Tabla Facultad", "Llenar BD"};
+    String[] menu = {"Tabla Combo", "Tabla ComboProducto","Tabla DetallePedido","Tabla TipoProducto","Tabla Producto","Tabla Empleado", "Tabla EncargadoLocal","Tabla PrecioProducto","Tabla TipoPago", "Tabla Local","Tabla Facultad","Tabla Cliente", "Llenar BD"};
     String[] activities = {"ComboMenuActivity", "ComboProductoMenuActivity","DetallePedidoMenuActivity",
-                           "TipoProductoMainActivity","ProductoMainActivity","EmpleadoMainActivity","EncargadoLocalMainActivity","PrecioProductoMainActivity","TipoPagoMenuActivity", "LocalMainActivity","FacultadMenuActivity"};
+                           "TipoProductoMainActivity","ProductoMainActivity","EmpleadoMainActivity","EncargadoLocalMainActivity","PrecioProductoMainActivity","TipoPagoMenuActivity", "LocalMainActivity","FacultadMenuActivity","ClienteMenuActivity"};
            
     ControlDB DBhelper;
 
@@ -31,7 +31,9 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id){
         super.onListItemClick(l, v, position, id);
-        if(position!=11){
+
+        if(position!=12){
+
 
 
 

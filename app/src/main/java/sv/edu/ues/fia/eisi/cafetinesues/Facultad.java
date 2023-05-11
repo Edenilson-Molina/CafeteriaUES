@@ -2,6 +2,7 @@ package sv.edu.ues.fia.eisi.cafetinesues;
 
 public class Facultad {
 
+
     private int id_Faculdad;
     private String nombre_Facultad;
 
@@ -19,6 +20,7 @@ public class Facultad {
 
     public void setId_Faculdad(int id_Faculdad) {
         this.id_Faculdad = id_Faculdad;
+
     }
 
     public String getNombre_Facultad() {
