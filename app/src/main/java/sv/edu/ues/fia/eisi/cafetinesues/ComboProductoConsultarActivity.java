@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class ComboProductoConsultarActivity extends AppCompatActivity {
         else{
             EditIdCombo.setText(String.valueOf(comboProducto.getId_Combo()));
             EditIdProducto.setText(String.valueOf(comboProducto.getId_Producto()));
+            ocultarTeclado(v);
         }
     }
 
@@ -40,6 +42,15 @@ public class ComboProductoConsultarActivity extends AppCompatActivity {
         EditIdComboProducto.setText("");
         EditIdCombo.setText("");
         EditIdProducto.setText("");
+    }
+
+    public void ocultarTeclado(View v)
+    {
+        if(v != null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),0);
+        }
     }
 
 

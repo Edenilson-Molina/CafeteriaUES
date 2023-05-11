@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class TipoProductoConsultarActivity extends Activity {
         }
         else {
             nombre_TipoProducto.setText(tipoProducto.getNombre_TipoProducto());
+            ocultarTeclado(v);
         }
 
     }
@@ -44,5 +46,14 @@ public class TipoProductoConsultarActivity extends Activity {
     {
         codigo_TipoProducto.setText("");
         nombre_TipoProducto.setText("");
+    }
+
+    public void ocultarTeclado(View v)
+    {
+        if(v != null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),0);
+        }
     }
 }

@@ -1,23 +1,26 @@
 package sv.edu.ues.fia.eisi.cafetinesues;
 
 public class Facultad {
-    private int id_Facultad;
-    private String nombre_Facultad;
 
-    public Facultad(int id_Facultad, String nombre_Facultad) {
-        this.id_Facultad = id_Facultad;
-        this.nombre_Facultad = nombre_Facultad;
-    }
+
+    private int id_Faculdad;
+    private String nombre_Facultad;
 
     public Facultad() {
     }
 
-    public int getId_Facultad() {
-        return id_Facultad;
+    public Facultad(int id_Faculdad, String nombre_Facultad) {
+        this.id_Faculdad = id_Faculdad;
+        this.nombre_Facultad = nombre_Facultad;
     }
 
-    public void setId_Facultad(int id_Facultad) {
-        this.id_Facultad = id_Facultad;
+    public int getId_Faculdad() {
+        return id_Faculdad;
+    }
+
+    public void setId_Faculdad(int id_Faculdad) {
+        this.id_Faculdad = id_Faculdad;
+
     }
 
     public String getNombre_Facultad() {

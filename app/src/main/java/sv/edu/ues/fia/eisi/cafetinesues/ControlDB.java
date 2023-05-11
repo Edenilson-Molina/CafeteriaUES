@@ -2,11 +2,17 @@ package sv.edu.ues.fia.eisi.cafetinesues;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Date;
 import java.util.Objects;
 
 public class ControlDB {
@@ -16,14 +22,20 @@ public class ControlDB {
     private static final String[] campos_DetallePedido = new String[]{"id_DetallePedido", "id_Pedido", "id_Combo", "id_Producto", "cantidad_Producto", "subtotal"};
     private static final String[] campos_Producto = new String[]{"id_Producto","id_TipoProducto","nombre_Producto","estado_Producto","precioactual_Producto"};
     private static final String[] campos_TipoProducto = new String[] {"id_TipoProducto","nombre_TipoProducto"};
+
+    private static final String[] campos_PrecioProducto = new String[] {"id_PrecioProducto","id_Producto","id_ListaPrecio","precio"};
+    private static final String[] campos_ListaPrecio = new String[] {"id_ListaPrecio","desde","hasta"};
     private static final String[] campos_Cliente = new String[] {"id_Cliente","id_Ubicacion","nombres_Cliente","apellidos_Cliente","fecha_nacimiento",};
     private static final String[] campos_TipoPago = new String[] {"id_TipoPago","nombre_TipoPago"};
 
-    private static final String[] campos_TipoUbicacion = new String[] {"id_TipoUbicacion","nombre_TipoUbicacion"};
-    private static final String[] campos_Facultad = new String[] {"id_Facultad","nombre_Facultad"};
+    private static final String[] campos_Facultad = new String[] {"id_Facultad", "nombre_Facultad"};
 
-    private static final String[] campos_Ubicacion = new String[] {"id_Ubicacion","id_Facultad","id_TipoUbicacion","nombre_Ubicacion","descripcion_ubicacion"};
 
+    private static final String[] Campos_Empleado = new String[] {"id_Empleado","id_Local", "nombre_Empleado", "tipo_Empleado"};
+
+    private static final String[] Campos_EncargadoLocal = new String[]{"id_EncargadoLocal","nombre_EncargadoLocal"};
+
+    private static final String[] Campos_Local = new String[]{"id_Local","id_Ubicacion", "id_EncargadoLocal", "nombre_Local"};
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -193,6 +205,47 @@ public class ControlDB {
                         "CONSTRAINT FK_UBICACION_FACULTAD FOREIGN KEY (ID_FACULTAD) REFERENCES FACULTAD(ID_FACULTAD) ON DELETE RESTRICT," +
                         "CONSTRAINT FK_UBICACION_TIPOUBICACION FOREIGN KEY (ID_TIPOUBICACION) REFERENCES TIPOUBICACION(ID_TIPOUBICACION) ON DELETE RESTRICT);");
 
+                //
+                //
+                // T R I G G E R S
+                //
+                //
+
+                // PARA EVITAR ELIMINAR UN COMBO SI TIENE COMBOPRODUCTO ASOCIADOS
+                db.execSQL("CREATE TRIGGER integridad_comboproducto_delete_combo " +
+                        "BEFORE DELETE ON COMBO " +
+                        "FOR EACH ROW " +
+                        "BEGIN " +
+                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen ComboProducto asociados') " +
+                        "FROM COMBOPRODUCTO " +
+                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                        "END;");
+
+                // PARA EVITAR ELIMINAR UN COMBO SI TIENE DETALLEPEDIDOS ASOCIADOS
+                db.execSQL("CREATE TRIGGER integridad_detallepedido_delete_combo " +
+                        "BEFORE DELETE ON COMBO " +
+                        "FOR EACH ROW " +
+                        "BEGIN " +
+                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen DetallePedido asociados') " +
+                        "FROM DETALLEPEDIDO " +
+                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                        "END;");
+
+                // ACTUALIZAR EL PRECIO DEL COMBO LUEGO DE INSERTAR UN NUEVO COMBO_PRODUCTO
+                db.execSQL("CREATE TRIGGER actualizar_precio_combo_insert " +
+                        "AFTER INSERT ON COMBOPRODUCTO " +
+                        "BEGIN " +
+                        "UPDATE COMBO " +
+                        "SET PRECIO_COMBO = ( " +
+                        "SELECT SUM(PRODUCTO.PRECIOACTUAL_PRODUCTO) " +
+                        "FROM COMBOPRODUCTO " +
+                        "JOIN PRODUCTO ON COMBOPRODUCTO.ID_PRODUCTO = PRODUCTO.ID_PRODUCTO " +
+                        "WHERE COMBOPRODUCTO.ID_COMBO = COMBO.ID_COMBO) " +
+                        "WHERE COMBO.ID_COMBO = NEW.ID_COMBO; " +
+                        "END;");
+
+
+
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -257,7 +310,12 @@ public class ControlDB {
         int contador = 0;
         //Verificar si existe el registro a eliminar
         if (verificarIntegridad(combo, 1)) {
-            contador += db.delete("Combo", "id_Combo='" + combo.getId_Combo() + "'", null);
+            try{
+                contador += db.delete("Combo", "id_Combo='" + combo.getId_Combo() + "'", null);
+            } catch (android.database.sqlite.SQLiteConstraintException e){
+                e.printStackTrace();
+                regAfectados = "No se puede eliminar el registro ya que existe una dependencia";
+            }
         }
         regAfectados += contador;
         return regAfectados;
@@ -367,12 +425,11 @@ public class ControlDB {
             detallePedidoValues.put("id_DetallePedido", detallePedido.getId_DetallePedido());
             detallePedidoValues.put("id_Pedido", detallePedido.getId_Pedido());
 
-            // EL CAMPO QUE VENGA COMO "0", SERA INSERTADO COMO NULL
+            // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
             if(detallePedido.getId_Combo() == 0) {
-                detallePedidoValues.put("id_Combo", (Integer) null);
-            }
-            if(detallePedido.getId_Producto() == 0){
-                detallePedidoValues.put("id_Producto", (Integer) null);
+                detallePedidoValues.put("id_Producto", detallePedido.getId_Producto());
+            } else {
+                detallePedidoValues.put("id_Combo", detallePedido.getId_Combo());
             }
 
             detallePedidoValues.put("cantidad_Producto", detallePedido.getCantidad_Producto());
@@ -392,12 +449,11 @@ public class ControlDB {
             ContentValues cv = new ContentValues();
             cv.put("id_Pedido", detallePedido.getId_Pedido());
 
-            // EL CAMPO QUE VENGA COMO "0", SERA INGRESADO COMO NULL
+            // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
             if(detallePedido.getId_Combo() == 0) {
-                cv.put("id_Combo", (Integer) null);
-            }
-            if(detallePedido.getId_Producto() == 0){
-                cv.put("id_Producto", (Integer) null);
+                cv.put("id_Producto", detallePedido.getId_Producto());
+            } else {
+                cv.put("id_Combo", detallePedido.getId_Combo());
             }
 
             cv.put("cantidad_Producto", detallePedido.getCantidad_Producto());
@@ -578,6 +634,7 @@ public class ControlDB {
     //
     //
     //
+
     public String insertar(TipoProducto tipoProducto) {
         String regInsertados = "Registro Insertado Nº= ";
         long contador = 0;
@@ -641,6 +698,91 @@ public class ControlDB {
             return null;
         }
     }
+
+
+    //
+    //
+    // METODOS PARA PRECIO PRODUCTO
+    //
+    //
+    //
+
+    public String insertar(PrecioProducto precioProducto) {
+        String regInsertado = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar existencia de un PrecioProducto con ese id y
+        // que las foraneas no se repitan
+        if (verificarIntegridad(precioProducto, 16)) {
+            regInsertado = "Error al Insertar el registro";
+        } else {
+            if (verificarIntegridad(precioProducto,19))
+            {
+                ContentValues precioProductoValues = new ContentValues();
+                precioProductoValues.put(campos_PrecioProducto[0], precioProducto.getId_PrecioProducto());
+                precioProductoValues.put(campos_PrecioProducto[1], precioProducto.getId_Producto());
+                precioProductoValues.put(campos_PrecioProducto[2], precioProducto.getId_ListaPrecio());
+                precioProductoValues.put(campos_PrecioProducto[3], precioProducto.getPrecio());
+                contador = db.insert("PrecioProducto", null, precioProductoValues);
+                regInsertado += contador;
+            }else{
+                regInsertado = "Verifique las foraneas";
+
+            }
+
+        }
+        return regInsertado;
+    }
+
+    public String actualizar(PrecioProducto precioProducto){
+        String registro = "";
+        if(verificarIntegridad(precioProducto,18) && verificarIntegridad(precioProducto,19)){
+            String[] id_precioProducto = {String.valueOf(precioProducto.getId_PrecioProducto())};
+            ContentValues precioProductoUpdate = new ContentValues();
+            precioProductoUpdate.put(campos_PrecioProducto[1],precioProducto.getId_Producto());
+            precioProductoUpdate.put(campos_PrecioProducto[2],precioProducto.getId_ListaPrecio());
+            precioProductoUpdate.put(campos_PrecioProducto[3],precioProducto.getPrecio());
+            db.update("PrecioProducto", precioProductoUpdate, "id_PrecioProducto = ?", id_precioProducto);
+            return "ID: " + precioProducto.getId_PrecioProducto() + "\nActualizado Satisfactoriamente";
+        }else {
+            return "No existe o\nForaneas repetidas";
+        }
+    }
+
+    public String eliminar(PrecioProducto precioProducto) {
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(precioProducto, 17)) {
+            contador += db.delete("PrecioProducto", "id_PrecioProducto='" + precioProducto.getId_PrecioProducto() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe";
+        }
+
+        return regAfectados;
+    }
+
+    public PrecioProducto consultarPrecioProducto(PrecioProducto precioProducto) {
+        // Verificar que exista el registro a consultar de PrecioProducto
+        if (verificarIntegridad(precioProducto, 17)) {
+            Cursor cursor = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?",
+                    new String[]{String.valueOf(precioProducto.getId_PrecioProducto())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                PrecioProducto precioProductoConsulta = new PrecioProducto();
+                precioProductoConsulta.setId_Producto(cursor.getInt(1));
+                precioProductoConsulta.setId_ListaPrecio(cursor.getInt(2));
+                precioProductoConsulta.setPrecio(cursor.getFloat(3));
+                return precioProductoConsulta;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
 
     //
     //
@@ -783,75 +925,337 @@ public class ControlDB {
             return null;
         }
     }
+    //
+    //
+    //
 
     //
-    //
-    // METODOS PARA Facultad
-    //
+    // METODOS PARA EMPLEADO
     //
     //
-    public String insertar(Facultad facultad) {
-        String regInsertados = "Registro Insertado Nº= ";
+    //
+    public String Insertar(Empleado empleado){
+        String resultado = "";
         long contador = 0;
-        // Verificar si existe el registro a insertar
-        //if (verificarIntegridad(tipoPago, 21)) {
-        if(false){
-            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
-        } else {
-            ContentValues facultadValues = new ContentValues();
-            facultadValues.put(campos_Facultad[0],facultad.getId_Facultad());
-            facultadValues.put(campos_Facultad[1],facultad.getNombre_Facultad());
-            contador = db.insert("Facultad", null, facultadValues);
-            regInsertados = regInsertados + contador;
+        Local local = new Local();
+        local.setId_Local(empleado.getId_Local());
+        boolean existenciaLocal = verificarIntegridad(local, 42);
+        boolean existenciaEmpleado = verificarIntegridad(empleado,41);
+        //verificar si existe el registro al insertar
+        if(!(existenciaEmpleado)&&(existenciaLocal)){
+            ContentValues empleadoValues = new ContentValues();
+            empleadoValues.put(Campos_Empleado[0], empleado.getId_Empleado());
+            empleadoValues.put(Campos_Empleado[1], empleado.getId_Local());
+            empleadoValues.put(Campos_Empleado[2], empleado.getNombre_Empleado());
+            empleadoValues.put(Campos_Empleado[3], empleado.getTipo_Empleado());
+            contador = db.insert("Empleado", null, empleadoValues);
+            resultado = "Registro Insertado N°=" + contador;
+        }else{
+            if(existenciaEmpleado){
+                resultado = "El Empleado ya existe";
+                if(!(existenciaEmpleado)){
+                    if(resultado.isEmpty()){
+                        resultado = "No existe el Empleado";
+                    }
+                    else {
+                        resultado += "y\nNo existe el Local";
+                    }
+                }
+            }
         }
-        return regInsertados;
+        return resultado;
+    }
+    public String Actualizar(Empleado empleado){
+        String resultado = "";
+        long contador = 0;
+        Local local = new Local();
+        local.setId_Local(empleado.getId_Local());
+        boolean existenciaLocal = verificarIntegridad(empleado, 42);
+        boolean existenciaEmpleado = verificarIntegridad(empleado,41);
+        if((existenciaEmpleado)&&(existenciaLocal)){
+            String[] id = {String.valueOf(empleado.getId_Empleado())};
+            ContentValues empleadoUpdate = new ContentValues();
+            empleadoUpdate.put(Campos_Empleado[1], empleado.getId_Local());
+            empleadoUpdate.put(Campos_Empleado[2], empleado.getNombre_Empleado());
+            empleadoUpdate.put(Campos_Empleado[3], empleado.getTipo_Empleado());
+            contador = db.update("Empleado", empleadoUpdate,"id_Empleado = ?",id);
+            resultado = "Registro  Actualizado Correctamente";
+        }else{
+            if(!(existenciaEmpleado)){
+                resultado = "El Empleado no existe";
+                if(!(existenciaLocal)){
+                    if(resultado.isEmpty()){
+                        resultado = "El tipo de producto no existe";
+                    }else{
+                        resultado += "y\nNo existe el Local";
+                    }
+                }
+            }
+        }
+        return resultado;
+    }
+    public String Eliminar (Empleado empleado){
+        String resultado = "";
+        int contador = 0;
+        if (verificarIntegridad(empleado, 41)&& !(verificarIntegridad(empleado,42))){
+
+            contador+= db.delete("Empleado", "id_Empleado='"+empleado.getId_Empleado()+"'",null);
+            resultado = "Filas afectadas N° = "+contador;
+        }else{
+            resultado = "No existe o\nEsta asociado";
+        }
+        return resultado;
+    }
+
+    public Empleado consultarEmpleado(Empleado empleado){
+        if(verificarIntegridad(empleado,41)){
+            Cursor cursor = db.query("Empleado", Campos_Empleado, "id_Empleado=?",
+                    new String[]{String.valueOf(empleado.getId_Empleado())},null,null,null);
+            if (cursor.moveToFirst()){
+                Empleado empleadoConsulta = new Empleado();
+                empleadoConsulta.setId_Empleado(cursor.getInt(0));
+                empleadoConsulta.setId_Local(cursor.getInt(1));
+                empleadoConsulta.setNombre_Empleado(cursor.getString(2));
+                empleadoConsulta.setTipo_Empleado(cursor.getString(3));
+                return empleadoConsulta;
+            }else{
+                return null;
+            }
+
+        }else {
+            return null;
+        }
+    }
+    //
+    // METODOS PARA ENCARGADOLOCAL
+    //
+    //
+    //
+    public String Insertar (EncargadoLocal encargadoLocal){
+        String resultado = "";
+        long contador = 0;
+        boolean existenciaEncargado = verificarIntegridad(encargadoLocal,43);
+        if(!existenciaEncargado){
+            ContentValues encargadoValues = new ContentValues();
+            encargadoValues.put(Campos_EncargadoLocal[0],encargadoLocal.getId_EncargadoLocal());
+            encargadoValues.put(Campos_EncargadoLocal[1],encargadoLocal.getNombre_EncargadoLocal());
+            contador = db.insert("EncargadoLocal", null, encargadoValues);
+            resultado = "Registro Insertado N°="+ contador;
+        }else if(existenciaEncargado){
+            resultado = "El encargado ya existe";
+
+        }
+        return resultado;
+
+    }
+
+    public String Actualizar (EncargadoLocal encargadoLocal){
+        String resultado="";
+        long contador =0;
+        boolean existenciaEncargado = verificarIntegridad(encargadoLocal,43);
+        if(existenciaEncargado){
+            String[] id ={String.valueOf(encargadoLocal.getId_EncargadoLocal())};
+            ContentValues encargadoUpdate = new ContentValues();
+            encargadoUpdate.put(Campos_EncargadoLocal[1], encargadoLocal.getNombre_EncargadoLocal());
+            contador = db.update("EncargadoLocal", encargadoUpdate,"id_EncargadoLocal=?", id);
+            resultado = "Registro Actualizado Correctamente";
+        }else if(!existenciaEncargado){
+            resultado = "El encargado no existe";
+        }
+        return resultado;
+    }
+
+    public String Eliminar(EncargadoLocal encargadoLocal){
+        String resultado = "";
+        long contador = 0;
+        boolean existenciaEncargado = verificarIntegridad(encargadoLocal,43);
+        if (existenciaEncargado){
+            contador = db.delete("EncargadoLocal", "id_EncargadoLocal='"+encargadoLocal.getId_EncargadoLocal()+"'", null);
+            resultado = "Filas afectadas N° ="+ contador;
+        }else{
+            resultado = "No existe ese encargado";
+        }
+        return  resultado;
+    }
+
+    public EncargadoLocal consultarEncargado(EncargadoLocal encargadoLocal){
+        if(verificarIntegridad(encargadoLocal,43)){
+            Cursor cursor = db.query("EncargadoLocal",Campos_EncargadoLocal,"id_EncargadoLocal=?",
+                    new String[]{String.valueOf(encargadoLocal.getId_EncargadoLocal())},null,null,null);
+            if(cursor.moveToFirst()){
+                EncargadoLocal encargadoConsulta = new EncargadoLocal();
+                encargadoConsulta.setId_EncargadoLocal(cursor.getInt(0));
+                encargadoConsulta.setNombre_EncargadoLocal(cursor.getString(1));
+                return encargadoConsulta;
+            }else {
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+    //
+    // METODOS PARA LOCAL
+    //
+    public String Insertar(Local local){
+        String resultado = "";
+        long contador;
+
+        Ubicacion ubicacion = new Ubicacion();
+        EncargadoLocal encargadoLocal = new EncargadoLocal();
+
+        ubicacion.setId_Ubicacion(local.getId_Ubicacion());
+        encargadoLocal.setId_EncargadoLocal(local.getId_EncargadoLocal());
+        boolean existenciaLocal = verificarIntegridad(local,45);
+        boolean existenciaRelaciones = verificarIntegridad(local, 44);
+        if(!(existenciaLocal)&&(existenciaRelaciones)){
+            ContentValues localValues = new ContentValues();
+            localValues.put(Campos_Local[0],local.getId_Local());
+            localValues.put(Campos_Local[1], local.getId_Ubicacion());
+            localValues.put(Campos_Local[2], local.getId_EncargadoLocal());
+            localValues.put(Campos_Local[3], local.getNombre_Local());
+            contador = db.insert("Local", null, localValues);
+            resultado = "Registro insertado N°= "+contador;
+        }else if(existenciaLocal) {
+            resultado = "El local ya existe";
+            if(!existenciaRelaciones){
+                if(resultado.isEmpty()){
+                    resultado = "No existe el encargado o/y ubicacion";
+                }
+            }
+        }
+        return resultado;
+    }
+    public String Actualizar(Local local){
+        String resultado = "";
+        long contador;
+
+        Ubicacion ubicacion = new Ubicacion();
+        EncargadoLocal encargadoLocal = new EncargadoLocal();
+
+        ubicacion.setId_Ubicacion(local.getId_Ubicacion());
+        encargadoLocal.setId_EncargadoLocal(local.getId_EncargadoLocal());
+        boolean existenciaLocal = verificarIntegridad(local,45);
+        boolean existenciaRelaciones = verificarIntegridad(local, 44);
+
+        if((existenciaLocal)&&(existenciaRelaciones)){
+            String[] id = {String.valueOf(local.getId_Local())};
+            ContentValues localUpdate = new ContentValues();
+            localUpdate.put(Campos_Local[1], local.getId_Ubicacion());
+            localUpdate.put(Campos_Local[2], local.getId_EncargadoLocal());
+            localUpdate.put(Campos_Local[3], local.getNombre_Local());
+            contador = db.update("Local", localUpdate,"id_local=?",id);
+            resultado = "Registro actualizado correctamente";
+        }else if(!existenciaLocal){
+            resultado = "El local no existe";
+            if(!existenciaRelaciones){
+                resultado = "La ubicacion o/y el encargado no existe";
+            }
+
+        }
+        return resultado;
+
+
+    }
+    public String Eliminar (Local local){
+        String resultado = "";
+        long contador;
+        boolean existenciaLocal = verificarIntegridad(local,45);
+        boolean existenciaRelaciones = verificarIntegridad(local, 44);
+        if(existenciaLocal&& existenciaRelaciones){
+            contador = db.delete("Local", "id_local='"+local.getId_Local()+"'", null);
+            resultado = "Filas afectadas  N° ="+ contador;
+        }else{
+            resultado = "No existe el local";
+        }
+        return resultado;
+    }
+    public Local Consultar(Local local){
+        if(verificarIntegridad(local,45)){
+            Cursor cursor = db.query("Local",Campos_Local,"id_Local=?",new String[]{String.valueOf(local.getId_Local())}, null,null,null);
+            if(cursor.moveToFirst()){
+                Local localConsulta = new Local();
+                localConsulta.setId_Local(cursor.getInt(0));
+                localConsulta.setId_Ubicacion(cursor.getInt(1));
+                localConsulta.setId_EncargadoLocal(cursor.getInt(2));
+                localConsulta.setNombre_Local(cursor.getString(3));
+                return localConsulta;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
     //
     //
-    // METODOS PARA TIPOUBICACION
-    //
-    //
-    //
-    public String insertar(TipoUbicacion tipoUbicacion) {
-        String regInsertados = "Registro Insertado Nº= ";
-        long contador = 0;
-        // Verificar si existe el registro a insertar
-        //if (verificarIntegridad(tipoPago, 21)) {
-        if (false) {
-            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
-        } else {
-            ContentValues tipoUbicacionValues = new ContentValues();
-            tipoUbicacionValues.put(campos_TipoUbicacion[0], tipoUbicacion.getId_TipoUbicacion());
-            tipoUbicacionValues.put(campos_TipoUbicacion[1], tipoUbicacion.getNombre_TipoUbicacion());
-            contador = db.insert("TipoUbicacion", null, tipoUbicacionValues);
-            regInsertados = regInsertados + contador;
+
+    //Metodos para FACULTAD
+
+
+    public String Insertar(Facultad facultad ){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (!exitenciaFacultad) {
+            ContentValues facutadInsertar = new ContentValues();
+            facutadInsertar.put(campos_Facultad[0],facultad.getId_Faculdad());
+            facutadInsertar.put(campos_Facultad[1],facultad.getNombre_Facultad());
+
+            contador=db.insert("Facultad", null, facutadInsertar);
+            resultadoF = "Facultad Insertada";
         }
-        return regInsertados;
+        else if (exitenciaFacultad){
+            resultadoF = "La Falcutad ya existe";
+        }
+        return resultadoF;
     }
-    //
-    //
-    // METODOS PARA UBICACION
-    //
-    //
-    //
-    public String insertar(Ubicacion ubicacion) {
-        String regInsertados = "Registro Insertado Nº= ";
-        long contador = 0;
-        // Verificar si existe el registro a insertar
-        //if (verificarIntegridad(tipoPago, 21)) {
-        if (false) {
-            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
-        } else {
-            ContentValues ubicacionValues = new ContentValues();
-            ubicacionValues.put(campos_Ubicacion[0], ubicacion.getId_Ubicacion());
-            ubicacionValues.put(campos_Ubicacion[1], ubicacion.getId_ubicacionFacultad());
-            ubicacionValues.put(campos_Ubicacion[2], ubicacion.getId_ubicacionTipoUbicacion());
-            ubicacionValues.put(campos_Ubicacion[3], ubicacion.getNombre_Ubicacion());
-            ubicacionValues.put(campos_Ubicacion[4], ubicacion.getDescripcion_Ubicacion());
-            contador = db.insert("Ubicacion", null, ubicacionValues);
-            regInsertados = regInsertados + contador;
+
+    public String Actualizar(Facultad facultad){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (exitenciaFacultad){
+            ContentValues facultadActualizar = new ContentValues();
+            String[] id = {String.valueOf(facultad.getId_Faculdad())};
+            facultadActualizar.put(campos_Facultad[1],facultad.getNombre_Facultad());
+
+            contador = db.update("Facultad", facultadActualizar, "id_Facultad=?", id);
+            resultadoF="Registro Actualizado Correctamente";
+        } else if (!exitenciaFacultad) {
+            resultadoF="Registro no existe, no se puede actualizar";
         }
-        return regInsertados;
+        return resultadoF;
+    }
+
+    public String Eliminar(Facultad facultad){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (exitenciaFacultad){
+            contador=db.delete("Facultad", "id_Facultad='" + facultad.getId_Faculdad() + "'", null);
+            resultadoF="Se elimino correctamente";
+        } else if (!exitenciaFacultad) {
+            resultadoF="Registro no existe, no se puede eliminar";
+        }
+        return resultadoF;
+    }
+
+    public Facultad consultarFacultad(Facultad facultad){
+        boolean exitenciaFacultad = verificarIntegridad(facultad, 31);
+        if (exitenciaFacultad){
+            Cursor cursor = db.query("Facultad", campos_Facultad, "id_Facultad=?", new String[]{String.valueOf(facultad.getId_Faculdad())},null,null,null );
+            if (cursor.moveToFirst()){
+                Facultad facultadConsultar = new Facultad();
+                facultadConsultar.setId_Faculdad(cursor.getInt(0));
+                facultadConsultar.setNombre_Facultad(cursor.getString(1));
+                return facultadConsultar;
+            }else {return null;}
+        }
+        else {return null;}
+
+
     }
 
 
@@ -1083,6 +1487,66 @@ public class ControlDB {
                         return true;
                     }
                     return false;
+                case 16:
+                    // Verificar la existencia del Precio Producto
+                    // y tambien sus id_Producto y id_ListaPrecio
+                    PrecioProducto precioProducto16 = (PrecioProducto) dato;
+                    String[] id_PrecioProducto16 = {String.valueOf(precioProducto16.getId_PrecioProducto())};
+                    String[] integridad16 = {String.valueOf(precioProducto16.getId_ListaPrecio()), String.valueOf(precioProducto16.getId_Producto())};
+                    abrir();
+                    Cursor cursorPP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?", id_PrecioProducto16, null, null, null);
+                    Cursor cursor2PP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?", integridad16, null, null, null);
+
+                    if (cursorPP16.moveToFirst() || cursor2PP16.moveToFirst()) {
+                        // Ya existe
+                        return true;
+                    }
+
+                    return false;
+                case 17:
+                    // Verificar la existencia del Precio Producto
+                    PrecioProducto precioProducto17 = (PrecioProducto) dato;
+                    String[] id_PrecioProducto17 = {String.valueOf(precioProducto17.getId_PrecioProducto())};
+                    abrir();
+                    Cursor cursorPP17 = db.query("PrecioProducto", null, "id_PrecioProducto = ?", id_PrecioProducto17, null, null, null);
+                    if (cursorPP17.moveToFirst()) {
+                        // Ya existe
+                        return true;
+                    }
+                case 18:
+                    // Verificar la existencia del Precio Producto
+                    // y tambien sus id_Producto y id_ListaPrecio
+                    PrecioProducto precioProducto18 = (PrecioProducto) dato;
+                    String[] id_PrecioProducto18 = {String.valueOf(precioProducto18.getId_PrecioProducto())};
+                    String[] integridad18 = {String.valueOf(precioProducto18.getId_ListaPrecio()), String.valueOf(precioProducto18.getId_Producto())};
+                    abrir();
+                    Cursor cursorPP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?", id_PrecioProducto18, null, null, null);
+                    Cursor cursor2PP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?", integridad18, null, null, null);
+
+                    if (cursorPP18.moveToFirst()) {
+
+                        if (!(cursor2PP18.moveToFirst()) || (cursor2PP18.getInt(0) == cursorPP18.getInt(0))) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+
+                    } else {
+                        return false;
+                    }
+                case 19:
+                    // Verificar la existencia de producto y listaProducto
+                    PrecioProducto precioProducto19 = (PrecioProducto) dato;
+                    String[] producto19 = {String.valueOf(precioProducto19.getId_Producto())};
+                    String[] listaPrecio19 = {String.valueOf(precioProducto19.getId_ListaPrecio())};
+                    abrir();
+                    Cursor cursorP19 = db.query("Producto", null, "id_Producto = ?", producto19, null, null, null);
+                    Cursor cursorLP19 = db.query("ListaPrecio", null, "id_ListaPrecio = ?", listaPrecio19, null, null, null);
+                    if (cursorP19.moveToFirst() && cursorLP19.moveToFirst()) {
+                        // Ya existe
+                        return true;
+                    }
+                    return false;
                 case 21:
                     Cliente cliente = (Cliente) dato;
                     String[] id_clien = {String.valueOf(cliente.getId_cliente())};
@@ -1094,9 +1558,109 @@ public class ControlDB {
                     }
                     return false;
 
-                default:
-                    return false;
+
+
+            
+            //Para eliminar DetallePedido
+
+            //
+            //
+            // INTEGRIDAD PARA EMPLEADO
+            //
+            //
+            case 41:
+            //verificar la integridad de existencia del empleado
+            Empleado empleado = (Empleado) dato;
+            String[] id_Empleado = {String.valueOf(empleado.getId_Empleado())};
+            abrir();
+            Cursor cursor41 = db.query("Empleado", null, "id_Empleado=?", id_Empleado, null, null, null);
+            if (cursor41.moveToFirst()) {
+                return true;
             }
+            return false;
+            case 42:
+            //verificar la integridad de existencia d eempleado en relaciones
+            Empleado empleado1 = (Empleado) dato;
+            String[] id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
+            abrir();
+            Cursor cursorE1 = db.query("Empleado", null, "id_Empleado=?", id_Empleado1, null, null, null);
+            Cursor cursorL1 = db.query("Local", null, "id_Empleado=?", id_Empleado1, null, null, null);
+            if (cursorE1.moveToFirst() && cursorL1.moveToFirst()) {
+                return true;
+            }
+            return false;
+            //
+            //
+            // INTEGRIDAD PARA ENCARGADOLOCAL
+            //
+            //
+            case 43:
+            EncargadoLocal encargadoLocal = (EncargadoLocal) dato;
+            String[] id_EncargadoLocal = {String.valueOf(encargadoLocal.getId_EncargadoLocal())};
+            abrir();
+            Cursor cursor43 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?", id_EncargadoLocal, null, null, null);
+            if (cursor43.moveToFirst()) {
+                return true;
+            }
+            return false;
+            //
+            //
+            // INTEGRIDAD PARA LOCAL
+            //
+            //
+            case 44:
+            //existencia de local en relaciones
+
+            Local local = (Local) dato;
+
+            String[] id_Local = {String.valueOf(local.getId_Local())};
+            String[] id_EncargadoLoc = {String.valueOf(local.getId_EncargadoLocal())};
+            String[] id_Ubicacion = {String.valueOf(local.getId_Ubicacion())};
+
+            abrir();
+            Cursor cursorEN2 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?", id_EncargadoLoc, null, null, null);
+            Cursor cursorU1 = db.query("Ubicacion", null, "id_Ubicacion=?", id_Ubicacion, null, null, null);
+            Cursor cursorL2 = db.query("Local", null, "id_Local=?", id_Local, null, null, null);
+            if (cursorEN2.moveToFirst() || cursorU1.moveToFirst() || cursorL2.moveToFirst()) {
+                return true;
+            }
+            return false;
+            case 45:
+            //existencia de Local
+            Local local1 = (Local) dato;
+            String[] id_Local2 = {String.valueOf(local1.getId_Local())};
+            abrir();
+            Cursor cursorL3 = db.query("Local", null, "id_Local=?", id_Local2, null, null, null);
+            if (cursorL3.moveToFirst()) {
+                return true;
+            }
+            return false;
+
+            //
+            //
+            // INTEGRIDAD PARA PRECIO PRODUCTO
+            //
+            //
+
+
+            case 31:
+            //Verificar la exitencia de Facultad
+            Facultad facultad = (Facultad) dato;
+            String[] id_Facutad = {String.valueOf(facultad.getId_Faculdad())};
+            abrir();
+            Cursor cursorP31 = db.query("Facultad", null, "id_Facultad = ?", id_Facutad, null, null, null);
+            if (cursorP31.moveToFirst()) {
+                //Ya existe
+                return true;
+            }
+            return false;
+
+
+            default:
+            return false;
+            }
+
+
         }
 
 
@@ -1125,6 +1689,14 @@ public class ControlDB {
         final String[] VECidCombo = {"1", "2", "3", "4", "5"};
         final String[] VECidProducto = {"1", "2", "3", "4", "5"};
         // DATOS PARA DETALLE_PEDIDO
+
+
+        // DATOS PARA LISTA_PRECIO
+        final String[] VECListaPrecio = {"1","2","3","4","5"};
+        final String[] VECDesde = {"06-05-2023","07-05-2023","08-05-2023","09-05-2023","10-05-2023"};
+        final String[] VECHasta = {"07-05-2023","08-05-2023","09-05-2023","10-05-2023","11-05-2023"};
+
+
         // DATOS TIPO_UBICACION
         final String[] VECid_TipoUbicacion = {"1", "2"};
         final String[] VECnombre_TipoUbicacion = {"Rural","Urbana"};
@@ -1150,14 +1722,20 @@ public class ControlDB {
         final String[] VECnombrre_TipoPago = {"1", "2"};
 
 
+
         // ABRIR BD
         abrir();
 
         // ELIMINAR REGISTROS
-        db.execSQL("DELETE FROM Combo");
-        db.execSQL("DELETE FROM Producto");
         db.execSQL("DELETE FROM TipoProducto");
         db.execSQL("DELETE FROM ComboProducto");
+
+        db.execSQL("DELETE FROM PrecioProducto");
+        db.execSQL("DELETE FROM ListaPrecio");
+        db.execSQL("DELETE FROM Combo");
+        db.execSQL("DELETE FROM Producto");
+
+
         ///
         db.execSQL("DELETE FROM TipoUbicacion");
         db.execSQL("DELETE FROM Facultad");
@@ -1165,6 +1743,7 @@ public class ControlDB {
         db.execSQL("DELETE FROM Ubicacion");
         db.execSQL("DELETE FROM Local");
         db.execSQL("DELETE FROM TipoPago");
+
 
 
 
@@ -1206,29 +1785,16 @@ public class ControlDB {
             insertar(comboProducto);
         }
 
-        // LLENAR TIPO UBICACION
-        TipoUbicacion tipoubicacion = new TipoUbicacion();
-        for (int i = 0; i < 2; i++) {
-            tipoubicacion.setId_TipoUbicacion(Integer.parseInt(VECid_TipoUbicacion[i]));
-            tipoubicacion.setNombre_TipoUbicacion(VECnombre_TipoUbicacion[i]);
-            insertar(tipoubicacion);
-        }
-        // LLENAR FACULTAD
-        Facultad facultad = new Facultad();
-        for (int i = 0; i < 2; i++) {
-            facultad.setId_Facultad(Integer.parseInt(VECid_Facultad[i]));
-            facultad.setNombre_Facultad(VECnombre_Facultad[i]);
-            insertar(facultad);
-        }
-        // LLENAR UBICACION
-        Ubicacion ubicacion = new Ubicacion();
-        for (int i = 0; i < 2; i++) {
-            ubicacion.setId_Ubicacion(Integer.parseInt(VECid_Ubicacion[i]));
-            ubicacion.setId_ubicacionFacultad(Integer.parseInt(VECid_ubicacionFacultad[i]));
-            ubicacion.setId_ubicacionTipoUbicacion(Integer.parseInt(VECid_TipoUbicacion[i]));
-            ubicacion.setNombre_Ubicacion(VECnombre_Ubicacion[i]);
-            ubicacion.setDescripcion_Ubicacion(VECdescripcion_Ubicacion[i]);
-            insertar(ubicacion);
+
+        // LLENAR TABLA LISTA_PRECIO
+        for (int i = 0; i < 5; i++){
+            ContentValues listaPrecioValues = new ContentValues();
+            listaPrecioValues.put(campos_ListaPrecio[0], Integer.parseInt(VECListaPrecio[i]));
+            listaPrecioValues.put(campos_ListaPrecio[1], VECDesde[i]);
+            listaPrecioValues.put(campos_ListaPrecio[2], VECHasta[i]);
+            db.insert("ListaPrecio", null, listaPrecioValues);
+
+       
         }
 
 

@@ -23,6 +23,7 @@
     <string name="id_detalle_pedido">ID del DetallePedido</string>
     <string name="cantidad_detalle_pedido">Cantidad del Producto/Combo elegido</string>
     <string name="subtotal_detalle_pedido">Subtotal</string>
+    <string name="id_ProductoOrCombo">ID del Producto o Combo</string>
 
     <!-- Tabla Pedido -->
     <string name="texto_pedido">PEDIDO</string>
@@ -36,12 +37,23 @@
     <string name="nombre_Producto">Nombre del Producto</string>
     <string name="estado_Producto">Estado del Producto</string>
     <string name="precioactual_Producto">Precio actual</string>
-
+    <!-- Tabla Empleado -->
+    <string name="texto_Empleado">EMPLEADO</string>
+    <string name="id_Empleado">ID del empleado</string>
+    <string name="nombre_Empleado">Nombre del empleado</string>
+    <string name="tipo_Empleado">Tipo del empleado</string>
+    <string name="id_Local">ID del local</string>
     <!-- Tabla TipoProducto -->
     <string name="texto_TipoProducto">TIPO PRODUCTO</string>
     <string name="id_TipoProducto">ID del Tipo Producto</string>
     <string name="nombre_TipoProducto">Nombre del Tipo Producto</string>
 
+    <!-- Tabla PrecioProducto -->
+    <string name="texto_PrecioProducto">PRECIO PRODUCTO</string>
+    <string name="id_PrecioProducto">ID de Precio Producto</string>
+    <string name="id_ListaPrecio">ID de Lista Precio</string>
+    <!--<string name="id_Producto">ID del Producto</string>-->
+    <string name="precio">Precio</string>
     <!-- Tabla Cliente -->
     <string name="texto_cliente">CLIENTE</string>
     <string name="texto_id_cliente">Id Cliente</string>
@@ -50,10 +62,25 @@
     <string name="texto_fecha_nacimiento">Fecha de Nacimiento</string>
     <string name="texto_ubicacion">ID Ubicacion</string>
 
-    !-- Tabla TipoPago -->
+    <!-- Tabla TipoPago -->
     <string name="texto_TipoPago">Tipo Pago</string>
     <string name="texto_id_tipoPago">Id TipoPago</string>
     <string name="texto_nombreTipoPago">Nombre Pago</string>
 
+    <!-- Tabla Facultad -->
+    <string name="texto_Facultad">FACULTAD</string>
+    <string name="id_Facultad">ID de la Facultad</string>
+    <string name="nombre_Facultad">Nombre de la Facultad</string>
 
+
+
+
+    <!-- Tabla Encargado Local -->
+    <string name="texto_EncargadoLocal">ENCARGADO LOCAL</string>
+    <string name="id_EncargadoLocal">ID del encargado</string>
+    <string name="nombre_EncargadoLocal">Nombre del encargado</string>
+    <!-- Tabla Encargado Local -->
+    <string name="texto_Local">LOCAL</string>
+    <string name="id_Ubicacion">ID de la Ubicacion</string>
+    <string name="nombre_Local">Nombre del Local</string>
 </resources>

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class DetallePedidoConsultarActivity extends AppCompatActivity {
@@ -17,6 +19,11 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
     EditText EditCantidad_Producto;
     EditText EditSubtotal;
 
+
+    // EXTRAS
+    EditText ID_ProdOrCombo;
+    RadioGroup radio_seleccion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +31,11 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
         helper = new ControlDB(this);
         EditId_DetallePedido = (EditText) findViewById(R.id.id_DetallePedido);
         EditId_Pedido = (EditText) findViewById(R.id.id_Pedido);
-        EditId_Combo = (EditText) findViewById(R.id.id_Combo);
-        EditId_Producto = (EditText) findViewById(R.id.id_Producto);
+
+        // EXTRAS
+        ID_ProdOrCombo = (EditText) findViewById(R.id.id_ProductoOrCombo);
+        radio_seleccion = (RadioGroup) findViewById(R.id.radio_group);
+
         EditCantidad_Producto = (EditText) findViewById(R.id.cantidad_Producto);
         EditSubtotal = (EditText) findViewById(R.id.subtotal);
     }
@@ -38,19 +48,35 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
             Toast.makeText(this, "Detalle Pedido no registrado", Toast.LENGTH_LONG).show();
         else{
             EditId_Pedido.setText(String.valueOf(detallePedido.getId_Pedido()));
-            EditId_Combo.setText(String.valueOf(detallePedido.getId_Combo()));
-            EditId_Producto.setText(String.valueOf(detallePedido.getId_Producto()));
+
+            if(detallePedido.getId_Combo() != 0){
+                ID_ProdOrCombo.setText(String.valueOf(detallePedido.getId_Combo()));
+                radio_seleccion.check(R.id.radio_combo);
+            }else{
+                ID_ProdOrCombo.setText(String.valueOf(detallePedido.getId_Producto()));
+                radio_seleccion.check(R.id.radio_producto);
+            }
+
             EditCantidad_Producto.setText(String.valueOf(detallePedido.getCantidad_Producto()));
             EditSubtotal.setText(String.valueOf(detallePedido.getSubtotal()));
+            ocultarTeclado(v);
         }
     }
 
     public void limpiarTextoConsultarDetallePedido(View v){
         EditId_DetallePedido.setText("");
         EditId_Pedido.setText("");
-        EditId_Combo.setText("");
-        EditId_Producto.setText("");
+        ID_ProdOrCombo.setText("");
         EditCantidad_Producto.setText("");
         EditSubtotal.setText("");
+    }
+
+    public void ocultarTeclado(View v)
+    {
+        if(v != null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),0);
+        }
     }
 }
