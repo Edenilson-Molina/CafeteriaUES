@@ -24,11 +24,16 @@ public class ProductoEliminarActivity extends Activity {
     public void eliminarProducto(View v)
     {
         Producto producto = new Producto();
-        producto.setCodigo_Producto(Integer.parseInt(codigo_Producto.getText().toString()));
-        String registro;
-        helper.abrir();
-        registro = helper.eliminar(producto);
-        helper.cerrar();
-        Toast.makeText(this,registro, Toast.LENGTH_SHORT).show();
+        try{
+            producto.setCodigo_Producto(Integer.parseInt(codigo_Producto.getText().toString()));
+            String registro;
+            helper.abrir();
+            registro = helper.eliminar(producto);
+            helper.cerrar();
+            Toast.makeText(this,registro, Toast.LENGTH_SHORT).show();
+        } catch(NumberFormatException ex){ // handle your exception
+            Toast.makeText(this,"huy"+ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

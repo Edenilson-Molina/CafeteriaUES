@@ -11,6 +11,86 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
+
+
+        <activity
+            android:name=".LocalMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteInsertarActivity"
+            android:exported="false" />
         <activity
             android:name=".FacultadMenuActivity"
             android:exported="false" />
