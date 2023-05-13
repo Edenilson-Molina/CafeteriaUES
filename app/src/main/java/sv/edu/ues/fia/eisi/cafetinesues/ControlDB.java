@@ -31,7 +31,6 @@ public class ControlDB {
 
     private static final String[] campos_Facultad = new String[] {"id_Facultad", "nombre_Facultad"};
 
-
     private static final String[] Campos_Empleado = new String[] {"id_Empleado","id_Local", "nombre_Empleado", "tipo_Empleado"};
 
     private static final String[] Campos_EncargadoLocal = new String[]{"id_EncargadoLocal","nombre_EncargadoLocal"};
@@ -39,6 +38,12 @@ public class ControlDB {
     private static final String[] Campos_Local = new String[]{"id_Local","id_Ubicacion", "id_EncargadoLocal", "nombre_Local"};
 
     private static final String[] Campos_Pedido = new String[]{"id_Pedido","id_Cliente","id_TipoPago","id_Local","id_EventoEspecial","tipo_Pedido","estado_Pedido"};
+    
+    private static final String[] campos_Ubicacion = new String[] {"id_Ubicacion", "nombre_Ubicacion","descripcion_Ubicacion", "id_Facultad", "id_TipoUbicacion"};
+
+    private static final String[] campos_TipoUbicacion = new String[] {"id_TipoUbicacion", "nombre_TipoUbicacion"};
+    
+
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -1376,20 +1381,152 @@ public class ControlDB {
     }
 
 
+    //METODOS PARA UBICACION
+
+    public String insertar(Ubicacion ubicacion){
+        String resultafoF="Registro insertado N=";
+        long contador=0;
+        boolean existenciaUbicacion = verificarIntegridad(ubicacion,32);
+        if (!existenciaUbicacion){
+            ContentValues ubicacionInsertar = new ContentValues();
+            ubicacionInsertar.put(campos_Ubicacion[0],ubicacion.getId_Ubicacion());
+            ubicacionInsertar.put(campos_Ubicacion[1],ubicacion.getNombre_Ubicacion());
+            ubicacionInsertar.put(campos_Ubicacion[2],ubicacion.getDescripcion_Ubicacion());
+            ubicacionInsertar.put(campos_Ubicacion[3],ubicacion.getId_Facultad());
+            ubicacionInsertar.put(campos_Ubicacion[4],ubicacion.getId_TipoUbicacion());
+
+            contador=db.insert("Ubicacion",null,ubicacionInsertar);
+            resultafoF="Ubicacion Insertada";
+        } else if (existenciaUbicacion) {
+            resultafoF="La Ubicacion ya existe";
+        }
+        return resultafoF;
+    }
+
+    public String actualizar(Ubicacion ubicacion){
+        String resultadoF="Registro Actualizado N= ";
+        long contador=0;
+        boolean existenciaUbicacion = verificarIntegridad(ubicacion,32);
+        if (existenciaUbicacion){
+            ContentValues ubicacionActualizar = new ContentValues();
+            String[] id = {String.valueOf(ubicacion.getId_Ubicacion())};
+            ubicacionActualizar.put(campos_Ubicacion[1],ubicacion.getNombre_Ubicacion());
+            ubicacionActualizar.put(campos_Ubicacion[2],ubicacion.getDescripcion_Ubicacion());
+            ubicacionActualizar.put(campos_Ubicacion[3],ubicacion.getId_Facultad());
+            ubicacionActualizar.put(campos_Ubicacion[4],ubicacion.getId_TipoUbicacion());
 
 
+            contador = db.update("Ubicacion", ubicacionActualizar, "id_Ubicacion=?",id);
+            resultadoF="Ubicacion Actualizada Correctamente";
 
+        } else if (!existenciaUbicacion) {
+            resultadoF="Registro no existe, no se puede actualizar";
+        }
+        return resultadoF;
 
+    }
 
+    public String eliminar(Ubicacion ubicacion){
+        String resultadoF = "Registro Insertado N= ";
+        long contador=0;
+        boolean existenciaUbicacion = verificarIntegridad(ubicacion,32);
+        boolean existenciaForaneas = verificarIntegridad(ubicacion,35);
+        if (existenciaUbicacion && !existenciaForaneas){
+            contador= db.delete("Ubicacion", "id_Ubicacion='" + ubicacion.getId_Ubicacion() + "'", null);
+            resultadoF="Se elimino correctamente";
+        } else if (!existenciaUbicacion) {
+            resultadoF="Registro no existe, o sepuede eliminar";
+        }
+        return resultadoF;
 
+    }
 
-        // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
+    public Ubicacion consultarUbicacion(Ubicacion ubicacion){
+        boolean existenciaUbicacion = verificarIntegridad(ubicacion,32);
+        if (existenciaUbicacion){
+            Cursor cursor = db.query("Ubicacion", campos_Ubicacion, "id_Ubicacion=?", new String[]{String.valueOf(ubicacion.getId_Ubicacion())},null,null,null);
+            if (cursor.moveToFirst()){
+                Ubicacion ubicacionConsultar = new Ubicacion();
+                ubicacionConsultar.setId_Ubicacion(cursor.getInt(0));
+                ubicacionConsultar.setNombre_Ubicacion(cursor.getString(1));
+                ubicacionConsultar.setDescripcion_Ubicacion(cursor.getString(2));
+                ubicacionConsultar.setId_Facultad(cursor.getInt(3));
+                ubicacionConsultar.setId_TipoUbicacion(cursor.getInt(4));
 
+                return  ubicacionConsultar;
+            }else {return null;}
+        }else {return null;}
 
-        //
-        //
-        //
-        private boolean verificarIntegridad (Object dato,int relacion) throws SQLException {
+    }
+
+    //Metodos para TipoUbicacion
+
+    public String insertar(TipoUbicacion tipoUbicacion){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean existenciaTipoUbicacion = verificarIntegridad(tipoUbicacion, 34);
+        if (!existenciaTipoUbicacion){
+            ContentValues tipoUbicacionInsertar = new ContentValues();
+            tipoUbicacionInsertar.put(campos_TipoUbicacion[0],tipoUbicacion.getId_TipoUbicacion());
+            tipoUbicacionInsertar.put(campos_TipoUbicacion[1],tipoUbicacion.getNombre_TipoUbicacion());
+
+            contador=db.insert("TipoUbicacion",null,tipoUbicacionInsertar);
+            resultadoF = "Tipo de Ubicacion Insertada";
+        } else if (existenciaTipoUbicacion) {
+            resultadoF = "El Tipo Ubicacion ya existe";
+        }
+        return resultadoF;
+    }
+
+    public String actualizar(TipoUbicacion tipoUbicacion){
+        String resultadoF = "Registro Insertado N= ";
+        long contador=0;
+        boolean existenciaTipoUbicacion = verificarIntegridad(tipoUbicacion, 34);
+        if (existenciaTipoUbicacion){
+            ContentValues tipoUbicacionActualizar = new ContentValues();
+            String[] id = {String.valueOf(tipoUbicacion.getId_TipoUbicacion())};
+            tipoUbicacionActualizar.put(campos_TipoUbicacion[1],tipoUbicacion.getNombre_TipoUbicacion());
+
+            contador = db.update("TipoUbicacion", tipoUbicacionActualizar,"id_TipoUbicacion=?",id);
+            resultadoF = "Registro Actualizado Correctamente";
+        } else if (!existenciaTipoUbicacion) {
+            resultadoF="Registro no existe, no se puede actualizar";
+        }
+        return resultadoF;
+    }
+
+    public String eliminar(TipoUbicacion tipoUbicacion){
+        String resultadoF="Registro Insertado N= ";
+        long contador=0;
+        boolean existenciaTipoUbicacion = verificarIntegridad(tipoUbicacion,34);
+        if (existenciaTipoUbicacion){
+            contador=db.delete("TipoUbicacion", "id_TipoUbicacion='" + tipoUbicacion.getId_TipoUbicacion() + "'",null);
+            resultadoF="Se elimino correctamente";
+        } else if (!existenciaTipoUbicacion) {
+            resultadoF="Registro no existe, no se puede eliminar";
+        }
+        return resultadoF;
+    }
+
+    public TipoUbicacion consultarTipoUbicacion(TipoUbicacion tipoUbicacion){
+        boolean existenciaTipoUbicacion = verificarIntegridad(tipoUbicacion,34);
+        if(existenciaTipoUbicacion){
+            Cursor cursor = db.query("TipoUbicacion", campos_TipoUbicacion, "id_TipoUbicacion=?", new String[]{String.valueOf(tipoUbicacion.getId_TipoUbicacion())},null,null,null);
+            if (cursor.moveToFirst()){
+                TipoUbicacion tipoUbicacionConsultar = new TipoUbicacion();
+                tipoUbicacionConsultar.setId_TipoUbicacion(cursor.getInt(0));
+                tipoUbicacionConsultar.setNombre_TipoUbicacion(cursor.getString(1));
+                return tipoUbicacionConsultar;
+            }else {return null;}
+        }else {return null;}
+    }
+
+    //
+    //
+    // VERIFICACIÓN DE INTEGRIDAD
+    //
+    //
+    private boolean verificarIntegridad (Object dato,int relacion) throws SQLException {
             switch (relacion) {
                 //
                 //
@@ -1695,110 +1832,150 @@ public class ControlDB {
 
 
             
-            //Para eliminar DetallePedido
+                //Para eliminar DetallePedido
 
-            //
-            //
-            // INTEGRIDAD PARA EMPLEADO
-            //
-            //
-            case 41:
-            //verificar la integridad de existencia del empleado
-            Empleado empleado = (Empleado) dato;
-            String[] id_Empleado = {String.valueOf(empleado.getId_Empleado())};
-            abrir();
-            Cursor cursor41 = db.query("Empleado", null, "id_Empleado=?", id_Empleado, null, null, null);
-            if (cursor41.moveToFirst()) {
-                return true;
-            }
-            return false;
-            case 42:
-            //verificar la integridad de existencia d eempleado en relaciones
-            Empleado empleado1 = (Empleado) dato;
-            String[] id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
-            abrir();
-            Cursor cursorE1 = db.query("Empleado", null, "id_Empleado=?", id_Empleado1, null, null, null);
-            Cursor cursorL1 = db.query("Local", null, "id_Empleado=?", id_Empleado1, null, null, null);
-            if (cursorE1.moveToFirst() && cursorL1.moveToFirst()) {
-                return true;
-            }
-            return false;
-            //
-            //
-            // INTEGRIDAD PARA ENCARGADOLOCAL
-            //
-            //
-            case 43:
-            EncargadoLocal encargadoLocal = (EncargadoLocal) dato;
-            String[] id_EncargadoLocal = {String.valueOf(encargadoLocal.getId_EncargadoLocal())};
-            abrir();
-            Cursor cursor43 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?", id_EncargadoLocal, null, null, null);
-            if (cursor43.moveToFirst()) {
-                return true;
-            }
-            return false;
-            //
-            //
-            // INTEGRIDAD PARA LOCAL
-            //
-            //
-            case 44:
-            //existencia de local en relaciones
+                //
+                //
+                // INTEGRIDAD PARA EMPLEADO
+                //
+                //
+                case 41:
+                //verificar la integridad de existencia del empleado
+                Empleado empleado = (Empleado) dato;
+                String[] id_Empleado = {String.valueOf(empleado.getId_Empleado())};
+                abrir();
+                Cursor cursor41 = db.query("Empleado", null, "id_Empleado=?", id_Empleado, null, null, null);
+                if (cursor41.moveToFirst()) {
+                    return true;
+                }
+                return false;
+                case 42:
+                //verificar la integridad de existencia d eempleado en relaciones
+                Empleado empleado1 = (Empleado) dato;
+                String[] id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
+                abrir();
+                Cursor cursorE1 = db.query("Empleado", null, "id_Empleado=?", id_Empleado1, null, null, null);
+                Cursor cursorL1 = db.query("Local", null, "id_Empleado=?", id_Empleado1, null, null, null);
+                if (cursorE1.moveToFirst() && cursorL1.moveToFirst()) {
+                    return true;
+                }
+                return false;
+                //
+                //
+                // INTEGRIDAD PARA ENCARGADOLOCAL
+                //
+                //
+                case 43:
+                EncargadoLocal encargadoLocal = (EncargadoLocal) dato;
+                String[] id_EncargadoLocal = {String.valueOf(encargadoLocal.getId_EncargadoLocal())};
+                abrir();
+                Cursor cursor43 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?", id_EncargadoLocal, null, null, null);
+                if (cursor43.moveToFirst()) {
+                    return true;
+                }
+                return false;
+                //
+                //
+                // INTEGRIDAD PARA LOCAL
+                //
+                //
+                case 44:
+                //existencia de local en relaciones
 
-            Local local = (Local) dato;
+                Local local = (Local) dato;
 
-            String[] id_Local = {String.valueOf(local.getId_Local())};
-            String[] id_EncargadoLoc = {String.valueOf(local.getId_EncargadoLocal())};
-            String[] id_Ubicacion = {String.valueOf(local.getId_Ubicacion())};
+                String[] id_Local = {String.valueOf(local.getId_Local())};
+                String[] id_EncargadoLoc = {String.valueOf(local.getId_EncargadoLocal())};
+                String[] id_Ubicacion = {String.valueOf(local.getId_Ubicacion())};
 
-            abrir();
-            Cursor cursorEN2 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?", id_EncargadoLoc, null, null, null);
-            Cursor cursorU1 = db.query("Ubicacion", null, "id_Ubicacion=?", id_Ubicacion, null, null, null);
-            Cursor cursorL2 = db.query("Local", null, "id_Local=?", id_Local, null, null, null);
-            if (cursorEN2.moveToFirst() || cursorU1.moveToFirst() || cursorL2.moveToFirst()) {
-                return true;
-            }
-            return false;
-            case 45:
-            //existencia de Local
-            Local local1 = (Local) dato;
-            String[] id_Local2 = {String.valueOf(local1.getId_Local())};
-            abrir();
-            Cursor cursorL3 = db.query("Local", null, "id_Local=?", id_Local2, null, null, null);
-            if (cursorL3.moveToFirst()) {
-                return true;
-            }
-            return false;
+                abrir();
+                Cursor cursorEN2 = db.query("EncargadoLocal", null, "id_EncargadoLocal=?", id_EncargadoLoc, null, null, null);
+                Cursor cursorU1 = db.query("Ubicacion", null, "id_Ubicacion=?", id_Ubicacion, null, null, null);
+                Cursor cursorL2 = db.query("Local", null, "id_Local=?", id_Local, null, null, null);
+                if (cursorEN2.moveToFirst() || cursorU1.moveToFirst() || cursorL2.moveToFirst()) {
+                    return true;
+                }
+                return false;
+                case 45:
+                //existencia de Local
+                Local local1 = (Local) dato;
+                String[] id_Local2 = {String.valueOf(local1.getId_Local())};
+                abrir();
+                Cursor cursorL3 = db.query("Local", null, "id_Local=?", id_Local2, null, null, null);
+                if (cursorL3.moveToFirst()) {
+                    return true;
+                }
+                return false;
 
-            //
-            //
-            // INTEGRIDAD PARA PRECIO PRODUCTO
-            //
-            //
+                //
+                //
+                // INTEGRIDAD PARA FACULTAD
+                //
+                //
 
+                case 31:
+                //Verificar la exitencia de Facultad
+                Facultad facultad = (Facultad) dato;
+                String[] id_Facutad ={String.valueOf(facultad.getId_Faculdad())};
+                abrir();
+                Cursor cursorP31 = db.query("Facultad", null, "id_Facultad = ?", id_Facutad, null, null, null);
+                if (cursorP31.moveToFirst()){
+                    //Ya existe
+                    return true;
+                }
+                return false;
 
-            case 31:
-            //Verificar la exitencia de Facultad
-            Facultad facultad = (Facultad) dato;
-            String[] id_Facutad = {String.valueOf(facultad.getId_Faculdad())};
-            abrir();
-            Cursor cursorP31 = db.query("Facultad", null, "id_Facultad = ?", id_Facutad, null, null, null);
-            if (cursorP31.moveToFirst()) {
-                //Ya existe
-                return true;
-            }
-            return false;
+                //
+                //
+                // INTEGRIDAD PARA UBICACIÓN
+                //
+                //
 
+                case 32:
+                    //Verificar la existencia de Ubicacion
+                    Ubicacion ubicacion = (Ubicacion) dato;
+                    String[] id_Ubicacion32={String.valueOf(ubicacion.getId_Ubicacion())};
+                    abrir();
+                    Cursor cursorP32 = db.query("Ubicacion", null, "id_Ubicacion=?", id_Ubicacion32,null,null,null);
+                    if (cursorP32.moveToFirst()){
+                        //Ya existe
+                        return true;
+                    } else {return false;}
 
-            default:
-            return false;
-            }
+                    
+                case 35:
+                //Verificar la existencia de Ubicacion en Cliente y Local
+                Ubicacion ubicacion35 = (Ubicacion) dato;
+                String[] id_Ubicacion35={String.valueOf(ubicacion35.getId_Ubicacion())};
+                abrir();
+                Cursor cursorP35 = db.query("Local",null,"id_Ubicacion=?", id_Ubicacion35, null,null,null);
+                Cursor cursorP352 = db.query("Cliente",null,"id_Ubicacion=?", id_Ubicacion35, null,null,null);
+                if (cursorP35.moveToFirst() || cursorP352.moveToFirst() ){
+                    return true;
+                }else return false;
+
+                //
+                //
+                // INTEGRIDAD PARA TIPOUBICACIÓN
+                //
+                //
+                case 34:
+                    //Verificar la existencia de TipoUbicacion
+                    TipoUbicacion tipoUbicacion = (TipoUbicacion) dato;
+                    String[] id_TipoUbicacion={String.valueOf(tipoUbicacion.getId_TipoUbicacion())};
+                    abrir();
+                    Cursor cursorP34 = db.query("TipoUbicacion",null,"id_TipoUbicacion=?", id_TipoUbicacion, null,null,null);
+                    if (cursorP34.moveToFirst()){
+                        //Ya existe
+                        return true;
+                    }
+
+                default:
+                return false;
+                }
 
 
         }
-
-
-
 
     //
     //
@@ -1965,8 +2142,5 @@ public class ControlDB {
             return false;
         }
     }
-
-
-
 
 }

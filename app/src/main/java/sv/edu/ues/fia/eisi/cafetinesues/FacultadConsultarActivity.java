@@ -36,7 +36,7 @@ public class FacultadConsultarActivity extends Activity {
         }
     }
 
-    public void LimpiarTexto(View v){
+    public void limpiarTexto(View v){
         id_Facultad.setText("");
         nombre_Facultad.setText("");
 

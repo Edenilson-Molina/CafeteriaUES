@@ -29,7 +29,6 @@
     <string name="texto_pedido">PEDIDO</string>
     <string name="id_pedido">ID del Pedido</string>
 
-
     <!-- Tabla Producto -->
     <string name="texto_Producto">PRODUCTO</string>
     <string name="id_Producto">ID del Producto</string>
@@ -37,12 +36,14 @@
     <string name="nombre_Producto">Nombre del Producto</string>
     <string name="estado_Producto">Estado del Producto</string>
     <string name="precioactual_Producto">Precio actual</string>
+
     <!-- Tabla Empleado -->
     <string name="texto_Empleado">EMPLEADO</string>
     <string name="id_Empleado">ID del empleado</string>
     <string name="nombre_Empleado">Nombre del empleado</string>
     <string name="tipo_Empleado">Tipo del empleado</string>
     <string name="id_Local">ID del local</string>
+
     <!-- Tabla TipoProducto -->
     <string name="texto_TipoProducto">TIPO PRODUCTO</string>
     <string name="id_TipoProducto">ID del Tipo Producto</string>
@@ -54,6 +55,7 @@
     <string name="id_ListaPrecio">ID de Lista Precio</string>
     <!--<string name="id_Producto">ID del Producto</string>-->
     <string name="precio">Precio</string>
+
     <!-- Tabla Cliente -->
     <string name="texto_cliente">CLIENTE</string>
     <string name="texto_id_cliente">Id Cliente</string>
@@ -72,16 +74,17 @@
     <string name="id_Facultad">ID de la Facultad</string>
     <string name="nombre_Facultad">Nombre de la Facultad</string>
 
-
     <!-- Tabla Encargado Local -->
     <string name="texto_EncargadoLocal">ENCARGADO LOCAL</string>
     <string name="id_EncargadoLocal">ID del encargado</string>
     <string name="nombre_EncargadoLocal">Nombre del encargado</string>
+
     <!-- Tabla Encargado Local -->
     <string name="texto_Local">LOCAL</string>
     <string name="id_Ubicacion">ID de la Ubicacion</string>
     <string name="nombre_Local">Nombre del Local</string>
 
+    <!-- Tabla Pedido -->
     <string name="texto_id_pedido">Id Pedido</string>
     <string name="id_evento_especial">Id Evento Especial</string>
     <string name="texto_tipo_pedido">Tipo Pedido</string>
@@ -89,12 +92,22 @@
     <string name="texto_estado_pedido">Estado Pedido</string>
     <string name="texto_monto_Pedido">Monto Pedido</string>
 
-
     <!-- Tabla Usuario -->
     <string name="texto_Usuario">CAFETINES UES</string>
     <string name="id_Usuario">Usuario</string>
     <string name="clave_Usuario">Contraseña</string>
     <string name="iniciarSesion">Iniciar Sesión</string>
+
+    <!-- Tabla Ubicacion -->
+    <string name="texto_Ubicacion">UBICACION</string>
+    <!--<string name="id_Ubicacion">ID de la Ubicacion</string>-->
+    <string name="nombre_Ubicacion">Nombre de la Ubicacion</string>
+    <string name="descripcion_Ubicacion">Descripcion</string>
+
+    <!-- Tabla TipoUbicacion -->
+    <string name="texto_TipoUbicacion">TIPO UBICACION</string>
+    <string name="id_TipoUbicacion">ID del Tipo Ubicacion</string>
+    <string name="nombre_TipoUbicacion">Nombre del Tipo Ubicacion</string>
 
 
 </resources>

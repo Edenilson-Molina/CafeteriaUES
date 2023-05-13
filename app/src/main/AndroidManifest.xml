@@ -11,8 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
-        <activity
 
+        <activity
             android:name=".PedidoActualizarActivity"
             android:exported="false" />
         <activity
@@ -27,7 +27,7 @@
         <activity
             android:name=".PedidoMenuActivity"
             android:exported="false" />
-
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -141,6 +141,36 @@
             android:exported="false" />
         <activity
             android:name=".FacultadActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionActualizarActivity"
             android:exported="false" />
         <activity
             android:name=".TipoProductoConsultarActivity"

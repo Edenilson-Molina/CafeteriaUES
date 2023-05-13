@@ -19,13 +19,15 @@ public class MainActivity extends ListActivity {
             "Tabla Combo", "Tabla ComboProducto","Tabla DetallePedido",
             "Tabla TipoProducto","Tabla Producto","Tabla Empleado",
             "Tabla EncargadoLocal","Tabla PrecioProducto","Tabla TipoPago",
-            "Tabla Local","Tabla Facultad","Tabla Cliente","Tabla Pedido","Llenar BD"
+            "Tabla Local","Tabla Facultad","Tabla Cliente","Tabla Pedido",
+            "Tabla TipoUbicacion","Tabla Ubicacion","Llenar BD"
     };
     String[] activities = {
             "ComboMenuActivity", "ComboProductoMenuActivity","DetallePedidoMenuActivity",
             "TipoProductoMainActivity","ProductoMainActivity","EmpleadoMainActivity",
             "EncargadoLocalMainActivity","PrecioProductoMainActivity","TipoPagoMenuActivity",
-            "LocalMainActivity","FacultadMenuActivity","ClienteMenuActivity","PedidoMenuActivity"
+            "LocalMainActivity","FacultadMenuActivity","ClienteMenuActivity","PedidoMenuActivity",
+            "TipoUbicacionMenuActivity","UbicacionMenuActivity"
     };
            
     ControlDB DBhelper;
@@ -42,7 +44,7 @@ public class MainActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
 
 
-        if(position!=13){
+        if(position!=15){
             String nombreValue = activities[position];
 
             try{
