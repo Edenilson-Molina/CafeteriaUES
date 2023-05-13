@@ -41,8 +41,8 @@ public class MainActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id){
         super.onListItemClick(l, v, position, id);
 
-        if(position!=13){
 
+        if(position!=13){
             String nombreValue = activities[position];
 
             try{
