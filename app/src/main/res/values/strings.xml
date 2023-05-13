@@ -73,8 +73,6 @@
     <string name="nombre_Facultad">Nombre de la Facultad</string>
 
 
-
-
     <!-- Tabla Encargado Local -->
     <string name="texto_EncargadoLocal">ENCARGADO LOCAL</string>
     <string name="id_EncargadoLocal">ID del encargado</string>
@@ -83,4 +81,10 @@
     <string name="texto_Local">LOCAL</string>
     <string name="id_Ubicacion">ID de la Ubicacion</string>
     <string name="nombre_Local">Nombre del Local</string>
+    <string name="texto_id_pedido">Id Pedido</string>
+    <string name="id_evento_especial">Id Evento Especial</string>
+    <string name="texto_tipo_pedido">Tipo Pedido</string>
+    <string name="texto_tipoPedido">Tipo Pedido</string>
+    <string name="texto_estado_pedido">Estado Pedido</string>
+    <string name="texto_monto_Pedido">Monto Pedido</string>
 </resources>

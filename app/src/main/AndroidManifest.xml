@@ -11,8 +11,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CafetinesUES"
         tools:targetApi="31">
-
-
+        <activity
+            android:name=".PedidoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoMenuActivity"
+            android:exported="false" />
         <activity
             android:name=".LocalMainActivity"
             android:exported="false" />

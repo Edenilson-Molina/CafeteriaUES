@@ -36,6 +36,8 @@ public class ControlDB {
     private static final String[] Campos_EncargadoLocal = new String[]{"id_EncargadoLocal","nombre_EncargadoLocal"};
 
     private static final String[] Campos_Local = new String[]{"id_Local","id_Ubicacion", "id_EncargadoLocal", "nombre_Local"};
+
+    private static final String[] Campos_Pedido = new String[]{"id_Pedido","id_Cliente","id_TipoPago","id_Local","id_EventoEspecial","tipo_Pedido","estado_Pedido"};
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -1257,6 +1259,103 @@ public class ControlDB {
 
 
     }
+    //
+    //
+    //
+    //Metodos para Pedidos
+    //
+    //
+    //
+    public String insertar(Pedido pedido){
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+        // Verificar si existe el registro a insertar
+        if (verificarIntegridad(pedido, 22)) {
+        //if(false){
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        } else {
+            ContentValues pedidoValues = new ContentValues();
+            pedidoValues.put(Campos_Pedido[0],pedido.getId_Pedido());
+            pedidoValues.put(Campos_Pedido[1],pedido.getId_cliente());
+            pedidoValues.put(Campos_Pedido[2],pedido.getId_tipoPago());
+            pedidoValues.put(Campos_Pedido[3],pedido.getId_local());
+            pedidoValues.put(Campos_Pedido[4],pedido.getId_eventoEspecial());
+            pedidoValues.put(Campos_Pedido[5],pedido.getTipo_Pedido());
+            pedidoValues.put(Campos_Pedido[6],pedido.getEstado_Pedido());
+            pedidoValues.put(Campos_Pedido[7],pedido.getMonto_Pedido());
+            contador = db.insert("Pedido", null, pedidoValues);
+            regInsertados = regInsertados + contador;
+        }
+        return regInsertados;
+
+    }
+    public String actualizar(Pedido pedido){
+        // Verificar si existe el registro a actualizar
+        // En este caso nos interesa que SI exista
+        if (verificarIntegridad(pedido, 22)) {
+            String[] id = {String.valueOf(pedido.getId_Pedido())};
+            ContentValues pedidoValues = new ContentValues();
+            pedidoValues.put(Campos_Pedido[1],pedido.getId_cliente());
+            pedidoValues.put(Campos_Pedido[2],pedido.getId_tipoPago());
+            pedidoValues.put(Campos_Pedido[3],pedido.getId_local());
+            pedidoValues.put(Campos_Pedido[4],pedido.getId_eventoEspecial());
+            pedidoValues.put(Campos_Pedido[5],pedido.getTipo_Pedido());
+            pedidoValues.put(Campos_Pedido[6],pedido.getEstado_Pedido());
+            pedidoValues.put(Campos_Pedido[7],pedido.getMonto_Pedido());
+            db.update("Pedido", pedidoValues, "id_Pedido = ?", id);
+            return "Registro Actualizado Correctamente";
+        } else {
+            return "Tipo de Producto con código " + pedido.getId_Pedido() + " no existe";
+        }
+    }
+    public String eliminar(Pedido pedido){
+        String regAfectados = "";
+        int contador = 0;
+
+        //Verificar si existe el registro a eliminar
+        if (verificarIntegridad(pedido, 22) ) {
+            contador += db.delete("Pedido", "id_Pedido='" + pedido.getId_Pedido() + "'", null);
+            regAfectados = "Filas afectadas N° = " + contador;
+        }
+        else {
+            regAfectados = "No existe o\nEsta asociado";
+        }
+
+        return regAfectados;
+    }
+
+    public Pedido consultar(Pedido pedido){
+        // Verificar que exista el registro a consultar de Pedido
+        if (verificarIntegridad(pedido, 22)) {
+            Cursor cursor = db.query("Pedido",Campos_Pedido, "id_Pedido = ?",
+                    new String[]{String.valueOf(pedido.getId_cliente())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                Pedido pedidoConsulta = new Pedido();
+                pedidoConsulta.setId_Pedido(cursor.getInt(0));
+                pedidoConsulta.setId_cliente(cursor.getInt(1));
+                pedidoConsulta.setId_tipoPago(cursor.getInt(2));
+                pedidoConsulta.setId_local(cursor.getInt(3));
+                pedidoConsulta.setId_eventoEspecial(cursor.getInt(4));
+                pedidoConsulta.setTipo_Pedido(cursor.getString(5));
+                pedidoConsulta.setEstado_Pedido(cursor.getString(7));
+                pedidoConsulta.setMonto_Pedido(cursor.getFloat(6));
+
+
+                return  pedidoConsulta;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
 
 
         // DEMAS METODOS CRUD PARA LAS DEMAS TABLAS
@@ -1553,6 +1652,16 @@ public class ControlDB {
                     abrir();
                     Cursor cursorIP21 = db.query("Cliente", null, "id_Cliente = ?", id_clien, null, null, null);
                     if (cursorIP21.moveToFirst()) {
+                        // Ya existe
+                        return true;
+                    }
+                    return false;
+                case 22:
+                    Pedido pedido = (Pedido) dato;
+                    String [] id_pedi = {String.valueOf(pedido.getId_Pedido())};
+                    abrir();
+                    Cursor cursorIP22 = db.query("Pedido",null,"id_Pedido = ?",id_pedi,null,null,null);
+                    if (cursorIP22.moveToFirst()) {
                         // Ya existe
                         return true;
                     }
