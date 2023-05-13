@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -243,6 +244,30 @@ public class ControlDB {
                         "WHERE COMBOPRODUCTO.ID_COMBO = COMBO.ID_COMBO) " +
                         "WHERE COMBO.ID_COMBO = NEW.ID_COMBO; " +
                         "END;");
+                //
+                //
+                // TABLAS PARA CONTROL DE USUARIOS
+                //
+                //
+
+                db.execSQL("CREATE TABLE USUARIO(" +
+                        "IDUSUARIO VARCHAR(2) NOT NULL," +
+                        "NOMUSUARIO VARCHAR(30) NOT NULL," +
+                        "CLAVE VARCHAR(5) NOT NULL," +
+                        "CONSTRAINT PK_USUARIO PRIMARY KEY (IDUSUARIO));");
+
+                db.execSQL("CREATE TABLE OPCIONCRUD(" +
+                        "IDOPCIONCRUD VARCHAR(3) NOT NULL PRIMARY KEY," +
+                        "DESOPCION VARCHAR(30) NOT NULL," +
+                        "NUMCRUD INTEGER NOT NULL);");
+
+                db.execSQL("CREATE TABLE ACCESOUSUARIO(" +
+                        "IDUSUARIO VARCHAR(2) NOT NULL," +
+                        "IDOPCIONCRUD VARCHAR(3) NOT NULL," +
+                        "PRIMARY KEY(IDUSUARIO,IDOPCIONCRUD)," +
+                        "FOREIGN KEY (IDUSUARIO) REFERENCES USUARIO(IDUSUARIO) ON DELETE RESTRICT," +
+                        "FOREIGN KEY (IDOPCIONCRUD) REFERENCES OPCIONCRUD(IDOPCIONCRUD) ON DELETE RESTRICT" +
+                        ");");
 
 
 
@@ -1721,6 +1746,11 @@ public class ControlDB {
         final String[] VECid_TipoPago = {"1", "2"};
         final String[] VECnombrre_TipoPago = {"1", "2"};
 
+        // DATOS Usuario
+        final String[] VECid_Usuario = {"RM","RR"};
+        final String[] VECnom_Usuario = {"Edenilson","Manuel"};
+        final String[] VECclave = {"12345","12345"};
+
 
 
         // ABRIR BD
@@ -1743,7 +1773,7 @@ public class ControlDB {
         db.execSQL("DELETE FROM Ubicacion");
         db.execSQL("DELETE FROM Local");
         db.execSQL("DELETE FROM TipoPago");
-
+        db.execSQL("DELETE FROM Usuario");
 
 
 
@@ -1796,12 +1826,37 @@ public class ControlDB {
 
        
         }
+        // LLENAR TABLA USUARIO
+        for (int i = 0; i < 1; i++){
+            ContentValues UsuarioValues = new ContentValues();
+            UsuarioValues.put("idUsuario", VECid_Usuario[i]);
+            UsuarioValues.put("nomUsuario", VECnom_Usuario[i]);
+            UsuarioValues.put("clave", VECclave[i]);
+            db.insert("Usuario", null,UsuarioValues);
+        }
 
 
         // CERRAR BD
         cerrar();
         return "Datos cargados correctamente";
     }
+
+    // Validar Usuario y Contraseña
+    public boolean iniciarSesion(String usuario, String clave)
+    {
+        String[] login = {usuario,clave};
+        Cursor cursor = db.query("Usuario",null, "nomUsuario = ? AND clave = ?",login, null, null, null);
+
+        if (cursor.moveToFirst())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
 
 

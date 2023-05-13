@@ -34,9 +34,6 @@ public class MainActivity extends ListActivity {
 
         if(position!=12){
 
-
-
-
             String nombreValue = activities[position];
 
             try{
