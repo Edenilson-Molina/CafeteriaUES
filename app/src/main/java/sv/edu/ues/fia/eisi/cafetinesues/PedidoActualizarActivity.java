@@ -60,4 +60,14 @@ public class PedidoActualizarActivity extends AppCompatActivity {
         regInsertados = helper.actualizar(pedido);
         helper.cerrar();
     }
+    public void limpiarTextoPedidoActualizar(View v){
+        id_Pedido.setText("");
+        id_cliente.setText("");
+        id_tipoPago.setText("");
+        id_local.setText("");
+        id_eventoEspecial.setText("");
+        tipo_Pedido.setText("");
+        estado_Pedido.setText("");
+        monto_Pedido.setText("");
+    }
 }

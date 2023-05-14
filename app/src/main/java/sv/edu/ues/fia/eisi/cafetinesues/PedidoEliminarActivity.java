@@ -34,4 +34,9 @@ public class PedidoEliminarActivity extends AppCompatActivity {
         }
 
     }
+
+    public void limpiarTextoPedidoEliminar(View v){
+        id_Pedido.setText("");
+
+    }
 }

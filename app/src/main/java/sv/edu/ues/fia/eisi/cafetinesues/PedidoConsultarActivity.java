@@ -26,7 +26,14 @@ public class PedidoConsultarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido_consultar);
         helper = new ControlDB(this);
-        id_Pedido = (EditText) findViewById(R.id.txtIdCliente);
+        id_Pedido = (EditText) findViewById(R.id.txtIdPedido);
+        id_cliente = (EditText) findViewById(R.id.txtIdCliente);
+        id_tipoPago = (EditText) findViewById(R.id.txtIdTipoPago);
+        id_local = (EditText) findViewById(R.id.txtIdLocal);
+        id_eventoEspecial = (EditText) findViewById(R.id.txtIdEventoEspecial);
+        tipo_Pedido = (EditText) findViewById(R.id.txtIdTipoPedido);
+        estado_Pedido = (EditText) findViewById(R.id.txtEstadoPedido);
+        monto_Pedido = (EditText) findViewById(R.id.txtMontoPedido);
     }
     public void consultarPedido(View v){
         Pedido pedido = new Pedido();
@@ -49,5 +56,15 @@ public class PedidoConsultarActivity extends AppCompatActivity {
             monto_Pedido.setText(String.valueOf(pedi.getMonto_Pedido()));
         }
 
+    }
+    public void limpiarTextoPedidoConsultar(View v){
+        id_Pedido.setText("");
+        id_cliente.setText("");
+        id_tipoPago.setText("");
+        id_local.setText("");
+        id_eventoEspecial.setText("");
+        tipo_Pedido.setText("");
+        estado_Pedido.setText("");
+        monto_Pedido.setText("");
     }
 }
