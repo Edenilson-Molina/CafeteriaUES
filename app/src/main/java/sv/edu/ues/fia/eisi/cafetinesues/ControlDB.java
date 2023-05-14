@@ -531,7 +531,7 @@ public class ControlDB {
                 } else {
                     detallePedido.setId_Producto(cursor.getInt(3));
                 }
-                detallePedido.setId_Producto(cursor.getInt(3));
+
                 detallePedido.setCantidad_Producto(cursor.getInt(4));
                 detallePedido.setSubtotal(cursor.getFloat(5));
                 return detallePedido;
@@ -1983,22 +1983,27 @@ public class ControlDB {
     //
     //
     public String llenarBD() {
+
         // DATOS PARA COMBO
         final String[] VECcombo = {"1", "2", "3", "4", "5"};
         final String[] VECprecio = {"1.00", "2.00", "3.00", "4.00", "5.00"};
+
         //DATOS PARA PRODUCTO
         final String[] VECproducto = {"1", "2", "3", "4", "5"};
         final String[] VECnombre = {"Producto1", "Producto2", "Producto3", "Producto4", "Producto5"};
         final String[] VECestado_producto = {"Estado1", "Estado2", "Estado3", "Estado4", "Estado5"};
         final String[] VECprecioActualProducto = {"1.00", "2.00", "3.00", "4.00", "5.00"};
         final String[] VECidTipoProducto = {"1", "2", "3", "4", "5"};
+
         //DATOS PARA TIPO PRODUCTO
         final String[] VECtipoProducto = {"1", "2", "3", "4", "5"};
         final String[] VECnombreTipoProducto = {"TipoProducto1", "TipoProducto2", "TipoProducto3", "TipoProducto4", "TipoProducto5"};
+
         // DATOS PARA COMBO_PRODUCTO
         final String[] VECComboProducto = {"1", "2", "3", "4", "5"};
         final String[] VECidCombo = {"1", "2", "3", "4", "5"};
         final String[] VECidProducto = {"1", "2", "3", "4", "5"};
+
         // DATOS PARA DETALLE_PEDIDO
 
 
@@ -2011,55 +2016,104 @@ public class ControlDB {
         // DATOS TIPO_UBICACION
         final String[] VECid_TipoUbicacion = {"1", "2"};
         final String[] VECnombre_TipoUbicacion = {"Rural","Urbana"};
+
+
         //DATOS Facultad
         final String[] VECid_Facultad = {"1", "2"};
         final String[] VECnombre_Facultad = {"Medicina","Humanidades"};
+
         //DATOS ENCARGADO LOCAL
         final String[] VECid_EncargadoLocal = {"1", "2"};
         final String[] VECnombre_EncargadoLocal = {"Juan","Pedro"};
+
         //DATOS Ubicacion
         final String[] VECid_Ubicacion = {"1", "2"};
         final String[] VECnombre_Ubicacion = {"Oficinas Seguro","Palillos chinos"};
         final String[] VECdescripcion_Ubicacion = {"Bvd.Ejercito continuo a Carcel de mujeres","Plaza soyapango"};
         final String[] VECid_ubicacionTipoUbicacion = {"1", "2"};
         final String[] VECid_ubicacionFacultad = {"1", "2"};
+
         //DATOS LOCAL
         final String[] VECid_Local = {"1", "2"};
         final String[] VECnombre_Local = {"Local1","Local2"};
         final String[] VECid_localEncargadoLocal = {"1", "2"};
-        final String[] VECid_localTipoUbicacion = {"1", "2"};
-        //DATOS TipoPago
-        final String[] VECid_TipoPago = {"1", "2"};
-        final String[] VECnombrre_TipoPago = {"1", "2"};
+        final String[] VECid_localUbicacion = {"1", "2"};
+
+        // DATOS EMPLEADO
+        final String[] VECid_Empleado = {"1", "2"};
+        final String[] VECid_LocalEmpleado = {"1", "2"};
+        final String[] VECnombre_Empleado = {"Empleado1","Empleado2"};
+        final String[] VECtipoEmpleado = {"Tipo1", "Tipo2"};
+
 
         // DATOS Usuario
         final String[] VECid_Usuario = {"RM","RR"};
         final String[] VECnom_Usuario = {"Edenilson","Manuel"};
         final String[] VECclave = {"12345","12345"};
 
+        // DATOS Envio
+        final String[] VECid_Envio = {"1","2"};
+        final String[] VECid_EmpleadoEnvio = {"1","2"};
+        final String[] VECfecha_Envio = {"06-05-2023","07-05-2023"};
 
+        // DATOS Cliente
+        final String[] VECid_Cliente = {"1","2"};
+        final String[] VECid_UbicacionCliente = {"1","2"};
+        final String[] VECnombres_Cliente = {"Cliente1","Cliente2"};
+        final String[] VECapellidos_Cliente = {"Cliente1","Cliente2"};
+        final String[] VECfecha_nacimiento = {"06-05-2023","07-05-2023"};
+
+
+        //DATOS TipoPago
+        final String[] VECid_TipoPago = {"1", "2"};
+        final String[] VECnombrre_TipoPago = {"1", "2"};
+
+        // DATOS EVENTO ESPECIAL
+        final String[] VECid_EventoEspecial = {"1","2"};
+        final String[] VECnombre_EventoEspecial = {"Evento1","Evento2"};
+        final String[] VECfecha_EventoEspecial = {"06-05-2023","07-05-2023"};
+        final String[] VECmonto_minimo = {"100", "200"};
+        final String[] VECmonto_maximo = {"1000", "2000"};
+
+        // DATOS PEDIDO
+        final String[] VECid_Pedido = {"1","2"};
+        final String[] VECid_ClientePedido = {"1","2"};
+        final String[] VECid_TipoPagoPedido = {"1","2"};
+        final String[] VECid_LocalPedido = {"1","2"};
+        final String[] VECid_EventoEspecialPedido = {"1","2"};
+        final String[] VECtipo_Pedido = {"Tipo1","Tipo2"};
+        final String[] VECestado_Pedido = {"Estado1","Estado2"};
+        final String[] VECmonto_pedido = {"1000","2000"};
 
         // ABRIR BD
         abrir();
 
         // ELIMINAR REGISTROS
         db.execSQL("DELETE FROM TipoProducto");
+        db.execSQL("DELETE FROM DetallePedido");
         db.execSQL("DELETE FROM ComboProducto");
-
         db.execSQL("DELETE FROM PrecioProducto");
         db.execSQL("DELETE FROM ListaPrecio");
         db.execSQL("DELETE FROM Combo");
         db.execSQL("DELETE FROM Producto");
-
-
-        ///
-        db.execSQL("DELETE FROM TipoUbicacion");
         db.execSQL("DELETE FROM Facultad");
-        db.execSQL("DELETE FROM EncargadoLocal");
-        db.execSQL("DELETE FROM Ubicacion");
+        db.execSQL("DELETE FROM TipoUbicacion");
+        db.execSQL("DELETE FROM ListaPedidos");
+        db.execSQL("DELETE FROM Envio");
+        db.execSQL("DELETE FROM Empleado");
+        db.execSQL("DELETE FROM Pedido");
+        db.execSQL("DELETE FROM Cliente");
         db.execSQL("DELETE FROM Local");
+        db.execSQL("DELETE FROM Ubicacion");
+        db.execSQL("DELETE FROM EncargadoLocal");
         db.execSQL("DELETE FROM TipoPago");
+        db.execSQL("DELETE FROM EventoEspecial");
+
+
         db.execSQL("DELETE FROM Usuario");
+
+
+
 
 
 
@@ -2113,7 +2167,7 @@ public class ControlDB {
        
         }
         // LLENAR TABLA USUARIO
-        for (int i = 0; i < 1; i++){
+        for (int i = 0; i < 2; i++){
             ContentValues UsuarioValues = new ContentValues();
             UsuarioValues.put("idUsuario", VECid_Usuario[i]);
             UsuarioValues.put("nomUsuario", VECnom_Usuario[i]);
@@ -2121,6 +2175,115 @@ public class ControlDB {
             db.insert("Usuario", null,UsuarioValues);
         }
 
+        // LLENAR TABLA TIPO UBICACION
+        for (int i = 0; i < 2; i++){
+            ContentValues TipoUbicacionValues = new ContentValues();
+            TipoUbicacionValues.put("id_TipoUbicacion", VECid_TipoUbicacion[i]);
+            TipoUbicacionValues.put("nombre_TipoUbicacion", VECnombre_TipoUbicacion[i]);
+            db.insert("TipoUbicacion", null,TipoUbicacionValues);
+        }
+
+        // LLENAR TABLA FACULTAD
+        for (int i = 0; i < 2; i++){
+            ContentValues FacultadValues = new ContentValues();
+            FacultadValues.put("id_Facultad", VECid_Facultad[i]);
+            FacultadValues.put("nombre_Facultad", VECnombre_Facultad[i]);
+            db.insert("Facultad", null,FacultadValues);
+        }
+
+        // LLENAR TABLA UBICACION
+        for (int i = 0; i < 2; i++){
+            ContentValues UbicacionValues = new ContentValues();
+            UbicacionValues.put("id_Ubicacion", VECid_Ubicacion[i]);
+            UbicacionValues.put("nombre_Ubicacion", VECnombre_Ubicacion[i]);
+            UbicacionValues.put("descripcion_Ubicacion", VECdescripcion_Ubicacion[i]);
+            UbicacionValues.put("id_Facultad", VECid_ubicacionFacultad[i]);
+            UbicacionValues.put("id_TipoUbicacion", VECid_ubicacionTipoUbicacion[i]);
+            db.insert("Ubicacion", null,UbicacionValues);
+        }
+
+        // LLENAR ENCARGADO LOCAL
+        for (int i = 0; i < 2; i++) {
+            ContentValues encargadoLocal = new ContentValues();
+            encargadoLocal.put("id_EncargadoLocal", VECid_EncargadoLocal[i]);
+            encargadoLocal.put("nombre_EncargadoLocal", VECnombre_EncargadoLocal[i]);
+            db.insert("EncargadoLocal", null, encargadoLocal);
+        }
+
+        // LLENAR LOCAL
+        for (int i = 0; i < 2; i++) {
+            ContentValues local = new ContentValues();
+            local.put("id_Local", VECid_Local[i]);
+            local.put("id_Ubicacion", VECid_localUbicacion[i]);
+            local.put("id_EncargadoLocal", VECid_localEncargadoLocal[i]);
+            local.put("nombre_Local", VECnombre_Local[i]);
+            db.insert("Local", null, local);
+        }
+
+        // LLENAR EMPLEADO
+        for (int i = 0; i < 2; i++) {
+            ContentValues empleado = new ContentValues();
+            empleado.put("id_Empleado", VECid_Empleado[i]);
+            empleado.put("id_Local", VECid_LocalEmpleado[i]);
+            empleado.put("nombre_Empleado", VECnombre_Empleado[i]);
+            empleado.put("tipo_Empleado", VECtipoEmpleado[i]);
+
+            db.insert("Empleado", null, empleado);
+        }
+
+
+        // LLENAR TABLA ENVIO
+        for (int i = 0; i < 2; i++) {
+            ContentValues envio = new ContentValues();
+            envio.put("id_Envio", VECid_Envio[i]);
+            envio.put("id_Empleado", VECid_EmpleadoEnvio[i]);
+            envio.put("fecha", VECfecha_Envio[i]);
+            db.insert("Envio", null, envio);
+        }
+
+        // LLENAR TABLA CLIENTE
+        for (int i = 0; i < 2; i++) {
+            ContentValues cliente = new ContentValues();
+            cliente.put("id_Cliente", VECid_Cliente[i]);
+            cliente.put("id_Ubicacion", VECid_UbicacionCliente[i]);
+            cliente.put("nombres_Cliente", VECnombres_Cliente[i]);
+            cliente.put("apellidos_Cliente", VECapellidos_Cliente[i]);
+            cliente.put("fecha_nacimiento", VECfecha_nacimiento[i]);
+            db.insert("Cliente", null, cliente);
+        }
+
+        // LLENAR TABLA TIPO PAGO
+        for (int i = 0; i < 2; i++) {
+            ContentValues tipoPago = new ContentValues();
+            tipoPago.put("id_TipoPago", VECid_TipoPago[i]);
+            tipoPago.put("nombre_TipoPago", VECnombrre_TipoPago[i]);
+            db.insert("TipoPago", null, tipoPago);
+        }
+
+        // LLENAR TABLA EVENTO ESPECIAL
+        for (int i = 0; i < 2; i++) {
+            ContentValues eventoEspecial = new ContentValues();
+            eventoEspecial.put("id_EventoEspecial", VECid_EventoEspecial[i]);
+            eventoEspecial.put("nombre_EventoEspecial", VECnombre_EventoEspecial[i]);
+            eventoEspecial.put("fecha_EventoEspecial", VECfecha_EventoEspecial[i]);
+            eventoEspecial.put("monto_minimo", VECmonto_minimo[i]);
+            eventoEspecial.put("monto_maximo", VECmonto_maximo[i]);
+            db.insert("EventoEspecial", null, eventoEspecial);
+        }
+
+        // LLENAR TABLA PEDIDO
+        for (int i = 0; i < 2; i++) {
+            ContentValues pedido = new ContentValues();
+            pedido.put("id_Pedido", VECid_Pedido[i]);
+            pedido.put("id_Cliente", VECid_ClientePedido[i]);
+            pedido.put("id_TipoPago", VECid_TipoPagoPedido[i]);
+            pedido.put("id_Local", VECid_LocalPedido[i]);
+            pedido.put("id_EventoEspecial", VECid_EventoEspecialPedido[i]);
+            pedido.put("tipo_Pedido", VECtipo_Pedido[i]);
+            pedido.put("estado_Pedido", VECestado_Pedido[i]);
+            pedido.put("monto_Pedido", VECmonto_pedido[i]);
+            db.insert("Pedido", null, pedido);
+        }
 
         // CERRAR BD
         cerrar();
