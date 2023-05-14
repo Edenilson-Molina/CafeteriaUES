@@ -24,8 +24,12 @@ public class ComboActualizarActivity extends AppCompatActivity {
 
     public void actualizarCombo(View v){
         Combo combo = new Combo();
-        combo.setId_Combo(Integer.parseInt(editIdCombo.getText().toString()));
-        combo.setPrecio_Combo(Float.parseFloat(editPrecioCombo.getText().toString()));
+        try{
+            combo.setId_Combo(Integer.parseInt(editIdCombo.getText().toString()));
+            combo.setPrecio_Combo(Float.parseFloat(editPrecioCombo.getText().toString()));
+        } catch (Exception e){
+            Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_LONG).show();
+        }
         helper.abrir();
         String estado = helper.actualizar(combo);
         helper.cerrar();

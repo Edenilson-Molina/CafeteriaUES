@@ -42,7 +42,13 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
 
     public void consultarDetallePedido(View v){
         helper.abrir();
-        DetallePedido detallePedido = helper.consultarDetallePedido(Integer.parseInt(EditId_DetallePedido.getText().toString()));
+        DetallePedido detallePedido = null;
+        try{
+            detallePedido = helper.consultarDetallePedido(Integer.parseInt(EditId_DetallePedido.getText().toString()));
+
+        } catch (Exception e){
+            Toast.makeText(this, "Ingrese un ID de Detalle Pedido", Toast.LENGTH_LONG).show();
+        }
         helper.cerrar();
         if(detallePedido == null)
             Toast.makeText(this, "Detalle Pedido no registrado", Toast.LENGTH_LONG).show();

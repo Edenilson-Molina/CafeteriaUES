@@ -117,7 +117,6 @@
             android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:checkedButton="@id/radio_combo"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 

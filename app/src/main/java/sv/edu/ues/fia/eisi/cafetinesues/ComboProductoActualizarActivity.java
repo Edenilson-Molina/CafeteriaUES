@@ -26,9 +26,13 @@ public class ComboProductoActualizarActivity extends AppCompatActivity {
 
     public void actualizarComboProducto(View v){
         ComboProducto comboProducto = new ComboProducto();
-        comboProducto.setId_ComboProducto(Integer.parseInt(editIdComboProducto.getText().toString()));
-        comboProducto.setId_Combo(Integer.parseInt(editIdCombo.getText().toString()));
-        comboProducto.setId_Producto(Integer.parseInt(editIdProducto.getText().toString()));
+        try{
+            comboProducto.setId_ComboProducto(Integer.parseInt(editIdComboProducto.getText().toString()));
+            comboProducto.setId_Combo(Integer.parseInt(editIdCombo.getText().toString()));
+            comboProducto.setId_Producto(Integer.parseInt(editIdProducto.getText().toString()));
+        } catch (Exception e){
+            Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_LONG).show();
+        }
         helper.abrir();
         String estado = helper.actualizar(comboProducto);
         helper.cerrar();
