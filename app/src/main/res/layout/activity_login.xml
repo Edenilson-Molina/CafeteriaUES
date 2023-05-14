@@ -56,8 +56,7 @@
             android:hint="@string/clave_Usuario"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
-            tools:ignore="MissingConstraints">
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/clave_Usuario"
