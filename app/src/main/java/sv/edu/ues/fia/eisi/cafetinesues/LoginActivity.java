@@ -35,7 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         helper.cerrar();
         if(acceso)
         {
+            Bundle envioDatos = new Bundle();
+            envioDatos.putString("Username",usuario);
             Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtras(envioDatos);
             startActivity(intent);
         }else{
             Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();

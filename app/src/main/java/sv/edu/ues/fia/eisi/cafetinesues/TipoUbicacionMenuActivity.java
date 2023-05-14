@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class TipoUbicacionMenuActivity extends ListActivity {
 
@@ -17,13 +18,18 @@ public class TipoUbicacionMenuActivity extends ListActivity {
 
     String[] activities = {"TipoUbicacionInsertarActivity", "TipoUbicacionEliminarActivity",
             "TipoUbicacionConsultarActivity","TipoUbicacionActualizarActivity" };
-
+    final String[] OpcionCRUD = {"010","020","030","040"};
+    String username;
+    ControlDB helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ListView listView = getListView();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,menu);
         setListAdapter(adapter);
+        helper = new ControlDB(this);
+        Bundle recepcionDatos = getIntent().getExtras();
+        username = recepcionDatos.getString("Username");
 
     }
 
@@ -32,14 +38,20 @@ public class TipoUbicacionMenuActivity extends ListActivity {
         String nombreValue= activities[position];
 
         l.getChildAt(position).setBackgroundColor(Color.rgb(128,128,255));
-
-        try{
-            Class<?> clase = Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
-            Intent inte = new Intent(this,clase);
-            this.startActivity(inte);
-        }catch(ClassNotFoundException e){
-            e.printStackTrace();
+        String acceso = OpcionCRUD[position];
+        if(helper.validarEntrada(username,acceso))
+        {
+            try{
+                Class<?> clase = Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
+                Intent inte = new Intent(this,clase);
+                this.startActivity(inte);
+            }catch(ClassNotFoundException e){
+                e.printStackTrace();
+            }
+        }else {
+            Toast.makeText(this, "No tiene acceso", Toast.LENGTH_SHORT).show();
         }
+
 
     }
 }

@@ -1527,319 +1527,317 @@ public class ControlDB {
     //
     //
     private boolean verificarIntegridad (Object dato,int relacion) throws SQLException {
-            switch (relacion) {
+        switch (relacion) {
+            //
+            //
+            // INTEGRIDAD PARA COMBO
+            //
+            //
+            case 1:
+                // Verificar si ya existe ese COMBO
+                Combo combo = (Combo) dato;
+                String[] id1 = {String.valueOf(combo.getId_Combo())};
+                abrir();
+                Cursor cursor1 = db.query("Combo", null, "id_combo = ?", id1, null, null, null);
+                if (cursor1.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            case 2:
+                // Verificar si existe ese id_Combo
+                String[] id2 = {String.valueOf(dato)};
+                abrir();
+                Cursor cursor2 = db.query("Combo", null, "id_combo = ?", id2, null, null, null);
+                if (cursor2.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA COMBO_PRODUCTO
+            //
+            //
+            case 3:
+                // PARA INSERTAR
                 //
-                //
-                // INTEGRIDAD PARA COMBO
-                //
-                //
-                case 1:
-                    // Verificar si ya existe ese COMBO
-                    Combo combo = (Combo) dato;
-                    String[] id1 = {String.valueOf(combo.getId_Combo())};
-                    abrir();
-                    Cursor cursor1 = db.query("Combo", null, "id_combo = ?", id1, null, null, null);
-                    if (cursor1.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
+                // Verificar si ya existe ese COMBO_PRODUCTO y si existen  el Combo y Producto especificado
+                ComboProducto comboProducto = (ComboProducto) dato;
+                String[] id1c = {String.valueOf(comboProducto.getId_ComboProducto())};
+                String[] id2c = {String.valueOf(comboProducto.getId_Combo())};
+                String[] id3c = {String.valueOf(comboProducto.getId_Producto())};
+                abrir();
+                Cursor cursor1c = db.query("ComboProducto", null, "id_ComboProducto = ?", id1c, null, null, null);
+                Cursor cursor2c = db.query("Combo", null, "id_Combo = ?", id2c, null, null, null);
+                Cursor cursor3c = db.query("Producto", null, "id_Producto = ?", id3c, null, null, null);
+                if (cursor1c.moveToFirst()) {
+                    // ID duplicado, no se debe insertar
+                    return true;
+                }
+                if (cursor2c.moveToFirst() && cursor3c.moveToFirst()) {
+                    //Se encontraron los ID's, se puede insertar
                     return false;
-                case 2:
-                    // Verificar si existe ese id_Combo
-                    String[] id2 = {String.valueOf(dato)};
-                    abrir();
-                    Cursor cursor2 = db.query("Combo", null, "id_combo = ?", id2, null, null, null);
-                    if (cursor2.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
+                }
+                return true;
+            case 4:
+                // PARA ACTUALIZAR
                 //
-                //
-                // INTEGRIDAD PARA COMBO_PRODUCTO
-                //
-                //
-                case 3:
-                    // PARA INSERTAR
-                    //
-                    // Verificar si ya existe ese COMBO_PRODUCTO y si existen  el Combo y Producto especificado
-                    ComboProducto comboProducto = (ComboProducto) dato;
-                    String[] id1c = {String.valueOf(comboProducto.getId_ComboProducto())};
-                    String[] id2c = {String.valueOf(comboProducto.getId_Combo())};
-                    String[] id3c = {String.valueOf(comboProducto.getId_Producto())};
-                    abrir();
-                    Cursor cursor1c = db.query("ComboProducto", null, "id_ComboProducto = ?", id1c, null, null, null);
-                    Cursor cursor2c = db.query("Combo", null, "id_Combo = ?", id2c, null, null, null);
-                    Cursor cursor3c = db.query("Producto", null, "id_Producto = ?", id3c, null, null, null);
-                    if (cursor1c.moveToFirst()) {
-                        // ID duplicado, no se debe insertar
-                        return true;
-                    }
-                    if (cursor2c.moveToFirst() && cursor3c.moveToFirst()) {
-                        //Se encontraron los ID's, se puede insertar
+                // Verificar si ya existe ese COMBO_PRODUCTO y si existen  el Combo y Producto especificado
+                ComboProducto comboProducto1 = (ComboProducto) dato;
+                String[] id1cQ = {String.valueOf(comboProducto1.getId_ComboProducto())};
+                String[] id2cQ = {String.valueOf(comboProducto1.getId_Combo())};
+                String[] id3cQ = {String.valueOf(comboProducto1.getId_Producto())};
+                abrir();
+                Cursor cursor1cQ = db.query("ComboProducto", null, "id_ComboProducto = ?", id1cQ, null, null, null);
+                Cursor cursor2cQ = db.query("Combo", null, "id_Combo = ?", id2cQ, null, null, null);
+                Cursor cursor3cQ = db.query("Producto", null, "id_Producto = ?", id3cQ, null, null, null);
+                if (cursor1cQ.moveToFirst() && cursor2cQ.moveToFirst() && cursor3cQ.moveToFirst()) {
+                    // LOS 3 ID'S EXISTEN, SE PUEDE ACTUALIZAR
+                    return true;
+                }
+                return false;
+            case 5:
+                // Verificar si existe ese id_ComboProducto
+                String[] id2cc = {String.valueOf(dato)};
+                abrir();
+                Cursor cursor2cc = db.query("ComboProducto", null, "id_ComboProducto = ?", id2cc, null, null, null);
+                if (cursor2cc.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA DETALLE_PEDIDO
+            //
+            //
+            case 6:
+                // Verificar si ya existe ese DETALLE_PEDIDO y si existen  el Pedido, Combo y Producto especificado
+                DetallePedido detallePedido = (DetallePedido) dato;
+                String[] id1d = {String.valueOf(detallePedido.getId_DetallePedido())};
+                String[] id2d = {String.valueOf(detallePedido.getId_Pedido())};
+
+                abrir();
+
+                Cursor cursor1d = db.query("DetallePedido", null, "id_DetallePedido = ?", id1d, null, null, null);
+                Cursor cursor2d = db.query("Pedido", null, "id_Pedido = ?", id2d, null, null, null);
+
+                // PRIMERO VERIFICAMOS SI ESE ID YA EXISTE EN LA BDD
+                if (cursor1d.moveToFirst()) {
+                    // Ya existe ese DetallePedido, no se puede insertar
+                    return true;
+                }
+
+                // AHORA VERIFICAMOS PRIMERO CUAL CAMPO ES "0"
+                // Y PARA EL QUE NO ES "0", VERIFICAR SI EXISTE
+                if (detallePedido.getId_Combo() == 0) {
+                    String[] id4d = {String.valueOf(detallePedido.getId_Producto())};
+                    Cursor cursor4d = db.query("Producto", null, "id_Producto = ?", id4d, null, null, null);
+                    if (cursor2d.moveToFirst() && cursor4d.moveToFirst()) {
+                        //Se encontraron datos, por lo que esta CORRECTO
                         return false;
                     }
+                } else {
+                    String[] id3d = {String.valueOf(detallePedido.getId_Combo())};
+                    Cursor cursor3d = db.query("Combo", null, "id_Combo = ?", id3d, null, null, null);
+                    if (cursor2d.moveToFirst() && cursor3d.moveToFirst()) {
+                        //Se encontraron datos, por lo que esta CORRECTO
+                        return false;
+                    }
+
+                }
+                return true;
+
+            //Para actualizar DetallePedido
+            case 7:
+                // Verificar si ya existe ese DETALLE_PEDIDO y si existen  el Pedido, Combo y Producto especificado
+                DetallePedido detallePedido1 = (DetallePedido) dato;
+                String[] id1d1 = {String.valueOf(detallePedido1.getId_DetallePedido())};
+                String[] id2d1 = {String.valueOf(detallePedido1.getId_Pedido())};
+
+                abrir();
+
+                Cursor cursor1d1 = db.query("DetallePedido", null, "id_DetallePedido = ?", id1d1, null, null, null);
+                Cursor cursor2d1 = db.query("Pedido", null, "id_Pedido = ?", id2d1, null, null, null);
+
+                // AHORA VERIFICAMOS PRIMERO CUAL CAMPO ES "0"
+                // Y PARA EL QUE NO ES "0", VERIFICAR SI EXISTE
+                if (detallePedido1.getId_Combo() == 0) {
+                    String[] id4d = {String.valueOf(detallePedido1.getId_Producto())};
+                    Cursor cursor4d = db.query("Producto", null, "id_Producto = ?", id4d, null, null, null);
+                    if (cursor1d1.moveToFirst() && cursor2d1.moveToFirst() && cursor4d.moveToFirst()) {
+                        //Se encontraron datos, por lo que esta CORRECTO
+                        return true;
+                    }
+                } else {
+                    String[] id3d = {String.valueOf(detallePedido1.getId_Combo())};
+                    Cursor cursor3d = db.query("Combo", null, "id_Combo = ?", id3d, null, null, null);
+                    if (cursor1d1.moveToFirst() && cursor2d1.moveToFirst() && cursor3d.moveToFirst()) {
+                        //Se encontraron datos, por lo que esta CORRECTO
+                        return true;
+                    }
+
+                }
+                return false;
+            //Para eliminar DetallePedido
+            case 8:
+                // Verificar si existe ese id_DetallePedido
+                String[] iddp = {String.valueOf(dato)};
+                abrir();
+                Cursor cursordp = db.query("DetallePedido", null, "id_DetallePedido = ?", iddp, null, null, null);
+                if (cursordp.moveToFirst()) {
+                    // Ya existe
                     return true;
-                case 4:
-                    // PARA ACTUALIZAR
-                    //
-                    // Verificar si ya existe ese COMBO_PRODUCTO y si existen  el Combo y Producto especificado
-                    ComboProducto comboProducto1 = (ComboProducto) dato;
-                    String[] id1cQ = {String.valueOf(comboProducto1.getId_ComboProducto())};
-                    String[] id2cQ = {String.valueOf(comboProducto1.getId_Combo())};
-                    String[] id3cQ = {String.valueOf(comboProducto1.getId_Producto())};
-                    abrir();
-                    Cursor cursor1cQ = db.query("ComboProducto", null, "id_ComboProducto = ?", id1cQ, null, null, null);
-                    Cursor cursor2cQ = db.query("Combo", null, "id_Combo = ?", id2cQ, null, null, null);
-                    Cursor cursor3cQ = db.query("Producto", null, "id_Producto = ?", id3cQ, null, null, null);
-                    if (cursor1cQ.moveToFirst() && cursor2cQ.moveToFirst() && cursor3cQ.moveToFirst()) {
-                        // LOS 3 ID'S EXISTEN, SE PUEDE ACTUALIZAR
-                        return true;
-                    }
-                    return false;
-                case 5:
-                    // Verificar si existe ese id_ComboProducto
-                    String[] id2cc = {String.valueOf(dato)};
-                    abrir();
-                    Cursor cursor2cc = db.query("ComboProducto", null, "id_ComboProducto = ?", id2cc, null, null, null);
-                    if (cursor2cc.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
-                //
-                //
-                // INTEGRIDAD PARA DETALLE_PEDIDO
-                //
-                //
-                case 6:
-                    // Verificar si ya existe ese DETALLE_PEDIDO y si existen  el Pedido, Combo y Producto especificado
-                    DetallePedido detallePedido = (DetallePedido) dato;
-                    String[] id1d = {String.valueOf(detallePedido.getId_DetallePedido())};
-                    String[] id2d = {String.valueOf(detallePedido.getId_Pedido())};
+                }
+                return false;
 
-                    abrir();
-
-                    Cursor cursor1d = db.query("DetallePedido", null, "id_DetallePedido = ?", id1d, null, null, null);
-                    Cursor cursor2d = db.query("Pedido", null, "id_Pedido = ?", id2d, null, null, null);
-
-                    // PRIMERO VERIFICAMOS SI ESE ID YA EXISTE EN LA BDD
-                    if (cursor1d.moveToFirst()) {
-                        // Ya existe ese DetallePedido, no se puede insertar
-                        return true;
-                    }
-
-                    // AHORA VERIFICAMOS PRIMERO CUAL CAMPO ES "0"
-                    // Y PARA EL QUE NO ES "0", VERIFICAR SI EXISTE
-                    if (detallePedido.getId_Combo() == 0) {
-                        String[] id4d = {String.valueOf(detallePedido.getId_Producto())};
-                        Cursor cursor4d = db.query("Producto", null, "id_Producto = ?", id4d, null, null, null);
-                        if (cursor2d.moveToFirst() && cursor4d.moveToFirst()) {
-                            //Se encontraron datos, por lo que esta CORRECTO
-                            return false;
-                        }
-                    } else {
-                        String[] id3d = {String.valueOf(detallePedido.getId_Combo())};
-                        Cursor cursor3d = db.query("Combo", null, "id_Combo = ?", id3d, null, null, null);
-                        if (cursor2d.moveToFirst() && cursor3d.moveToFirst()) {
-                            //Se encontraron datos, por lo que esta CORRECTO
-                            return false;
-                        }
-
-                    }
+            //
+            //
+            // INTEGRIDAD PARA PRODUCTO
+            //
+            //
+            case 11:
+                // Verificar que no exista el producto
+                Producto producto1 = (Producto) dato;
+                String[] id_Producto1 = {String.valueOf(producto1.getCodigo_Producto())};
+                abrir();
+                Cursor cursorIP = db.query("Producto", null, "id_Producto = ?", id_Producto1, null, null, null);
+                if (cursorIP.moveToFirst()) {
+                    // Ya existe
                     return true;
+                }
+                return false;
+            case 12:
+                // Verificar que existencia del producto en las relaciones
+                Producto producto12 = (Producto) dato;
+                String[] id_Producto12 = {String.valueOf(producto12.getCodigo_Producto())};
+                abrir();
+                Cursor cursorCP12 = db.query("ComboProducto", null, "id_Producto = ?", id_Producto12, null, null, null);
+                Cursor cursorDP12 = db.query("DetallePedido", null, "id_Producto = ?", id_Producto12, null, null, null);
+                Cursor cursorPP12 = db.query("PrecioProducto", null, "id_Producto = ?", id_Producto12, null, null, null);
+                if (cursorCP12.moveToFirst() || cursorDP12.moveToFirst() || cursorPP12.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            //
+            //
+            // INTEGRIDAD PARA TIPO PRODUCTO
+            //
+            //
+            case 14:
+                // Verificar la existencia del Tipo Producto
+                TipoProducto tipoProducto1 = (TipoProducto) dato;
+                String[] id_TipoProducto1 = {String.valueOf(tipoProducto1.getId_TipoProducto())};
+                abrir();
+                Cursor cursorITP = db.query("TipoProducto", null, "id_TipoProducto = ?", id_TipoProducto1, null, null, null);
+                if (cursorITP.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            case 15:
+                // Verificar la existencia del Tipo Producto en Producto
+                TipoProducto tipoProducto15 = (TipoProducto) dato;
+                String[] id_TipoProducto15 = {String.valueOf(tipoProducto15.getId_TipoProducto())};
+                abrir();
+                Cursor cursorP15 = db.query("Producto", null, "id_TipoProducto = ?", id_TipoProducto15, null, null, null);
+                if (cursorP15.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            case 16:
+                // Verificar la existencia del Precio Producto
+                // y tambien sus id_Producto y id_ListaPrecio
+                PrecioProducto precioProducto16 = (PrecioProducto) dato;
+                String[] id_PrecioProducto16 = {String.valueOf(precioProducto16.getId_PrecioProducto())};
+                String[] integridad16 = {String.valueOf(precioProducto16.getId_ListaPrecio()), String.valueOf(precioProducto16.getId_Producto())};
+                abrir();
+                Cursor cursorPP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?", id_PrecioProducto16, null, null, null);
+                Cursor cursor2PP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?", integridad16, null, null, null);
 
-                //Para actualizar DetallePedido
-                case 7:
-                    // Verificar si ya existe ese DETALLE_PEDIDO y si existen  el Pedido, Combo y Producto especificado
-                    DetallePedido detallePedido1 = (DetallePedido) dato;
-                    String[] id1d1 = {String.valueOf(detallePedido1.getId_DetallePedido())};
-                    String[] id2d1 = {String.valueOf(detallePedido1.getId_Pedido())};
+                if (cursorPP16.moveToFirst() || cursor2PP16.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
 
-                    abrir();
+                return false;
+            case 17:
+                // Verificar la existencia del Precio Producto
+                PrecioProducto precioProducto17 = (PrecioProducto) dato;
+                String[] id_PrecioProducto17 = {String.valueOf(precioProducto17.getId_PrecioProducto())};
+                abrir();
+                Cursor cursorPP17 = db.query("PrecioProducto", null, "id_PrecioProducto = ?", id_PrecioProducto17, null, null, null);
+                if (cursorPP17.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+            case 18:
+                // Verificar la existencia del Precio Producto
+                // y tambien sus id_Producto y id_ListaPrecio
+                PrecioProducto precioProducto18 = (PrecioProducto) dato;
+                String[] id_PrecioProducto18 = {String.valueOf(precioProducto18.getId_PrecioProducto())};
+                String[] integridad18 = {String.valueOf(precioProducto18.getId_ListaPrecio()), String.valueOf(precioProducto18.getId_Producto())};
+                abrir();
+                Cursor cursorPP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?", id_PrecioProducto18, null, null, null);
+                Cursor cursor2PP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?", integridad18, null, null, null);
 
-                    Cursor cursor1d1 = db.query("DetallePedido", null, "id_DetallePedido = ?", id1d1, null, null, null);
-                    Cursor cursor2d1 = db.query("Pedido", null, "id_Pedido = ?", id2d1, null, null, null);
+                if (cursorPP18.moveToFirst()) {
 
-                    // AHORA VERIFICAMOS PRIMERO CUAL CAMPO ES "0"
-                    // Y PARA EL QUE NO ES "0", VERIFICAR SI EXISTE
-                    if (detallePedido1.getId_Combo() == 0) {
-                        String[] id4d = {String.valueOf(detallePedido1.getId_Producto())};
-                        Cursor cursor4d = db.query("Producto", null, "id_Producto = ?", id4d, null, null, null);
-                        if (cursor1d1.moveToFirst() && cursor2d1.moveToFirst() && cursor4d.moveToFirst()) {
-                            //Se encontraron datos, por lo que esta CORRECTO
-                            return true;
-                        }
-                    } else {
-                        String[] id3d = {String.valueOf(detallePedido1.getId_Combo())};
-                        Cursor cursor3d = db.query("Combo", null, "id_Combo = ?", id3d, null, null, null);
-                        if (cursor1d1.moveToFirst() && cursor2d1.moveToFirst() && cursor3d.moveToFirst()) {
-                            //Se encontraron datos, por lo que esta CORRECTO
-                            return true;
-                        }
-
-                    }
-                    return false;
-                //Para eliminar DetallePedido
-                case 8:
-                    // Verificar si existe ese id_DetallePedido
-                    String[] iddp = {String.valueOf(dato)};
-                    abrir();
-                    Cursor cursordp = db.query("DetallePedido", null, "id_DetallePedido = ?", iddp, null, null, null);
-                    if (cursordp.moveToFirst()) {
-                        // Ya existe
+                    if (!(cursor2PP18.moveToFirst()) || (cursor2PP18.getInt(0) == cursorPP18.getInt(0))) {
                         return true;
-                    }
-                    return false;
-
-                //
-                //
-                // INTEGRIDAD PARA PRODUCTO
-                //
-                //
-                case 11:
-                    // Verificar que no exista el producto
-                    Producto producto1 = (Producto) dato;
-                    String[] id_Producto1 = {String.valueOf(producto1.getCodigo_Producto())};
-                    abrir();
-                    Cursor cursorIP = db.query("Producto", null, "id_Producto = ?", id_Producto1, null, null, null);
-                    if (cursorIP.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
-                case 12:
-                    // Verificar que existencia del producto en las relaciones
-                    Producto producto12 = (Producto) dato;
-                    String[] id_Producto12 = {String.valueOf(producto12.getCodigo_Producto())};
-                    abrir();
-                    Cursor cursorCP12 = db.query("ComboProducto", null, "id_Producto = ?", id_Producto12, null, null, null);
-                    Cursor cursorDP12 = db.query("DetallePedido", null, "id_Producto = ?", id_Producto12, null, null, null);
-                    Cursor cursorPP12 = db.query("PrecioProducto", null, "id_Producto = ?", id_Producto12, null, null, null);
-                    if (cursorCP12.moveToFirst() || cursorDP12.moveToFirst() || cursorPP12.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
-                //
-                //
-                // INTEGRIDAD PARA TIPO PRODUCTO
-                //
-                //
-                case 14:
-                    // Verificar la existencia del Tipo Producto
-                    TipoProducto tipoProducto1 = (TipoProducto) dato;
-                    String[] id_TipoProducto1 = {String.valueOf(tipoProducto1.getId_TipoProducto())};
-                    abrir();
-                    Cursor cursorITP = db.query("TipoProducto", null, "id_TipoProducto = ?", id_TipoProducto1, null, null, null);
-                    if (cursorITP.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
-                case 15:
-                    // Verificar la existencia del Tipo Producto en Producto
-                    TipoProducto tipoProducto15 = (TipoProducto) dato;
-                    String[] id_TipoProducto15 = {String.valueOf(tipoProducto15.getId_TipoProducto())};
-                    abrir();
-                    Cursor cursorP15 = db.query("Producto", null, "id_TipoProducto = ?", id_TipoProducto15, null, null, null);
-                    if (cursorP15.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
-                case 16:
-                    // Verificar la existencia del Precio Producto
-                    // y tambien sus id_Producto y id_ListaPrecio
-                    PrecioProducto precioProducto16 = (PrecioProducto) dato;
-                    String[] id_PrecioProducto16 = {String.valueOf(precioProducto16.getId_PrecioProducto())};
-                    String[] integridad16 = {String.valueOf(precioProducto16.getId_ListaPrecio()), String.valueOf(precioProducto16.getId_Producto())};
-                    abrir();
-                    Cursor cursorPP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?", id_PrecioProducto16, null, null, null);
-                    Cursor cursor2PP16 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?", integridad16, null, null, null);
-
-                    if (cursorPP16.moveToFirst() || cursor2PP16.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-
-                    return false;
-                case 17:
-                    // Verificar la existencia del Precio Producto
-                    PrecioProducto precioProducto17 = (PrecioProducto) dato;
-                    String[] id_PrecioProducto17 = {String.valueOf(precioProducto17.getId_PrecioProducto())};
-                    abrir();
-                    Cursor cursorPP17 = db.query("PrecioProducto", null, "id_PrecioProducto = ?", id_PrecioProducto17, null, null, null);
-                    if (cursorPP17.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                case 18:
-                    // Verificar la existencia del Precio Producto
-                    // y tambien sus id_Producto y id_ListaPrecio
-                    PrecioProducto precioProducto18 = (PrecioProducto) dato;
-                    String[] id_PrecioProducto18 = {String.valueOf(precioProducto18.getId_PrecioProducto())};
-                    String[] integridad18 = {String.valueOf(precioProducto18.getId_ListaPrecio()), String.valueOf(precioProducto18.getId_Producto())};
-                    abrir();
-                    Cursor cursorPP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_PrecioProducto = ?", id_PrecioProducto18, null, null, null);
-                    Cursor cursor2PP18 = db.query("PrecioProducto", campos_PrecioProducto, "id_ListaPrecio = ? AND id_Producto = ?", integridad18, null, null, null);
-
-                    if (cursorPP18.moveToFirst()) {
-
-                        if (!(cursor2PP18.moveToFirst()) || (cursor2PP18.getInt(0) == cursorPP18.getInt(0))) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-
                     } else {
                         return false;
                     }
-                case 19:
-                    // Verificar la existencia de producto y listaProducto
-                    PrecioProducto precioProducto19 = (PrecioProducto) dato;
-                    String[] producto19 = {String.valueOf(precioProducto19.getId_Producto())};
-                    String[] listaPrecio19 = {String.valueOf(precioProducto19.getId_ListaPrecio())};
-                    abrir();
-                    Cursor cursorP19 = db.query("Producto", null, "id_Producto = ?", producto19, null, null, null);
-                    Cursor cursorLP19 = db.query("ListaPrecio", null, "id_ListaPrecio = ?", listaPrecio19, null, null, null);
-                    if (cursorP19.moveToFirst() && cursorLP19.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
+
+                } else {
                     return false;
-                case 21:
-                    Cliente cliente = (Cliente) dato;
-                    String[] id_clien = {String.valueOf(cliente.getId_cliente())};
-                    abrir();
-                    Cursor cursorIP21 = db.query("Cliente", null, "id_Cliente = ?", id_clien, null, null, null);
-                    if (cursorIP21.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
-                case 22:
-                    Pedido pedido = (Pedido) dato;
-                    String [] id_pedi = {String.valueOf(pedido.getId_Pedido())};
-                    abrir();
-                    Cursor cursorIP22 = db.query("Pedido",null,"id_Pedido = ?",id_pedi,null,null,null);
-                    if (cursorIP22.moveToFirst()) {
-                        // Ya existe
-                        return true;
-                    }
-                    return false;
+                }
+            case 19:
+                // Verificar la existencia de producto y listaProducto
+                PrecioProducto precioProducto19 = (PrecioProducto) dato;
+                String[] producto19 = {String.valueOf(precioProducto19.getId_Producto())};
+                String[] listaPrecio19 = {String.valueOf(precioProducto19.getId_ListaPrecio())};
+                abrir();
+                Cursor cursorP19 = db.query("Producto", null, "id_Producto = ?", producto19, null, null, null);
+                Cursor cursorLP19 = db.query("ListaPrecio", null, "id_ListaPrecio = ?", listaPrecio19, null, null, null);
+                if (cursorP19.moveToFirst() && cursorLP19.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            case 21:
+                Cliente cliente = (Cliente) dato;
+                String[] id_clien = {String.valueOf(cliente.getId_cliente())};
+                abrir();
+                Cursor cursorIP21 = db.query("Cliente", null, "id_Cliente = ?", id_clien, null, null, null);
+                if (cursorIP21.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
+            case 22:
+                Pedido pedido = (Pedido) dato;
+                String[] id_pedi = {String.valueOf(pedido.getId_Pedido())};
+                abrir();
+                Cursor cursorIP22 = db.query("Pedido", null, "id_Pedido = ?", id_pedi, null, null, null);
+                if (cursorIP22.moveToFirst()) {
+                    // Ya existe
+                    return true;
+                }
+                return false;
 
 
+            //Para eliminar DetallePedido
 
-            
-                //Para eliminar DetallePedido
-
-                //
-                //
-                // INTEGRIDAD PARA EMPLEADO
-                //
-                //
-                case 41:
+            //
+            //
+            // INTEGRIDAD PARA EMPLEADO
+            //
+            //
+            case 41:
                 //verificar la integridad de existencia del empleado
                 Empleado empleado = (Empleado) dato;
                 String[] id_Empleado = {String.valueOf(empleado.getId_Empleado())};
@@ -1849,7 +1847,7 @@ public class ControlDB {
                     return true;
                 }
                 return false;
-                case 42:
+            case 42:
                 //verificar la integridad de existencia d eempleado en relaciones
                 Empleado empleado1 = (Empleado) dato;
                 String[] id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
@@ -1860,12 +1858,12 @@ public class ControlDB {
                     return true;
                 }
                 return false;
-                //
-                //
-                // INTEGRIDAD PARA ENCARGADOLOCAL
-                //
-                //
-                case 43:
+            //
+            //
+            // INTEGRIDAD PARA ENCARGADOLOCAL
+            //
+            //
+            case 43:
                 EncargadoLocal encargadoLocal = (EncargadoLocal) dato;
                 String[] id_EncargadoLocal = {String.valueOf(encargadoLocal.getId_EncargadoLocal())};
                 abrir();
@@ -1874,12 +1872,12 @@ public class ControlDB {
                     return true;
                 }
                 return false;
-                //
-                //
-                // INTEGRIDAD PARA LOCAL
-                //
-                //
-                case 44:
+            //
+            //
+            // INTEGRIDAD PARA LOCAL
+            //
+            //
+            case 44:
                 //existencia de local en relaciones
 
                 Local local = (Local) dato;
@@ -1896,7 +1894,7 @@ public class ControlDB {
                     return true;
                 }
                 return false;
-                case 45:
+            case 45:
                 //existencia de Local
                 Local local1 = (Local) dato;
                 String[] id_Local2 = {String.valueOf(local1.getId_Local())};
@@ -1907,75 +1905,77 @@ public class ControlDB {
                 }
                 return false;
 
-                //
-                //
-                // INTEGRIDAD PARA FACULTAD
-                //
-                //
+            //
+            //
+            // INTEGRIDAD PARA FACULTAD
+            //
+            //
 
-                case 31:
+            case 31:
                 //Verificar la exitencia de Facultad
                 Facultad facultad = (Facultad) dato;
-                String[] id_Facutad ={String.valueOf(facultad.getId_Faculdad())};
+                String[] id_Facutad = {String.valueOf(facultad.getId_Faculdad())};
                 abrir();
                 Cursor cursorP31 = db.query("Facultad", null, "id_Facultad = ?", id_Facutad, null, null, null);
-                if (cursorP31.moveToFirst()){
+                if (cursorP31.moveToFirst()) {
                     //Ya existe
                     return true;
                 }
                 return false;
 
-                //
-                //
-                // INTEGRIDAD PARA UBICACIÓN
-                //
-                //
+            //
+            //
+            // INTEGRIDAD PARA UBICACIÓN
+            //
+            //
 
-                case 32:
-                    //Verificar la existencia de Ubicacion
-                    Ubicacion ubicacion = (Ubicacion) dato;
-                    String[] id_Ubicacion32={String.valueOf(ubicacion.getId_Ubicacion())};
-                    abrir();
-                    Cursor cursorP32 = db.query("Ubicacion", null, "id_Ubicacion=?", id_Ubicacion32,null,null,null);
-                    if (cursorP32.moveToFirst()){
-                        //Ya existe
-                        return true;
-                    } else {return false;}
+            case 32:
+                //Verificar la existencia de Ubicacion
+                Ubicacion ubicacion = (Ubicacion) dato;
+                String[] id_Ubicacion32 = {String.valueOf(ubicacion.getId_Ubicacion())};
+                abrir();
+                Cursor cursorP32 = db.query("Ubicacion", null, "id_Ubicacion=?", id_Ubicacion32, null, null, null);
+                if (cursorP32.moveToFirst()) {
+                    //Ya existe
+                    return true;
+                } else {
+                    return false;
+                }
 
-                    
-                case 35:
+
+            case 35:
                 //Verificar la existencia de Ubicacion en Cliente y Local
                 Ubicacion ubicacion35 = (Ubicacion) dato;
-                String[] id_Ubicacion35={String.valueOf(ubicacion35.getId_Ubicacion())};
+                String[] id_Ubicacion35 = {String.valueOf(ubicacion35.getId_Ubicacion())};
                 abrir();
-                Cursor cursorP35 = db.query("Local",null,"id_Ubicacion=?", id_Ubicacion35, null,null,null);
-                Cursor cursorP352 = db.query("Cliente",null,"id_Ubicacion=?", id_Ubicacion35, null,null,null);
-                if (cursorP35.moveToFirst() || cursorP352.moveToFirst() ){
+                Cursor cursorP35 = db.query("Local", null, "id_Ubicacion=?", id_Ubicacion35, null, null, null);
+                Cursor cursorP352 = db.query("Cliente", null, "id_Ubicacion=?", id_Ubicacion35, null, null, null);
+                if (cursorP35.moveToFirst() || cursorP352.moveToFirst()) {
                     return true;
-                }else return false;
+                } else return false;
 
                 //
                 //
                 // INTEGRIDAD PARA TIPOUBICACIÓN
                 //
                 //
-                case 34:
-                    //Verificar la existencia de TipoUbicacion
-                    TipoUbicacion tipoUbicacion = (TipoUbicacion) dato;
-                    String[] id_TipoUbicacion={String.valueOf(tipoUbicacion.getId_TipoUbicacion())};
-                    abrir();
-                    Cursor cursorP34 = db.query("TipoUbicacion",null,"id_TipoUbicacion=?", id_TipoUbicacion, null,null,null);
-                    if (cursorP34.moveToFirst()){
-                        //Ya existe
-                        return true;
-                    }
-
-                default:
-                return false;
+            case 34:
+                //Verificar la existencia de TipoUbicacion
+                TipoUbicacion tipoUbicacion = (TipoUbicacion) dato;
+                String[] id_TipoUbicacion = {String.valueOf(tipoUbicacion.getId_TipoUbicacion())};
+                abrir();
+                Cursor cursorP34 = db.query("TipoUbicacion", null, "id_TipoUbicacion=?", id_TipoUbicacion, null, null, null);
+                if (cursorP34.moveToFirst()) {
+                    //Ya existe
+                    return true;
                 }
 
-
+            default:
+                return false;
         }
+
+
+    }
 
     //
     //
@@ -2032,10 +2032,33 @@ public class ControlDB {
         final String[] VECid_TipoPago = {"1", "2"};
         final String[] VECnombrre_TipoPago = {"1", "2"};
 
+        /*
+        Elmer Edenilson Rosales Molina		RM20001
+        Tomás Eduardo Romero Cañas		    RC18087
+        Manuel Alejandro Rico Rodriguez		RR20044
+        Josias Abner Rivas Fuentes		    RF20010
+        David Alejandro Deras Cerros		DC19019
+        */
+
         // DATOS Usuario
-        final String[] VECid_Usuario = {"RM","RR"};
-        final String[] VECnom_Usuario = {"Edenilson","Manuel"};
-        final String[] VECclave = {"12345","12345"};
+        final String[] VECid_Usuario = {"RM","RC","RR","RF","DC"};
+        final String[] VECnom_Usuario = {"Edenilson","Tomas","Manuel","Josias","David"};
+        final String[] VECclave = {"RM20001","RC18087","RR20044","RF20010","DC19019"};
+
+        // DATOS OpcionCRUD
+        final String[] VECid_OpcionCRUD = {"010","020","030","040"};
+        final String[] VECdes_OpcionCRUD = {"Insertar","Eliminar","Consultar","Actualizar"};
+        final String[] VECnum_OpcionCRUD = {"1","2","3","4"};
+
+        // DATOS ACCESOUSUARIO
+        final String[] VECUsuario = {
+                "RM","RM","RM","RM",
+                "RC","RC","RC"
+        };
+        final String[] VECOpcion = {
+                "010","020","030","040",
+                "010","040","030"
+        };
 
 
 
@@ -2045,14 +2068,10 @@ public class ControlDB {
         // ELIMINAR REGISTROS
         db.execSQL("DELETE FROM TipoProducto");
         db.execSQL("DELETE FROM ComboProducto");
-
         db.execSQL("DELETE FROM PrecioProducto");
         db.execSQL("DELETE FROM ListaPrecio");
         db.execSQL("DELETE FROM Combo");
         db.execSQL("DELETE FROM Producto");
-
-
-        ///
         db.execSQL("DELETE FROM TipoUbicacion");
         db.execSQL("DELETE FROM Facultad");
         db.execSQL("DELETE FROM EncargadoLocal");
@@ -2060,9 +2079,8 @@ public class ControlDB {
         db.execSQL("DELETE FROM Local");
         db.execSQL("DELETE FROM TipoPago");
         db.execSQL("DELETE FROM Usuario");
-
-
-
+        db.execSQL("DELETE FROM OpcionCrud");
+        db.execSQL("DELETE FROM AccesoUsuario");
 
 
         // LLENAR TABLA COMBO
@@ -2113,12 +2131,31 @@ public class ControlDB {
        
         }
         // LLENAR TABLA USUARIO
-        for (int i = 0; i < 1; i++){
+        for (int i = 0; i < 5; i++){
             ContentValues UsuarioValues = new ContentValues();
             UsuarioValues.put("idUsuario", VECid_Usuario[i]);
             UsuarioValues.put("nomUsuario", VECnom_Usuario[i]);
             UsuarioValues.put("clave", VECclave[i]);
             db.insert("Usuario", null,UsuarioValues);
+        }
+
+        // LLENAR TABLA OPCIONCRUD
+        for (int i = 0; i < 3; i++)
+        {
+            ContentValues OpcionValues = new ContentValues();
+            OpcionValues.put("idOpcionCrud", VECid_OpcionCRUD[i]);
+            OpcionValues.put("desOpcion", VECdes_OpcionCRUD[i]);
+            OpcionValues.put("numCrud", Integer.parseInt(VECnum_OpcionCRUD[i]));
+            db.insert("OpcionCrud", null,OpcionValues);
+        }
+
+        // LLENAR TABLA ACCESOUSUARIO
+        for (int i = 0; i < 7;i++)
+        {
+            ContentValues AccesoValues = new ContentValues();
+            AccesoValues.put("idUsuario", VECUsuario[i]);
+            AccesoValues.put("idOpcionCrud", VECOpcion[i]);
+            db.insert("AccesoUsuario", null,AccesoValues);
         }
 
 
@@ -2128,8 +2165,7 @@ public class ControlDB {
     }
 
     // Validar Usuario y Contraseña
-    public boolean iniciarSesion(String usuario, String clave)
-    {
+    public boolean iniciarSesion(String usuario, String clave) {
         String[] login = {usuario,clave};
         Cursor cursor = db.query("Usuario",null, "nomUsuario = ? AND clave = ?",login, null, null, null);
 
@@ -2143,4 +2179,40 @@ public class ControlDB {
         }
     }
 
+    public boolean validarEntrada(String username, String opcion) {
+        String idUsuario = "";
+        abrir();
+        Cursor cursor1 = db.query("Usuario", null, "nomUsuario = ?", new String[]{username}, null, null, null);
+        cursor1.moveToFirst();
+        idUsuario = cursor1.getString(0);
+        Cursor cursor2 = db.query("AccesoUsuario", null, "idUsuario = ? AND idOpcionCrud = ?", new String[]{idUsuario,opcion}, null, null, null);
+
+        if(cursor2.moveToFirst())
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public boolean verTablas(String username) {
+        String idUsuario = "";
+        abrir();
+        Cursor cursor1 = db.query("Usuario", null, "nomUsuario = ?", new String[]{username}, null, null, null);
+        cursor1.moveToFirst();
+        idUsuario = cursor1.getString(0);
+        Cursor cursor2 = db.query("AccesoUsuario", null, "idUsuario = ?", new String[]{idUsuario}, null, null, null);
+
+        if(cursor2.moveToFirst())
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+
+    }
 }

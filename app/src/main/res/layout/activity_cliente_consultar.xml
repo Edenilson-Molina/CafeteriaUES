@@ -81,7 +81,12 @@
                 android:id="@+id/textInputNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -102,7 +107,12 @@
                 android:id="@+id/textInputApellido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -123,7 +133,12 @@
                 android:id="@+id/textInputFechaNacimiento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -143,7 +158,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtidubicacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 

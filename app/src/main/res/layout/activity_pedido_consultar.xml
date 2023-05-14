@@ -79,7 +79,12 @@
                 android:id="@+id/txtIdCliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -100,7 +105,12 @@
                 android:id="@+id/txtIdTipoPago"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -121,7 +131,12 @@
                 android:id="@+id/txtIdLocal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -142,7 +157,12 @@
                 android:id="@+id/txtIdEventoEspecial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -163,7 +183,11 @@
                 android:id="@+id/txtIdTipoPedido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -184,7 +208,11 @@
                 android:id="@+id/txtEstadoPedido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -205,7 +233,12 @@
                 android:id="@+id/txtMontoPedido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                android:enabled ="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:longClickable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 

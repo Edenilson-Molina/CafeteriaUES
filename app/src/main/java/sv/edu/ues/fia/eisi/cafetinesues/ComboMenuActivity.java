@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -16,7 +17,9 @@ public class ComboMenuActivity extends ListActivity {
 
     String[] menu={"Insertar Registro","Eliminar Registro","Consultar Registro", "Actualizar Registro"};
     String[] activities={"ComboInsertarActivity","ComboEliminarActivity","ComboConsultarActivity", "ComboActualizarActivity"};
-
+    final String[] OpcionCRUD = {"010","020","030","040"};
+    String username;
+    ControlDB helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,10 @@ public class ComboMenuActivity extends ListActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menu);
         setListAdapter(adapter);
+        helper = new ControlDB(this);
+        Bundle recepcionDatos = getIntent().getExtras();
+        username = recepcionDatos.getString("Username");
+
     }
 
     @Override
@@ -36,13 +43,18 @@ public class ComboMenuActivity extends ListActivity {
         String nombreValue=activities[position];
 
         l.getChildAt(position).setBackgroundColor(Color.rgb(255, 128, 0));
-
-        try{
-            Class<?> clase=Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
-            Intent inte = new Intent(this,clase);
-            this.startActivity(inte);
-        }catch(ClassNotFoundException e){
-            e.printStackTrace();
+        String acceso = OpcionCRUD[position];
+        if(helper.validarEntrada(username,acceso))
+        {
+            try{
+                Class<?> clase = Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
+                Intent inte = new Intent(this,clase);
+                this.startActivity(inte);
+            }catch(ClassNotFoundException e){
+                e.printStackTrace();
+            }
+        }else {
+            Toast.makeText(this, "No tiene acceso", Toast.LENGTH_SHORT).show();
         }
     }
 }

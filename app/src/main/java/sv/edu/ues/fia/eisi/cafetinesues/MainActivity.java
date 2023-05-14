@@ -16,27 +16,33 @@ public class MainActivity extends ListActivity {
     // AGREGAR DEMAS MENUS, Y SU CORRESPONDIENTE ACTIVITY, EN CADA STRING
 
     String[] menu = {
-            "Tabla Combo", "Tabla ComboProducto","Tabla DetallePedido",
-            "Tabla TipoProducto","Tabla Producto","Tabla Empleado",
-            "Tabla EncargadoLocal","Tabla PrecioProducto","Tabla TipoPago",
-            "Tabla Local","Tabla Facultad","Tabla Cliente","Tabla Pedido",
-            "Tabla TipoUbicacion","Tabla Ubicacion","Llenar BD"
+            "Tabla Facultad", "Tabla TipoUbicacion","Tabla Ubicacion",
+            "Tabla EncargadoLocal","Tabla Local","Tabla Empleado",
+            "Tabla Cliente","Tabla TipoPago","Tabla Pedido",
+            "Tabla DetallePedido","Tabla Combo","Tabla ComboProducto",
+            "Tabla TipoProducto","Tabla Producto","Tabla PrecioProducto",
+            "Llenar BD"
     };
+
     String[] activities = {
-            "ComboMenuActivity", "ComboProductoMenuActivity","DetallePedidoMenuActivity",
-            "TipoProductoMainActivity","ProductoMainActivity","EmpleadoMainActivity",
-            "EncargadoLocalMainActivity","PrecioProductoMainActivity","TipoPagoMenuActivity",
-            "LocalMainActivity","FacultadMenuActivity","ClienteMenuActivity","PedidoMenuActivity",
-            "TipoUbicacionMenuActivity","UbicacionMenuActivity"
+            "FacultadMenuActivity", "TipoUbicacionMenuActivity","UbicacionMenuActivity",
+            "EncargadoLocalMainActivity","LocalMainActivity","EmpleadoMainActivity",
+            "ClienteMenuActivity","TipoPagoMenuActivity","PedidoMenuActivity",
+            "DetallePedidoMenuActivity","ComboMenuActivity","ComboProductoMenuActivity",
+            "TipoProductoMainActivity","ProductoMainActivity","PrecioProductoMainActivity"
     };
            
     ControlDB DBhelper;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menu));
         DBhelper=new ControlDB(this);
+        Bundle recepcionDatos = getIntent().getExtras();
+        username = recepcionDatos.getString("Username");
+        Toast.makeText(this, "Bienvenido " + username, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -45,14 +51,23 @@ public class MainActivity extends ListActivity {
 
 
         if(position!=15){
-            String nombreValue = activities[position];
 
-            try{
-                Class<?> clase=Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
-                Intent inte = new Intent(this,clase);
-                this.startActivity(inte);
-            }catch(ClassNotFoundException e){
-                e.printStackTrace();
+            String nombreValue = activities[position];
+            if(DBhelper.verTablas(username))
+            {
+
+                try{
+                    Bundle envioDatos = new Bundle();
+                    envioDatos.putString("Username",username);
+                    Class<?> clase=Class.forName("sv.edu.ues.fia.eisi.cafetinesues."+nombreValue);
+                    Intent inte = new Intent(this,clase);
+                    inte.putExtras(envioDatos);
+                    this.startActivity(inte);
+                }catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                }
+            }else {
+                Toast.makeText(this, "Acceso denegado", Toast.LENGTH_SHORT).show();
             }
 
         }else{
