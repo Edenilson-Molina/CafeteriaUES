@@ -71,14 +71,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="insertarFacultad"
-                android:text="Insertar"
+                android:text="@string/insertar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="limpiarTexto"
                 android:textStyle="bold"
-                android:text="Limpiar" />
+                android:text="@string/limpiar" />
         </TableRow>
     </LinearLayout>
 

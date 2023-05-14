@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CafetinesUES</string>
+    <!-- Botones genericos -->
+    <string name="insertar">Insert</string>
+    <string name="actualizar">Update</string>
+    <string name="consultar">Check</string>
+    <string name="eliminar">Delete</string>
+    <string name="limpiar">Clear</string>
+    <string name="resultado">Result</string>
+
+    <!-- Tabla Combo -->
+    <string name="texto_combo">COMBO</string>
+    <string name="id_combo">ID Combo</string>
+    <string name="precio_combo">Price combo</string>
+
+    <!-- Tabla ComboProducto -->
+    <string name="texto_combo_producto">COMBO-PRODUCT</string>
+    <string name="id_combo_producto">ID ComboProduct</string>
+
+    <!-- Tabla DetallePedido -->
+    <string name="texto_detalle_pedido">ORDER-DETAIL</string>
+    <string name="id_detalle_pedido">ID OrderDetail</string>
+    <string name="cantidad_detalle_pedido">Quantity of Product/Combo</string>
+    <string name="subtotal_detalle_pedido">Subtotal</string>
+    <string name="id_ProductoOrCombo">ID product or Combo</string>
+
+    <!-- Tabla Pedido -->
+    <string name="texto_pedido">ORDER</string>
+    <string name="id_pedido">ID Order</string>
+
+    <!-- Tabla Producto -->
+    <string name="texto_Producto">PRODUCT</string>
+    <string name="id_Producto">ID product</string>
+    <!--<string name="id_TipoProducto"></string>-->
+    <string name="nombre_Producto">Name product</string>
+    <string name="estado_Producto">Status product</string>
+    <string name="precioactual_Producto">Current price</string>
+
+    <!-- Tabla Empleado -->
+    <string name="texto_Empleado">EMPLOYEE</string>
+    <string name="id_Empleado">ID employee</string>
+    <string name="nombre_Empleado">Name employee</string>
+    <string name="tipo_Empleado">Type employee</string>
+    <string name="id_Local">ID store</string>
+
+    <!-- Tabla TipoProducto -->
+    <string name="texto_TipoProducto">TYPE PRODUCT</string>
+    <string name="id_TipoProducto">ID Type Product</string>
+    <string name="nombre_TipoProducto">Type product</string>
+
+    <!-- Tabla PrecioProducto -->
+    <string name="texto_PrecioProducto">PRICE PRODUCT</string>
+    <string name="id_PrecioProducto">ID price Product</string>
+    <string name="id_ListaPrecio">ID price list</string>
+    <!--<string name="id_Producto">ID del Producto</string>-->
+    <string name="precio">Price</string>
+
+    <!-- Tabla Cliente -->
+    <string name="texto_cliente">CUSTOMER</string>
+    <string name="texto_id_cliente">Id Customer</string>
+    <string name="texto_nombre">Names</string>
+    <string name="texto_apellido">Surnames</string>
+    <string name="texto_fecha_nacimiento">Date of birth</string>
+    <string name="texto_ubicacion">ID location</string>
+
+    <!-- Tabla TipoPago -->
+    <string name="texto_TipoPago">PAYMENT TYPE</string>
+    <string name="texto_id_tipoPago">Id payment type</string>
+    <string name="texto_nombreTipoPago">Payment type</string>
+
+    <!-- Tabla Facultad -->
+    <string name="texto_Facultad">FACULTY</string>
+    <string name="id_Facultad">ID faculty</string>
+    <string name="nombre_Facultad">Name faculty</string>
+
+    <!-- Tabla Encargado Local -->
+    <string name="texto_EncargadoLocal">STORE MANAGER</string>
+    <string name="id_EncargadoLocal">ID manager</string>
+    <string name="nombre_EncargadoLocal">Name store manager</string>
+
+    <!-- Tabla Encargado Local -->
+    <string name="texto_Local">STORE</string>
+    <string name="id_Ubicacion">ID location</string>
+    <string name="nombre_Local">Name Store</string>
+
+    <!-- Tabla Pedido -->
+    <string name="texto_id_pedido">Id order</string>
+    <string name="id_evento_especial">Id special event</string>
+    <string name="texto_tipo_pedido">Order type</string>
+    <string name="texto_tipoPedido">Order type</string>
+    <string name="texto_estado_pedido">Order status</string>
+    <string name="texto_monto_Pedido">Order amount</string>
+
+    <!-- Tabla Usuario -->
+    <string name="texto_Usuario">CAFETINES UES</string>
+    <string name="id_Usuario">Username</string>
+    <string name="clave_Usuario">Password</string>
+    <string name="iniciarSesion">Login</string>
+
+    <!-- Tabla Ubicacion -->
+    <string name="texto_Ubicacion">LOCATION</string>
+    <!--<string name="id_Ubicacion">ID de la Ubicacion</string>-->
+    <string name="nombre_Ubicacion">Location name</string>
+    <string name="descripcion_Ubicacion">Description</string>
+
+    <!-- Tabla TipoUbicacion -->
+    <string name="texto_TipoUbicacion">LOCATION TYPE</string>
+    <string name="id_TipoUbicacion">ID type location</string>
+    <string name="nombre_TipoUbicacion">Type location</string>
+
+</resources>

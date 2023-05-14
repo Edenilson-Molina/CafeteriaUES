@@ -107,7 +107,7 @@
     <!-- Tabla TipoUbicacion -->
     <string name="texto_TipoUbicacion">TIPO UBICACION</string>
     <string name="id_TipoUbicacion">ID del Tipo Ubicacion</string>
-    <string name="nombre_TipoUbicacion">Nombre del Tipo Ubicacion</string>
+    <string name="nombre_TipoUbicacion">Tipo Ubicacion</string>
 
 
 </resources>
