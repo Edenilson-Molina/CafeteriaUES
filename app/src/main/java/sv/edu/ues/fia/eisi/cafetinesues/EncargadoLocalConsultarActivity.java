@@ -22,7 +22,7 @@ public class EncargadoLocalConsultarActivity extends Activity {
 
     }
 
-    public void ConsultarEncargadoLocal (View v){
+    public void consultarEncargadoLocal (View v){
         EncargadoLocal encargadoLocalConsulta = new EncargadoLocal();
         encargadoLocalConsulta.setId_EncargadoLocal(Integer.parseInt(codigo_EncargadoLocal.getText().toString()));
         helper.cerrar();

@@ -2111,6 +2111,7 @@ public class ControlDB {
 
 
 
+
         // ABRIR BD
         abrir();
 
