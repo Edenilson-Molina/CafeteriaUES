@@ -61,9 +61,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/clave_Usuario"
-                android:inputType="text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:inputType="textPassword">
 
             </com.google.android.material.textfield.TextInputEditText>
 

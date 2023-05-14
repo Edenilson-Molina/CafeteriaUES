@@ -2060,7 +2060,7 @@ public class ControlDB {
         // DATOS Usuario
         final String[] VECid_Usuario = {"RM","RC","RR","RF","DC"};
         final String[] VECnom_Usuario = {"Edenilson","Tomas","Manuel","Josias","David"};
-        final String[] VECclave = {"RM20001","RC18087","RR20044","RF20010","DC19019"};
+        final String[] VECclave = {"admin","user","RR20044","RF20010","DC19019"};
 
         // DATOS Envio
         final String[] VECid_Envio = {"1","2"};
