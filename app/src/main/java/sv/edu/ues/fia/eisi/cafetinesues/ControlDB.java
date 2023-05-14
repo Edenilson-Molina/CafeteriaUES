@@ -484,8 +484,12 @@ public class ControlDB {
             // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
             if(detallePedido.getId_Combo() == 0) {
                 cv.put("id_Producto", detallePedido.getId_Producto());
+                // EL OTRO SE INSERTA COMO NULL
+                cv.putNull("id_Combo");
             } else {
                 cv.put("id_Combo", detallePedido.getId_Combo());
+                // EL OTRO SE INSERTA COMO NULL
+                cv.putNull("id_Producto");
             }
 
             cv.put("cantidad_Producto", detallePedido.getCantidad_Producto());
@@ -2009,8 +2013,8 @@ public class ControlDB {
 
         // DATOS PARA LISTA_PRECIO
         final String[] VECListaPrecio = {"1","2","3","4","5"};
-        final String[] VECDesde = {"06-05-2023","07-05-2023","08-05-2023","09-05-2023","10-05-2023"};
-        final String[] VECHasta = {"07-05-2023","08-05-2023","09-05-2023","10-05-2023","11-05-2023"};
+        final String[] VECDesde = {"06/05/2023","07/05/2023","08/05/2023","09/05/2023","10/05/2023"};
+        final String[] VECHasta = {"06/05/2023","07/05/2023","08/05/2023","09/05/2023","10/05/2023"};
 
 
         // DATOS TIPO_UBICACION
@@ -2061,7 +2065,7 @@ public class ControlDB {
         // DATOS Envio
         final String[] VECid_Envio = {"1","2"};
         final String[] VECid_EmpleadoEnvio = {"1","2"};
-        final String[] VECfecha_Envio = {"06-05-2023","07-05-2023"};
+        final String[] VECfecha_Envio = {"06/05/2023","07/05/2023"};
         // DATOS OpcionCRUD
         final String[] VECid_OpcionCRUD = {"010","020","030","040"};
         final String[] VECdes_OpcionCRUD = {"Insertar","Eliminar","Consultar","Actualizar"};
@@ -2072,7 +2076,7 @@ public class ControlDB {
         final String[] VECid_UbicacionCliente = {"1","2"};
         final String[] VECnombres_Cliente = {"Cliente1","Cliente2"};
         final String[] VECapellidos_Cliente = {"Cliente1","Cliente2"};
-        final String[] VECfecha_nacimiento = {"06-05-2023","07-05-2023"};
+        final String[] VECfecha_nacimiento = {"06/05/2023","07/05/2023"};
 
 
         //DATOS TipoPago
@@ -2082,7 +2086,7 @@ public class ControlDB {
         // DATOS EVENTO ESPECIAL
         final String[] VECid_EventoEspecial = {"1","2"};
         final String[] VECnombre_EventoEspecial = {"Evento1","Evento2"};
-        final String[] VECfecha_EventoEspecial = {"06-05-2023","07-05-2023"};
+        final String[] VECfecha_EventoEspecial = {"06/05/2023","07/05/2023"};
         final String[] VECmonto_minimo = {"100", "200"};
         final String[] VECmonto_maximo = {"1000", "2000"};
 

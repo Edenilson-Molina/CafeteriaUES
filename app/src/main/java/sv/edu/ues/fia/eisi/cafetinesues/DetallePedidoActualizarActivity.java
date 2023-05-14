@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -114,6 +115,7 @@ public class DetallePedidoActualizarActivity extends AppCompatActivity {
         // EXTRAS
         String id_ProdOrCom = ID_ProdOrCombo.getText().toString();
         boolean isCombo = radio_seleccion.getCheckedRadioButtonId() == R.id.radio_combo;
+        Log.i("isCombo", String.valueOf(isCombo));
 
         String cantidadProducto = EditCantidad_Producto.getText().toString();
         String subtotal = EditSubtotal.getText().toString();

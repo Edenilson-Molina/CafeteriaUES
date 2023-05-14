@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -22,7 +23,8 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
 
     // EXTRAS
     EditText ID_ProdOrCombo;
-    RadioGroup radio_seleccion;
+    RadioButton radio_combo;
+    RadioButton radio_producto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,8 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
 
         // EXTRAS
         ID_ProdOrCombo = (EditText) findViewById(R.id.id_ProductoOrCombo);
-        radio_seleccion = (RadioGroup) findViewById(R.id.radio_group);
+        radio_combo = (RadioButton) findViewById(R.id.radio_combo);
+        radio_producto = (RadioButton) findViewById(R.id.radio_producto);
 
         EditCantidad_Producto = (EditText) findViewById(R.id.cantidad_Producto);
         EditSubtotal = (EditText) findViewById(R.id.subtotal);
@@ -57,10 +60,10 @@ public class DetallePedidoConsultarActivity extends AppCompatActivity {
 
             if(detallePedido.getId_Combo() != 0){
                 ID_ProdOrCombo.setText(String.valueOf(detallePedido.getId_Combo()));
-                radio_seleccion.check(R.id.radio_combo);
+                radio_combo.setChecked(true);
             }else{
                 ID_ProdOrCombo.setText(String.valueOf(detallePedido.getId_Producto()));
-                radio_seleccion.check(R.id.radio_producto);
+                radio_producto.setChecked(true);
             }
 
             EditCantidad_Producto.setText(String.valueOf(detallePedido.getCantidad_Producto()));
