@@ -224,9 +224,9 @@ public class ControlDB {
                         "BEFORE DELETE ON COMBO " +
                         "FOR EACH ROW " +
                         "BEGIN " +
-                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen ComboProducto asociados') " +
-                        "FROM COMBOPRODUCTO " +
-                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                            "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen ComboProducto asociados') " +
+                            "FROM COMBOPRODUCTO " +
+                            "WHERE ID_COMBO = OLD.ID_COMBO; " +
                         "END;");
 
                 // PARA EVITAR ELIMINAR UN COMBO SI TIENE DETALLEPEDIDOS ASOCIADOS
@@ -234,23 +234,50 @@ public class ControlDB {
                         "BEFORE DELETE ON COMBO " +
                         "FOR EACH ROW " +
                         "BEGIN " +
-                        "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen DetallePedido asociados') " +
-                        "FROM DETALLEPEDIDO " +
-                        "WHERE ID_COMBO = OLD.ID_COMBO; " +
+                            "SELECT RAISE(ABORT, 'No se puede eliminar este Combo porque existen DetallePedido asociados') " +
+                            "FROM DETALLEPEDIDO " +
+                            "WHERE ID_COMBO = OLD.ID_COMBO; " +
                         "END;");
 
                 // ACTUALIZAR EL PRECIO DEL COMBO LUEGO DE INSERTAR UN NUEVO COMBO_PRODUCTO
                 db.execSQL("CREATE TRIGGER actualizar_precio_combo_insert " +
                         "AFTER INSERT ON COMBOPRODUCTO " +
                         "BEGIN " +
-                        "UPDATE COMBO " +
-                        "SET PRECIO_COMBO = ( " +
-                        "SELECT SUM(PRODUCTO.PRECIOACTUAL_PRODUCTO) " +
-                        "FROM COMBOPRODUCTO " +
-                        "JOIN PRODUCTO ON COMBOPRODUCTO.ID_PRODUCTO = PRODUCTO.ID_PRODUCTO " +
-                        "WHERE COMBOPRODUCTO.ID_COMBO = COMBO.ID_COMBO) " +
-                        "WHERE COMBO.ID_COMBO = NEW.ID_COMBO; " +
+                            "UPDATE COMBO " +
+                            "SET PRECIO_COMBO = ( " +
+                                "SELECT SUM(PRODUCTO.PRECIOACTUAL_PRODUCTO) " +
+                                "FROM COMBOPRODUCTO " +
+                                "JOIN PRODUCTO ON COMBOPRODUCTO.ID_PRODUCTO = PRODUCTO.ID_PRODUCTO " +
+                                "WHERE COMBOPRODUCTO.ID_COMBO = COMBO.ID_COMBO) " +
+                            "WHERE COMBO.ID_COMBO = NEW.ID_COMBO; " +
                         "END;");
+
+                //  Setear el Subtotal correcto del DetallePedido, despues de que se inserte
+                //  ese nuevo registro en DetallePedido
+                db.execSQL("CREATE TRIGGER actualizar_precio_detalle_pedido AFTER INSERT ON DETALLEPEDIDO " +
+                        "BEGIN " +
+                        "  UPDATE DETALLEPEDIDO " +
+                        "  SET SUBTOTAL = " +
+                        "    CASE " +
+                        "      WHEN ID_PRODUCTO IS NOT NULL THEN " +
+                        "        (SELECT PRECIOACTUAL_PRODUCTO * NEW.CANTIDAD_PRODUCTO FROM PRODUCTO WHERE ID_PRODUCTO = NEW.ID_PRODUCTO) " +
+                        "      WHEN id_Combo IS NOT NULL THEN " +
+                        "        (SELECT PRECIO_COMBO * NEW.CANTIDAD_PRODUCTO FROM COMBO WHERE ID_COMBO = NEW.ID_COMBO) " +
+                        "    END " +
+                        "  WHERE DETALLEPEDIDO.ID_DETALLEPEDIDO = NEW.ID_DETALLEPEDIDO; " +
+                        "END; ");
+
+                // ACTUALIZAR EL MONTO TOTAL DEL PEDIDO LUEGO DE INSERTAR UN NUEVO DETALLEPEDIDO
+                db.execSQL("CREATE TRIGGER actualizar_montopedido_pedido_insert " +
+                        "AFTER INSERT ON DETALLEPEDIDO " +
+                        "BEGIN " +
+                        "  UPDATE PEDIDO " +
+                        "  SET MONTO_PEDIDO = " +
+                        "    (SELECT SUM(SUBTOTAL) FROM DETALLEPEDIDO " +
+                        "    WHERE DETALLEPEDIDO.ID_PEDIDO = PEDIDO.ID_PEDIDO) " +
+                        "  WHERE PEDIDO.ID_PEDIDO = NEW.ID_PEDIDO; " +
+                        "END; ");
+
                 //
                 //
                 // TABLAS PARA CONTROL DE USUARIOS
