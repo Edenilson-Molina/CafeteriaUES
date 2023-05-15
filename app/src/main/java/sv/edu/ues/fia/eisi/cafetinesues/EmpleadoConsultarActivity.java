@@ -33,7 +33,7 @@ public class EmpleadoConsultarActivity extends Activity {
         if(empleado == null){
             Toast.makeText(this, "Empleado no registrado", Toast.LENGTH_SHORT).show();
         }else{
-            codigo_Empleado.setText(String.valueOf(empleado.getId_Local()));
+            codigo_Local.setText(String.valueOf(empleado.getId_Local()));
             nombre_Empleado.setText(String.valueOf(empleado.getNombre_Empleado()));
             tipo_Empleado.setText(String.valueOf(empleado.getTipo_Empleado()));
         }

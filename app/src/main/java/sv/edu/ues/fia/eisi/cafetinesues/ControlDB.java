@@ -1002,10 +1002,10 @@ public class ControlDB {
         long contador = 0;
         Local local = new Local();
         local.setId_Local(empleado.getId_Local());
-        boolean existenciaLocal = verificarIntegridad(local, 42);
+
         boolean existenciaEmpleado = verificarIntegridad(empleado,41);
         //verificar si existe el registro al insertar
-        if(!(existenciaEmpleado)&&(existenciaLocal)){
+        if(!(existenciaEmpleado)){
             ContentValues empleadoValues = new ContentValues();
             empleadoValues.put(Campos_Empleado[0], empleado.getId_Empleado());
             empleadoValues.put(Campos_Empleado[1], empleado.getId_Local());
@@ -1060,11 +1060,11 @@ public class ControlDB {
     public String Eliminar (Empleado empleado){
         String resultado = "";
         int contador = 0;
-        if (verificarIntegridad(empleado, 41)&& !(verificarIntegridad(empleado,42))){
+        if (verificarIntegridad(empleado, 41)){
 
             contador+= db.delete("Empleado", "id_Empleado='"+empleado.getId_Empleado()+"'",null);
             resultado = "Filas afectadas N° = "+contador;
-        }else{
+        }else if(!verificarIntegridad(empleado,41)){
             resultado = "No existe o\nEsta asociado";
         }
         return resultado;
@@ -1878,17 +1878,7 @@ public class ControlDB {
                     return true;
                 }
                 return false;
-            case 42:
-                //verificar la integridad de existencia d eempleado en relaciones
-                Empleado empleado1 = (Empleado) dato;
-                String[] id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
-                abrir();
-                Cursor cursorE1 = db.query("Empleado", null, "id_Empleado=?", id_Empleado1, null, null, null);
-                Cursor cursorL1 = db.query("Local", null, "id_Empleado=?", id_Empleado1, null, null, null);
-                if (cursorE1.moveToFirst() && cursorL1.moveToFirst()) {
-                    return true;
-                }
-                return false;
+
             //
             //
             // INTEGRIDAD PARA ENCARGADOLOCAL
