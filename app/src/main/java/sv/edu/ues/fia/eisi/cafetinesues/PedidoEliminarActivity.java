@@ -19,7 +19,7 @@ public class PedidoEliminarActivity extends AppCompatActivity {
         helper = new ControlDB(this);
         id_Pedido = (EditText) findViewById(R.id.txtIdPedido);
     }
-    public void eliminarCliente(View v)
+    public void eliminarPedido(View v)
     {
         Pedido pedido = new Pedido();
         try{

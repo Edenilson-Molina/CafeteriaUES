@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 public class PedidoMenuActivity extends ListActivity {
 
-    String[] menu = {"Insertar Local", "Eliminar Local",
-            "Consultar Local", "Actualizar Local"};
+    String[] menu = {"Insertar Registro", "Eliminar Registro",
+            "Consultar Registro", "Actualizar Registro"};
     String[] activities = {"PedidoInsertarActivity", "PedidoEliminarActivity",
             "PedidoConsultarActivity", "PedidoActualizarActivity"};
     final String[] OpcionCRUD = {"010","020","030","040"};

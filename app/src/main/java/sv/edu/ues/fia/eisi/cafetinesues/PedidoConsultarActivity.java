@@ -47,11 +47,11 @@ public class PedidoConsultarActivity extends AppCompatActivity {
                     id_Pedido.getText().toString() +
                     " no encontrado", Toast.LENGTH_LONG).show();
         else{
-            id_cliente.setText(pedi.getId_cliente());
-            id_tipoPago.setText(pedi.getId_tipoPago());
-            id_local.setText(pedi.getId_local());
-            id_eventoEspecial.setText(pedi.getId_eventoEspecial());
-            tipo_Pedido.setText(pedi.getId_Pedido());
+            id_cliente.setText(String.valueOf(pedi.getId_cliente()));
+            id_tipoPago.setText(String.valueOf(pedi.getId_tipoPago()));
+            id_local.setText(String.valueOf(pedi.getId_local()));
+            id_eventoEspecial.setText(String.valueOf(pedi.getId_eventoEspecial()));
+            tipo_Pedido.setText(pedi.getTipo_Pedido());
             estado_Pedido.setText(pedi.getEstado_Pedido());
             monto_Pedido.setText(String.valueOf(pedi.getMonto_Pedido()));
         }

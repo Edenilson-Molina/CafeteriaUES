@@ -37,7 +37,7 @@ public class ControlDB {
 
     private static final String[] Campos_Local = new String[]{"id_Local","id_Ubicacion", "id_EncargadoLocal", "nombre_Local"};
 
-    private static final String[] Campos_Pedido = new String[]{"id_Pedido","id_Cliente","id_TipoPago","id_Local","id_EventoEspecial","tipo_Pedido","estado_Pedido"};
+    private static final String[] Campos_Pedido = new String[]{"id_Pedido","id_Cliente","id_TipoPago","id_Local","id_EventoEspecial","tipo_Pedido","estado_Pedido","monto_Pedido"};
     
     private static final String[] campos_Ubicacion = new String[] {"id_Ubicacion", "nombre_Ubicacion","descripcion_Ubicacion", "id_Facultad", "id_TipoUbicacion"};
 
@@ -1389,7 +1389,7 @@ public class ControlDB {
         // Verificar que exista el registro a consultar de Pedido
         if (verificarIntegridad(pedido, 22)) {
             Cursor cursor = db.query("Pedido",Campos_Pedido, "id_Pedido = ?",
-                    new String[]{String.valueOf(pedido.getId_cliente())}, null, null, null);
+                    new String[]{String.valueOf(pedido.getId_Pedido())}, null, null, null);
             if (cursor.moveToFirst()) {
                 Pedido pedidoConsulta = new Pedido();
                 pedidoConsulta.setId_Pedido(cursor.getInt(0));
@@ -1398,8 +1398,8 @@ public class ControlDB {
                 pedidoConsulta.setId_local(cursor.getInt(3));
                 pedidoConsulta.setId_eventoEspecial(cursor.getInt(4));
                 pedidoConsulta.setTipo_Pedido(cursor.getString(5));
-                pedidoConsulta.setEstado_Pedido(cursor.getString(7));
-                pedidoConsulta.setMonto_Pedido(cursor.getFloat(6));
+                pedidoConsulta.setEstado_Pedido(cursor.getString(6));
+                pedidoConsulta.setMonto_Pedido(cursor.getFloat(7));
 
 
                 return  pedidoConsulta;
