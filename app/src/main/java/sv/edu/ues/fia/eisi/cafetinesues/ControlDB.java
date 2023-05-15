@@ -252,21 +252,6 @@ public class ControlDB {
                             "WHERE COMBO.ID_COMBO = NEW.ID_COMBO; " +
                         "END;");
 
-                //  Setear el Subtotal correcto del DetallePedido, despues de que se inserte
-                //  ese nuevo registro en DetallePedido
-                db.execSQL("CREATE TRIGGER actualizar_precio_detalle_pedido AFTER INSERT ON DETALLEPEDIDO " +
-                        "BEGIN " +
-                        "  UPDATE DETALLEPEDIDO " +
-                        "  SET SUBTOTAL = " +
-                        "    CASE " +
-                        "      WHEN ID_PRODUCTO IS NOT NULL THEN " +
-                        "        (SELECT PRECIOACTUAL_PRODUCTO * NEW.CANTIDAD_PRODUCTO FROM PRODUCTO WHERE ID_PRODUCTO = NEW.ID_PRODUCTO) " +
-                        "      WHEN id_Combo IS NOT NULL THEN " +
-                        "        (SELECT PRECIO_COMBO * NEW.CANTIDAD_PRODUCTO FROM COMBO WHERE ID_COMBO = NEW.ID_COMBO) " +
-                        "    END " +
-                        "  WHERE DETALLEPEDIDO.ID_DETALLEPEDIDO = NEW.ID_DETALLEPEDIDO; " +
-                        "END; ");
-
                 // ACTUALIZAR EL MONTO TOTAL DEL PEDIDO LUEGO DE INSERTAR UN NUEVO DETALLEPEDIDO
                 db.execSQL("CREATE TRIGGER actualizar_montopedido_pedido_insert " +
                         "AFTER INSERT ON DETALLEPEDIDO " +
@@ -484,15 +469,29 @@ public class ControlDB {
             detallePedidoValues.put("id_DetallePedido", detallePedido.getId_DetallePedido());
             detallePedidoValues.put("id_Pedido", detallePedido.getId_Pedido());
 
+            String[] deta_pedi_prod = {String.valueOf(detallePedido.getId_Producto())};
+            String[] deta_pedi_com = {String.valueOf(detallePedido.getId_Combo())};
+            Cursor cursor = null;
+            int precio_prod_or_combo = 0;
+            int subtot = 0;
             // EL CAMPO QUE VENGA COMO "0", NO SERA INSERTADO
             if(detallePedido.getId_Combo() == 0) {
                 detallePedidoValues.put("id_Producto", detallePedido.getId_Producto());
+                cursor = db.query("Producto", campos_Producto, "id_Producto = ?", deta_pedi_prod, null, null, null);
+                cursor.moveToFirst();
+                precio_prod_or_combo = cursor.getInt(4);
             } else {
                 detallePedidoValues.put("id_Combo", detallePedido.getId_Combo());
+                cursor = db.query("Combo", campos_Combo, "id_Combo = ?", deta_pedi_com, null, null, null);
+                cursor.moveToFirst();
+                precio_prod_or_combo = cursor.getInt(1);
             }
 
             detallePedidoValues.put("cantidad_Producto", detallePedido.getCantidad_Producto());
-            detallePedidoValues.put("subtotal", detallePedido.getSubtotal());
+
+            subtot = precio_prod_or_combo * detallePedido.getCantidad_Producto();
+            detallePedidoValues.put("subtotal", subtot);
+
             contador = db.insert("DetallePedido", null, detallePedidoValues);
             regInsertados = regInsertados + contador;
         }
