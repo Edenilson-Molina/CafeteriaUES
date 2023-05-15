@@ -1030,11 +1030,9 @@ public class ControlDB {
     public String Actualizar(Empleado empleado){
         String resultado = "";
         long contador = 0;
-        Local local = new Local();
-        local.setId_Local(empleado.getId_Local());
-        boolean existenciaLocal = verificarIntegridad(empleado, 42);
+
         boolean existenciaEmpleado = verificarIntegridad(empleado,41);
-        if((existenciaEmpleado)&&(existenciaLocal)){
+        if((existenciaEmpleado)){
             String[] id = {String.valueOf(empleado.getId_Empleado())};
             ContentValues empleadoUpdate = new ContentValues();
             empleadoUpdate.put(Campos_Empleado[1], empleado.getId_Local());
@@ -1045,13 +1043,13 @@ public class ControlDB {
         }else{
             if(!(existenciaEmpleado)){
                 resultado = "El Empleado no existe";
-                if(!(existenciaLocal)){
+
                     if(resultado.isEmpty()){
                         resultado = "El tipo de producto no existe";
                     }else{
                         resultado += "y\nNo existe el Local";
                     }
-                }
+
             }
         }
         return resultado;
