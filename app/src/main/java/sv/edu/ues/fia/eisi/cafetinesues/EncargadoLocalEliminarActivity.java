@@ -19,12 +19,19 @@ public class EncargadoLocalEliminarActivity extends Activity {
         codigo_EncargadoLocal = (EditText) findViewById(R.id.codigo_EncargadoLocal);
     }
     public void eliminarEncargadoLocal(View v){
-        EncargadoLocal encargadoLocal = new EncargadoLocal();
-        encargadoLocal.setId_EncargadoLocal(Integer.parseInt(codigo_EncargadoLocal.getText().toString()));
-        String registro;
-        helper.abrir();
-        registro = helper.Eliminar(encargadoLocal);
-        helper.cerrar();
-        Toast.makeText(this, registro, Toast.LENGTH_SHORT).show();
+
+        try{
+            EncargadoLocal encargadoLocal = new EncargadoLocal();
+            encargadoLocal.setId_EncargadoLocal(Integer.parseInt(codigo_EncargadoLocal.getText().toString()));
+            String registro;
+            helper.abrir();
+            registro = helper.Eliminar(encargadoLocal);
+            helper.cerrar();
+            Toast.makeText(this, registro, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
     }
 }

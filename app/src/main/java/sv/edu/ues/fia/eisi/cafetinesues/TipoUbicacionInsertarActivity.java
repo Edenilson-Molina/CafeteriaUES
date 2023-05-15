@@ -25,18 +25,25 @@ public class TipoUbicacionInsertarActivity extends Activity {
     }
 
     public void insertarTipoUbicacion(View v){
-        String id_TipoUbicacion = codigo_TipoUbicacion.getText().toString();
-        String nom_TipoUbicacion=nombre_TipoUbicacion.getText().toString();
-        TipoUbicacion tipoUbicacion = new TipoUbicacion();
 
-        tipoUbicacion.setId_TipoUbicacion(Integer.parseInt(id_TipoUbicacion));
-        tipoUbicacion.setNombre_TipoUbicacion(nom_TipoUbicacion);
-        String regInsertados;
+        try{
+            String id_TipoUbicacion = codigo_TipoUbicacion.getText().toString();
+            String nom_TipoUbicacion=nombre_TipoUbicacion.getText().toString();
+            TipoUbicacion tipoUbicacion = new TipoUbicacion();
 
-        helper.abrir();
-        regInsertados=helper.insertar(tipoUbicacion);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+            tipoUbicacion.setId_TipoUbicacion(Integer.parseInt(id_TipoUbicacion));
+            tipoUbicacion.setNombre_TipoUbicacion(nom_TipoUbicacion);
+            String regInsertados;
+
+            helper.abrir();
+            regInsertados=helper.insertar(tipoUbicacion);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

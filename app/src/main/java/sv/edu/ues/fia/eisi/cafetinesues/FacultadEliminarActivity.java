@@ -22,13 +22,20 @@ public class FacultadEliminarActivity extends Activity {
     }
 
     public void eliminarFacultad(View v){
-        Facultad facultad = new Facultad();
-        facultad.setId_Faculdad(Integer.parseInt(id_Facultad.getText().toString()));
-        String registro;
-        helper.abrir();
-        registro = helper.Eliminar(facultad);
-        helper.cerrar();
-        Toast.makeText(this,registro, Toast.LENGTH_SHORT).show();
+
+        try{
+            Facultad facultad = new Facultad();
+            facultad.setId_Faculdad(Integer.parseInt(id_Facultad.getText().toString()));
+            String registro;
+            helper.abrir();
+            registro = helper.Eliminar(facultad);
+            helper.cerrar();
+            Toast.makeText(this,registro, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

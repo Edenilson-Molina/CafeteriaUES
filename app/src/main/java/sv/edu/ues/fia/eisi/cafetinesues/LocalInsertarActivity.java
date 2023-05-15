@@ -26,22 +26,28 @@ public class LocalInsertarActivity extends Activity {
         nombre_Local = (EditText) findViewById(R.id.nombre_Local);
     }
     public void  insertarLocal(View v){
-        String id_Local = codigo_Local.getText().toString();
-        String id_Ubicacion = codigo_Ubicacion.getText().toString();
-        String id_Encargadolocal = codigo_EncargadoLocal.getText().toString();
-        String nom_Local = nombre_Local.getText().toString();
-        String regInsertados;
 
-        Local local = new Local();
-        local.setId_Local(Integer.parseInt(id_Local));
-        local.setId_Ubicacion(Integer.parseInt(id_Ubicacion));
-        local.setId_EncargadoLocal(Integer.parseInt(id_Encargadolocal));
-        local.setNombre_Local(nom_Local);
-        helper.abrir();
-        regInsertados = helper.Insertar(local);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        try{
+            String id_Local = codigo_Local.getText().toString();
+            String id_Ubicacion = codigo_Ubicacion.getText().toString();
+            String id_Encargadolocal = codigo_EncargadoLocal.getText().toString();
+            String nom_Local = nombre_Local.getText().toString();
+            String regInsertados;
 
+            Local local = new Local();
+            local.setId_Local(Integer.parseInt(id_Local));
+            local.setId_Ubicacion(Integer.parseInt(id_Ubicacion));
+            local.setId_EncargadoLocal(Integer.parseInt(id_Encargadolocal));
+            local.setNombre_Local(nom_Local);
+            helper.abrir();
+            regInsertados = helper.Insertar(local);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
     }
     public void limpiarTexto(View v){
         codigo_Local.setText("");

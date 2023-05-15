@@ -24,13 +24,20 @@ public class TipoUbicacionEliminarActivity extends Activity {
     }
 
     public void eliminarTipoUbicacion(View v){
-        TipoUbicacion tipoUbicacion = new TipoUbicacion();
-        tipoUbicacion.setId_TipoUbicacion(Integer.parseInt(id_TipoUbicacion.getText().toString()));
-        String registro;
-        helper.abrir();
-        registro = helper.eliminar(tipoUbicacion);
-        helper.cerrar();
-        Toast.makeText(this,registro,Toast.LENGTH_SHORT).show();
+
+        try{
+            TipoUbicacion tipoUbicacion = new TipoUbicacion();
+            tipoUbicacion.setId_TipoUbicacion(Integer.parseInt(id_TipoUbicacion.getText().toString()));
+            String registro;
+            helper.abrir();
+            registro = helper.eliminar(tipoUbicacion);
+            helper.cerrar();
+            Toast.makeText(this,registro,Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

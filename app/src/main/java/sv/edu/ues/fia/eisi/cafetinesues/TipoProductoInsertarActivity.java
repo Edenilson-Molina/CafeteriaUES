@@ -26,14 +26,22 @@ public class TipoProductoInsertarActivity extends Activity {
 
     public void insertarTipoProducto(View v)
     {
-        TipoProducto tipoProducto = new TipoProducto();
-        tipoProducto.setId_TipoProducto(Integer.parseInt(codigo_TipoProducto.getText().toString()));
-        tipoProducto.setNombre_TipoProducto(nombre_TipoProducto.getText().toString());
-        String regInsertados;
-        helper.abrir();
-        regInsertados = helper.insertar(tipoProducto);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+
+        try{
+            TipoProducto tipoProducto = new TipoProducto();
+            tipoProducto.setId_TipoProducto(Integer.parseInt(codigo_TipoProducto.getText().toString()));
+            tipoProducto.setNombre_TipoProducto(nombre_TipoProducto.getText().toString());
+            String regInsertados;
+            helper.abrir();
+            regInsertados = helper.insertar(tipoProducto);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void limpiarTexto(View v)

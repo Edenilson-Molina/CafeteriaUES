@@ -25,18 +25,26 @@ public class FacultadInsertarActivity extends Activity {
 
     public void insertarFacultad(View v)
     {
-        String id_Facultad = codigo_Facultad.getText().toString();
-        String nom_Facultad = nombre_Facultad.getText().toString();
-        Facultad facultad = new Facultad();
 
-        facultad.setId_Faculdad(Integer.parseInt(id_Facultad));
-        facultad.setNombre_Facultad(nom_Facultad);
-        String regInsertados;
+        try{
+            String id_Facultad = codigo_Facultad.getText().toString();
+            String nom_Facultad = nombre_Facultad.getText().toString();
+            Facultad facultad = new Facultad();
 
-        helper.abrir();
-        regInsertados=helper.Insertar(facultad);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();;
+            facultad.setId_Faculdad(Integer.parseInt(id_Facultad));
+            facultad.setNombre_Facultad(nom_Facultad);
+            String regInsertados;
+
+            helper.abrir();
+            regInsertados=helper.Insertar(facultad);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 

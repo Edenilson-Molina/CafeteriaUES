@@ -95,20 +95,21 @@ public class DetallePedidoInsertarActivity extends AppCompatActivity {
 //    }
 
     public void insertarDetallePedido(View v) {
-        String regInsertados;
-        String idDetallePedido = EditId_DetallePedido.getText().toString();
-        String idPedido = EditId_Pedido.getText().toString();
-        //String idCombo = EditId_Combo.getText().toString();
-        //String idProducto = EditId_Producto.getText().toString();
-
-        String id_ProdOrCom = ID_ProdOrCombo.getText().toString();
-        boolean isCombo = radio_seleccion.getCheckedRadioButtonId() == R.id.radio_combo;
-
-        String cantidadProducto = EditCantidad_Producto.getText().toString();
-        String subtotal = EditSubtotal.getText().toString();
-        DetallePedido detallePedido = new DetallePedido();
 
         try{
+            String regInsertados;
+            String idDetallePedido = EditId_DetallePedido.getText().toString();
+            String idPedido = EditId_Pedido.getText().toString();
+            //String idCombo = EditId_Combo.getText().toString();
+            //String idProducto = EditId_Producto.getText().toString();
+
+            String id_ProdOrCom = ID_ProdOrCombo.getText().toString();
+            boolean isCombo = radio_seleccion.getCheckedRadioButtonId() == R.id.radio_combo;
+
+            String cantidadProducto = EditCantidad_Producto.getText().toString();
+            String subtotal = EditSubtotal.getText().toString();
+            DetallePedido detallePedido = new DetallePedido();
+
             detallePedido.setId_DetallePedido(Integer.parseInt(idDetallePedido));
             detallePedido.setId_Pedido(Integer.parseInt(idPedido));
             detallePedido.setCantidad_Producto(Integer.parseInt(cantidadProducto));
@@ -120,15 +121,16 @@ public class DetallePedidoInsertarActivity extends AppCompatActivity {
                 detallePedido.setId_Producto(Integer.parseInt(id_ProdOrCom));
                 detallePedido.setId_Combo(0);
             }
+
+            helper.abrir();
+            String estado = helper.insertar(detallePedido);
+            helper.cerrar();
+            Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Error en los datos ingresados", Toast.LENGTH_SHORT).show();
         }
 
-        helper.abrir();
-        String estado = helper.insertar(detallePedido);
-        helper.cerrar();
-        Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
     }
 
 

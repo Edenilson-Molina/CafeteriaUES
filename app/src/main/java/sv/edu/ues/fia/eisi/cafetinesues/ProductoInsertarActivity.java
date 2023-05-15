@@ -27,23 +27,30 @@ public class ProductoInsertarActivity extends Activity {
     }
     public void insertarProducto(View v)
     {
-        String id_Producto = codigo_Producto.getText().toString();
-        String id_TipoProducto = codigo_TipoProducto.getText().toString();
-        String nom_Producto = nombre_Producto.getText().toString();
-        String statu_Producto = estado_Producto.getText().toString();
-        String precioact_Producto = precioactual_Producto.getText().toString();
-        String regInsertados;
 
-        Producto producto = new Producto();
-        producto.setCodigo_Producto(Integer.parseInt(id_Producto));
-        producto.setCodigo_TipoProducto(Integer.parseInt(id_TipoProducto));
-        producto.setNombre_Producto(nom_Producto);
-        producto.setEstado_Producto(statu_Producto);
-        producto.setPrecioactual_Producto(Float.parseFloat(precioact_Producto));
-        helper.abrir();
-        regInsertados=helper.insertar(producto);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        try{
+            String id_Producto = codigo_Producto.getText().toString();
+            String id_TipoProducto = codigo_TipoProducto.getText().toString();
+            String nom_Producto = nombre_Producto.getText().toString();
+            String statu_Producto = estado_Producto.getText().toString();
+            String precioact_Producto = precioactual_Producto.getText().toString();
+            String regInsertados;
+
+            Producto producto = new Producto();
+            producto.setCodigo_Producto(Integer.parseInt(id_Producto));
+            producto.setCodigo_TipoProducto(Integer.parseInt(id_TipoProducto));
+            producto.setNombre_Producto(nom_Producto);
+            producto.setEstado_Producto(statu_Producto);
+            producto.setPrecioactual_Producto(Float.parseFloat(precioact_Producto));
+            helper.abrir();
+            regInsertados=helper.insertar(producto);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void limpiarTexto(View v)

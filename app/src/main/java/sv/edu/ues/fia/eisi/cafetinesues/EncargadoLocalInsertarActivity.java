@@ -21,17 +21,24 @@ public class EncargadoLocalInsertarActivity extends Activity {
         nombre_EncargadoLocal = (EditText) findViewById(R.id.nombre_EncargadoLocal);
     }
     public void insertarEncargadoLocal (View v){
-        String id_Encargado = codigo_EncargadoLocal.getText().toString();
-        String nombre_Encargado = nombre_EncargadoLocal.getText().toString();
-        String regInsertados;
 
-        EncargadoLocal encargadoLocal = new EncargadoLocal();
-        encargadoLocal.setId_EncargadoLocal(Integer.parseInt(id_Encargado));
-        encargadoLocal.setNombre_EncargadoLocal(nombre_Encargado);
-        helper.abrir();
-        regInsertados = helper.Insertar(encargadoLocal);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        try{
+            String id_Encargado = codigo_EncargadoLocal.getText().toString();
+            String nombre_Encargado = nombre_EncargadoLocal.getText().toString();
+            String regInsertados;
+
+            EncargadoLocal encargadoLocal = new EncargadoLocal();
+            encargadoLocal.setId_EncargadoLocal(Integer.parseInt(id_Encargado));
+            encargadoLocal.setNombre_EncargadoLocal(nombre_Encargado);
+            helper.abrir();
+            regInsertados = helper.Insertar(encargadoLocal);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void limpiarTexto(View v){

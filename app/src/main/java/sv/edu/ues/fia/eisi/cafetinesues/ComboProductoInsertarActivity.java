@@ -25,19 +25,23 @@ public class ComboProductoInsertarActivity extends AppCompatActivity {
     }
 
     public void insertarComboProducto(View v){
-        String regInsertados;
-        ComboProducto comboProducto = new ComboProducto();
+
         try{
+            String regInsertados;
+            ComboProducto comboProducto = new ComboProducto();
             comboProducto.setId_ComboProducto(Integer.parseInt(editIdComboProducto.getText().toString()));
             comboProducto.setId_Combo(Integer.parseInt(editIdCombo.getText().toString()));
             comboProducto.setId_Producto(Integer.parseInt(editIdProducto.getText().toString()));
+
+            helper.abrir();
+            regInsertados = helper.insertar(comboProducto);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+
         } catch (Exception e){
             Toast.makeText(this, "Error en los datos ingresados", Toast.LENGTH_SHORT).show();
         }
-        helper.abrir();
-        regInsertados = helper.insertar(comboProducto);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+
     }
 
     public void limpiarTextoInsertarComboProducto(View v){

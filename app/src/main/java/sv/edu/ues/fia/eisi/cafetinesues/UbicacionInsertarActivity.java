@@ -31,24 +31,30 @@ public class UbicacionInsertarActivity extends Activity {
 
     public void insertarUbicacion(View v){
 
-        String id_Ubicacion = codigo_Ubicacion.getText().toString();
-        String nom_Ubicacion = nombre_Ubicacion.getText().toString();
-        String des_Ubicacion = descripcion_Ubicacion.getText().toString();
-        String id_Facultad = codigo_Facultad.getText().toString();
-        String id_TipoUbicacion = codigo_TipoUbicacion.getText().toString();
-        Ubicacion ubicacion = new Ubicacion();
+        try{
+            String id_Ubicacion = codigo_Ubicacion.getText().toString();
+            String nom_Ubicacion = nombre_Ubicacion.getText().toString();
+            String des_Ubicacion = descripcion_Ubicacion.getText().toString();
+            String id_Facultad = codigo_Facultad.getText().toString();
+            String id_TipoUbicacion = codigo_TipoUbicacion.getText().toString();
+            Ubicacion ubicacion = new Ubicacion();
 
-        ubicacion.setId_Ubicacion(Integer.parseInt(id_Ubicacion));
-        ubicacion.setNombre_Ubicacion(nom_Ubicacion);
-        ubicacion.setDescripcion_Ubicacion(des_Ubicacion);
-        ubicacion.setId_Facultad(Integer.parseInt(id_Facultad));
-        ubicacion.setId_TipoUbicacion(Integer.parseInt(id_TipoUbicacion));
-        String regInsertados;
+            ubicacion.setId_Ubicacion(Integer.parseInt(id_Ubicacion));
+            ubicacion.setNombre_Ubicacion(nom_Ubicacion);
+            ubicacion.setDescripcion_Ubicacion(des_Ubicacion);
+            ubicacion.setId_Facultad(Integer.parseInt(id_Facultad));
+            ubicacion.setId_TipoUbicacion(Integer.parseInt(id_TipoUbicacion));
+            String regInsertados;
 
-        helper.abrir();
-        regInsertados=helper.insertar(ubicacion);
-        helper.cerrar();
-        Toast.makeText(this,regInsertados,Toast.LENGTH_SHORT).show();
+            helper.abrir();
+            regInsertados=helper.insertar(ubicacion);
+            helper.cerrar();
+            Toast.makeText(this,regInsertados,Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

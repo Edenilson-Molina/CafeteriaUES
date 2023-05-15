@@ -20,12 +20,20 @@ public class EmpleadoEliminarActivity extends Activity {
     }
 
     public void eliminarEmpleado(View v){
-        Empleado empleado = new Empleado();
-        empleado.setId_Empleado(Integer.parseInt(codigo_Empleado.getText().toString()));
-        String registro;
-        helper.abrir();
-        registro = helper.Eliminar(empleado);
-        helper.cerrar();
-        Toast.makeText(this, registro, Toast.LENGTH_SHORT).show();
+
+        try{
+            Empleado empleado = new Empleado();
+            empleado.setId_Empleado(Integer.parseInt(codigo_Empleado.getText().toString()));
+            String registro;
+            helper.abrir();
+            registro = helper.Eliminar(empleado);
+            helper.cerrar();
+            Toast.makeText(this, registro, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

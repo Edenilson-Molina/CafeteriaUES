@@ -18,12 +18,19 @@ public class LocalEliminarActivity extends Activity {
         codigo_Local = (EditText) findViewById(R.id.codigo_Local);
     }
     public void eliminarLocal(View v){
-        Local local = new Local();
-        local.setId_Local(Integer.parseInt(codigo_Local.getText().toString()));
-        String registro;
-        helper.abrir();
-        registro = helper.Eliminar(local);
-        helper.cerrar();
-        Toast.makeText(this, registro, Toast.LENGTH_SHORT).show();
+
+        try{
+            Local local = new Local();
+            local.setId_Local(Integer.parseInt(codigo_Local.getText().toString()));
+            String registro;
+            helper.abrir();
+            registro = helper.Eliminar(local);
+            helper.cerrar();
+            Toast.makeText(this, registro, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
     }
 }

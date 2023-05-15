@@ -24,13 +24,20 @@ public class UbicacionEliminarActivity extends Activity {
     }
 
     public void eliminarUbicacion(View v){
-        Ubicacion ubicacion = new Ubicacion();
-        ubicacion.setId_Ubicacion(Integer.parseInt(id_Ubicacion.getText().toString()));
-        String registro;
-        helper.abrir();
-        registro = helper.eliminar(ubicacion);
-        helper.cerrar();
-        Toast.makeText(this,registro,Toast.LENGTH_SHORT).show();
+
+        try{
+            Ubicacion ubicacion = new Ubicacion();
+            ubicacion.setId_Ubicacion(Integer.parseInt(id_Ubicacion.getText().toString()));
+            String registro;
+            helper.abrir();
+            registro = helper.eliminar(ubicacion);
+            helper.cerrar();
+            Toast.makeText(this,registro,Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

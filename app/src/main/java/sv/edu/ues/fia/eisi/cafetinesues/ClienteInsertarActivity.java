@@ -35,23 +35,31 @@ public class ClienteInsertarActivity extends Activity {
     }
 
     public void insertarCliente(View v){
-        String id_cli = id_cliente.getText().toString();
-        String n_cli = nombre_cliente.getText().toString();
-        String a_cli = apellidos_cliente.getText().toString();
-        String f_cli = fecha_nacimiento.getText().toString();
-        String id_ubi = id_ubicacion.getText().toString();
-        String regInsertados;
 
-        Cliente cliente = new Cliente();
-        cliente.setId_cliente(Integer.parseInt(id_cli));
-        cliente.setNombres(n_cli);
-        cliente.setApellidos(a_cli);
-        cliente.setFecha_nacimiento(f_cli);
-        cliente.setId_ubicacion(Integer.parseInt(id_ubi));
-        helper.abrir();
-        regInsertados=helper.insertar(cliente);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        try{
+            String id_cli = id_cliente.getText().toString();
+            String n_cli = nombre_cliente.getText().toString();
+            String a_cli = apellidos_cliente.getText().toString();
+            String f_cli = fecha_nacimiento.getText().toString();
+            String id_ubi = id_ubicacion.getText().toString();
+            String regInsertados;
+
+            Cliente cliente = new Cliente();
+            cliente.setId_cliente(Integer.parseInt(id_cli));
+            cliente.setNombres(n_cli);
+            cliente.setApellidos(a_cli);
+            cliente.setFecha_nacimiento(f_cli);
+            cliente.setId_ubicacion(Integer.parseInt(id_ubi));
+            helper.abrir();
+            regInsertados=helper.insertar(cliente);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void limpiarTextoClienteInsertar(View v)

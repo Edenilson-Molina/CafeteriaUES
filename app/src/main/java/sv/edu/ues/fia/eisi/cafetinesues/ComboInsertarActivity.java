@@ -26,20 +26,25 @@ public class ComboInsertarActivity extends AppCompatActivity {
 
 
     public void insertarCombo(View v) {
-        String id_Combo=EditId_Combo.getText().toString();
-        String precio_Combo=EditPrecio_Combo.getText().toString();
-        String regInsertados;
-        Combo combo=new Combo();
-        try {
-            combo.setPrecio_Combo(Float.parseFloat(precio_Combo));
-            combo.setId_Combo(Integer.parseInt(id_Combo));
-        } catch (Exception e) {
-            Toast.makeText(this, "Tipo de dato incorrecto", Toast.LENGTH_SHORT).show();
-        }
-        helper.abrir();
-        regInsertados=helper.insertar(combo);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+
+            try {
+                String id_Combo=EditId_Combo.getText().toString();
+                String precio_Combo=EditPrecio_Combo.getText().toString();
+                String regInsertados;
+                Combo combo=new Combo();
+
+                combo.setPrecio_Combo(Float.parseFloat(precio_Combo));
+                combo.setId_Combo(Integer.parseInt(id_Combo));
+
+                helper.abrir();
+                regInsertados=helper.insertar(combo);
+                helper.cerrar();
+                Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Tipo de dato incorrecto", Toast.LENGTH_SHORT).show();
+            }
+
+
     }
 
     public void limpiarTextoInsertarCombo(View v) {

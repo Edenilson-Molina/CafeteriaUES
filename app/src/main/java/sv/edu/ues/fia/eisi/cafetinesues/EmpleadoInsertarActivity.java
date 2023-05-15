@@ -25,21 +25,27 @@ public class EmpleadoInsertarActivity extends Activity {
         tipo_Empleado = (EditText) findViewById(R.id.tipo_Empleado);
     }
     public void insertarEmpleado(View v){
-        String id_Empleado = codigo_Empleado.getText().toString();
-        String id_Local = codigo_Local.getText().toString();
-        String nom_Empleado = nombre_Empleado.getText().toString();
-        String tip_Empleado = tipo_Empleado.getText().toString();
-        String regInsertados;
 
-        Empleado empleado = new Empleado();
-        empleado.setId_Empleado(Integer.parseInt(id_Empleado));
-        empleado.setId_Local(Integer.parseInt(id_Local));
-        empleado.setNombre_Empleado(nom_Empleado);
-        empleado.setTipo_Empleado(tip_Empleado);
-        helper.abrir();
-        regInsertados = helper.Insertar(empleado);
-        helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        try{
+            String id_Empleado = codigo_Empleado.getText().toString();
+            String id_Local = codigo_Local.getText().toString();
+            String nom_Empleado = nombre_Empleado.getText().toString();
+            String tip_Empleado = tipo_Empleado.getText().toString();
+            String regInsertados;
+
+            Empleado empleado = new Empleado();
+            empleado.setId_Empleado(Integer.parseInt(id_Empleado));
+            empleado.setId_Local(Integer.parseInt(id_Local));
+            empleado.setNombre_Empleado(nom_Empleado);
+            empleado.setTipo_Empleado(tip_Empleado);
+            helper.abrir();
+            regInsertados = helper.Insertar(empleado);
+            helper.cerrar();
+            Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();}
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error en los datos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void limpiarTexto(View v){
