@@ -1884,7 +1884,7 @@ public class ControlDB {
                 String[] id_Empleado1 = {String.valueOf(empleado1.getId_Empleado())};
                 abrir();
                 Cursor cursorE1 = db.query("Empleado", null, "id_Empleado=?", id_Empleado1, null, null, null);
-                Cursor cursorL1 = db.query("Local", null, "id_Empleado=?", id_Empleado1, null, null, null);
+                    Cursor cursorL1 = db.query("Local", null, "id_Empleado=?", id_Empleado1, null, null, null);
                 if (cursorE1.moveToFirst() && cursorL1.moveToFirst()) {
                     return true;
                 }
@@ -2108,7 +2108,7 @@ public class ControlDB {
 
         //DATOS TipoPago
         final String[] VECid_TipoPago = {"1", "2"};
-        final String[] VECnombrre_TipoPago = {"1", "2"};
+        final String[] VECnombrre_TipoPago = {"Efectivo", "Bitcoin"};
 
         // DATOS EVENTO ESPECIAL
         final String[] VECid_EventoEspecial = {"1","2"};
