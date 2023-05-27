@@ -2,7 +2,8 @@
     <string name="app_name">CafetinesUES</string>
 
     <!-- Botones genericos -->
-    <string name="insertar">Insertar</string>
+    <string name="insertar">Insertar en Local</string>
+    <string name="insertarServicio">Insertar en Servicio Web</string>
     <string name="actualizar">Actualizar</string>
     <string name="consultar">Consultar</string>
     <string name="eliminar">Eliminar</string>
