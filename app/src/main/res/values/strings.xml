@@ -3,6 +3,7 @@
 
     <!-- Botones genericos -->
     <string name="insertar">Insertar</string>
+    <string name="insertarServidor">Insertar en Servidor</string>
     <string name="actualizar">Actualizar</string>
     <string name="consultar">Consultar</string>
     <string name="eliminar">Eliminar</string>

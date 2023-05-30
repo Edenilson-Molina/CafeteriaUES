@@ -6,13 +6,17 @@ android {
     namespace 'sv.edu.ues.fia.eisi.cafetinesues'
     compileSdk 33
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
     defaultConfig {
         applicationId "sv.edu.ues.fia.eisi.cafetinesues"
         minSdk 21
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        useLibrary 'org.apache.http.legacy'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,6 +34,7 @@ android {
 
 dependencies {
 
+    implementation 'org.apache.httpcomponents:httpclient:4.3'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
