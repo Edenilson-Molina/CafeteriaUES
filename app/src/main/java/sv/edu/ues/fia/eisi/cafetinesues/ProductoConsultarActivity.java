@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONObject;
 
 public class ProductoConsultarActivity extends Activity {
     ControlDB helper;
@@ -17,16 +21,24 @@ public class ProductoConsultarActivity extends Activity {
     EditText estado_Producto;
     EditText precioactual_Producto;
 
+    EditText cantidadAparicionesEnComboProductos;
+
+    private final String urlLocal = "http://192.168.1.45/ws_consultar_aparicionesproducto.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producto_consultar);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         helper = new ControlDB(this);
         codigo_Producto = (EditText) findViewById(R.id.codigo_Producto);
         codigo_TipoProducto = (EditText) findViewById(R.id.codigo_TipoProducto);
         nombre_Producto = (EditText) findViewById(R.id.nombre_Producto);
         estado_Producto = (EditText) findViewById(R.id.estado_Producto);
         precioactual_Producto = (EditText) findViewById(R.id.precioactual_Producto);
+        cantidadAparicionesEnComboProductos = (EditText) findViewById(R.id.cant_comboprod_relacionados);
     }
 
     public void consultarProducto(View v)
@@ -45,6 +57,15 @@ public class ProductoConsultarActivity extends Activity {
             precioactual_Producto.setText(String.valueOf(producto.getPrecioactual_Producto()));
             ocultarTeclado(v);
         }
+    }
+
+    public void consultarAparicionesEnComboProductos(View v)
+    {
+        String url = null;
+        url = urlLocal + "?idProducto=" + codigo_Producto.getText().toString();
+        String cant_aparicionesjSON = ControladorServicio.obtenerRespuestaPeticion(url, this);
+        Log.v("Respuesta", cant_aparicionesjSON);
+        cantidadAparicionesEnComboProductos.setText(ControladorServicio.consultarAparicionesProducto(cant_aparicionesjSON, this));
     }
 
     public void limpiarTexto(View v)

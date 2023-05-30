@@ -107,6 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
+
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="insertarComboProducto"
@@ -118,6 +119,20 @@
                 android:onClick="limpiarTextoInsertarComboProducto"
                 android:textStyle="bold"
                 android:text="@string/limpiar" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="5sp"
+                android:onClick="insertarComboProductoServicio"
+                android:text="@string/insertarServicio"
+                android:textStyle="bold" />
+
         </TableRow>
     </LinearLayout>
 
