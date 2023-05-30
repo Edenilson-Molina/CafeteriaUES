@@ -110,6 +110,7 @@
     <string name="texto_TipoUbicacion">TIPO UBICACION</string>
     <string name="id_TipoUbicacion">ID del Tipo Ubicacion</string>
     <string name="nombre_TipoUbicacion">Tipo Ubicacion</string>
+    <string name="insertarServidor">INSERTAR SERVIDOR</string>
 
 
 </resources>
