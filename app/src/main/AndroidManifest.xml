@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CafetinesUES"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".PedidoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PedidoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LocalMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocalInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EncargadoLocalInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrecioProductoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPagoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultadActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoUbicacionActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UbicacionActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoProductoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoProductoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoProductoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoProductoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoProductoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetallePedidoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboProductoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboProductoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboProductoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboProductoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboProductoMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComboInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductoActualizarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductoConsultarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductoEliminarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductoInsertarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
+        </activity>
+        <uses-library
+            android:name="org.apache.http."
+            android:required="false" />
+    </application>
+
+</manifest>
