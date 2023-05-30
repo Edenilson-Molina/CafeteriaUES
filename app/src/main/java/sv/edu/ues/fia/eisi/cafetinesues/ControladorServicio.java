@@ -154,5 +154,24 @@ public class ControladorServicio
             return " ";
         }
     }
+    public static List<Facultad> obtenerFacultadesExterno(String json, Context ctx) {
+
+        List<Facultad> listaFacultad = new ArrayList<Facultad>();
+
+        try {
+            JSONArray facultadJSON = new JSONArray(json);
+            for (int i = 0; i < facultadJSON.length(); i++) {
+                JSONObject obj = facultadJSON.getJSONObject(i);
+                Facultad facultad = new Facultad();
+                facultad.setId_Faculdad(obj.getInt("ID_FACULTAD"));
+                facultad.setNombre_Facultad(obj.getString("NOMBRE_FACULTAD"));
+                listaFacultad.add(facultad);
+            }
+            return listaFacultad;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG).show();
+            return null;
+        }
+    }
 
 }
