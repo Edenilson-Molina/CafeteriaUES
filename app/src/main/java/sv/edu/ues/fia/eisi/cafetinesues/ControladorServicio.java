@@ -15,6 +15,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ControladorServicio
 {
@@ -101,20 +103,13 @@ public class ControladorServicio
         try {
             JSONObject resultado = new JSONObject(json);
 
-            Toast.makeText(ctx, "Registro ingresado"+ resultado.getJSONArray("resultado"), Toast.LENGTH_LONG)
-                    .show();
-            int respuesta = resultado.getInt("resultado");
-            if (respuesta == 1)
-                Toast.makeText(ctx, "Registro ingresado", Toast.LENGTH_LONG).show();
-            else
-                Toast.makeText(ctx, "Error registro duplicado",
-                        Toast.LENGTH_LONG).show();
-            Toast.makeText(ctx, "Registro ingresado"+ resultado.getJSONArray("resultado").toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(ctx, "Registro ingresado"+ resultado.getJSONArray("resultado"), Toast.LENGTH_LONG).show();
             int respuesta = resultado.getInt("resultado");
             if (respuesta == 1)
                 Toast.makeText(ctx, "Registro ingresado", Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(ctx, "Error registro duplicado", Toast.LENGTH_LONG).show();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

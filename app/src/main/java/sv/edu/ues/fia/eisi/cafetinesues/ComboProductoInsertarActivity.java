@@ -17,7 +17,7 @@ public class ComboProductoInsertarActivity extends AppCompatActivity {
     EditText editIdProducto;
     ControlDB helper;
 
-    private final String urlLocal = "http://192.168.1.45/ws_comboproducto_insert.php";
+    private final String urlLocal = "http://192.168.1.21/ws_comboproducto_insert.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class ComboProductoInsertarActivity extends AppCompatActivity {
         JSONObject comboProducto = new JSONObject();
         url = urlLocal+ "?idComboProducto=" + editIdComboProducto.getText().toString() + "&idCombo="
                 + editIdCombo.getText().toString() + "&idProducto=" + editIdProducto.getText().toString();
-        ControladorServicio.insertarComboProductoExterno(url, this);
+        ControladorServicio.insertarExterno(url, this);
     }
 
     public void limpiarTextoInsertarComboProducto(View v){

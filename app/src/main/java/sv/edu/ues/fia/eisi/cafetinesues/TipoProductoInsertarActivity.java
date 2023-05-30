@@ -62,7 +62,7 @@ public class TipoProductoInsertarActivity extends Activity {
         String nomTP = nombre_TipoProducto.getText().toString();
         String url = null;
         url = urlLocal+ "?idTipoProducto=" + idTP + "&nombreTipoProducto=" + nomTP;
-        ControladorServicio.insertarTipoProductoExterno(url, this);
+        ControladorServicio.insertarExterno(url, this);
         //http://localhost/ws_tipoproducto_insert.php?idTipoProducto=2&nombreTipoProducto=Almuerzo
     }
 
