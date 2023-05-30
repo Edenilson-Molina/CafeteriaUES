@@ -61,7 +61,7 @@
                 android:id="@+id/nombre_EncargadoLocal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="text">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -77,6 +77,14 @@
                 android:text="@string/insertar"
                 android:textStyle="bold"
                 android:layout_marginEnd="5sp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:onClick="insertarServidor"
+                android:text="IN2"
+                android:textStyle="bold"
+                android:layout_marginEnd="5sp"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:onClick="limpiarTexto"
