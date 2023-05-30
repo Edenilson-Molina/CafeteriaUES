@@ -6,6 +6,10 @@ android {
     namespace 'sv.edu.ues.fia.eisi.cafetinesues'
     compileSdk 33
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
     defaultConfig {
         applicationId "sv.edu.ues.fia.eisi.cafetinesues"
         minSdk 21
@@ -30,6 +34,7 @@ android {
 
 dependencies {
 
+    implementation 'org.apache.httpcomponents:httpclient:4.3'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

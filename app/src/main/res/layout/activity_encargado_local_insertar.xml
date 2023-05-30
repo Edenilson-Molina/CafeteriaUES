@@ -61,28 +61,46 @@
                 android:id="@+id/nombre_EncargadoLocal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="text">
 
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TableRow
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        >
+
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
-            <Button
-                android:layout_width="wrap_content"
-                android:onClick="insertarEncargadoLocal"
-                android:text="@string/insertar"
-                android:textStyle="bold"
-                android:layout_marginEnd="5sp"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:onClick="limpiarTexto"
-                android:textStyle="bold"
-                android:text="@string/limpiar" />
-        </TableRow>
+            android:onClick="insertarEncargadoLocal"
+            android:text="@string/insertar"
+            android:textStyle="bold"
+            android:layout_marginEnd="5sp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="insertarServidor"
+            android:text="INSERTAR EN SERVIDOR"
+            android:textStyle="bold"
+            android:layout_marginEnd="5sp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="limpiarTexto"
+            android:textStyle="bold"
+            android:text="@string/limpiar"
+            android:layout_marginEnd="5sp"/>
+
+    </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

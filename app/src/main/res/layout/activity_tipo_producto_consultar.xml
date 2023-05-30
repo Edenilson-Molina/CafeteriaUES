@@ -88,7 +88,22 @@
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/button4"
+                android:text="@string/consultarServidor"
+                android:onClick="servicioPHP"/>
+        </TableRow>
+        <ListView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/listView1">
 
+        </ListView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -94,12 +94,9 @@ public class ControladorServicio
         return respuesta;
     }
 
-    //
-    //
-    // ESTE ES SOLO DE EJEMPLO DE LA GUIA 8
-    //
-    //
-    public static void insertarNotaExterno(String peticion, Context ctx) {
+
+    public static void insertarExterno(String peticion, Context ctx) {
+
         String json = obtenerRespuestaPeticion(peticion, ctx);
         try {
             JSONObject resultado = new JSONObject(json);
@@ -108,29 +105,38 @@ public class ControladorServicio
                     .show();
             int respuesta = resultado.getInt("resultado");
             if (respuesta == 1)
-                Toast.makeText(ctx, "Registro ingresado", Toast.LENGTH_LONG)
-                        .show();
-            else
-                Toast.makeText(ctx, "Error registro duplicado",
-                        Toast.LENGTH_LONG).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void insertarComboProductoExterno(String peticion, Context ctx){
-        String json = obtenerRespuestaPeticion(peticion, ctx);
-        try {
-            JSONObject resultado = new JSONObject(json);
-
-            int respuesta = resultado.getInt("resultado");
-            if (respuesta == 1)
                 Toast.makeText(ctx, "Registro ingresado", Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(ctx, "Error registro duplicado",
                         Toast.LENGTH_LONG).show();
+            Toast.makeText(ctx, "Registro ingresado"+ resultado.getJSONArray("resultado").toString(), Toast.LENGTH_LONG).show();
+            int respuesta = resultado.getInt("resultado");
+            if (respuesta == 1)
+                Toast.makeText(ctx, "Registro ingresado", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(ctx, "Error registro duplicado", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+  
+    public static List<TipoProducto> obtenerTipoProductosExterno(String json, Context ctx) {
+
+        List<TipoProducto> listaTipoProductos = new ArrayList<TipoProducto>();
+
+        try {
+            JSONArray tipoProductoJSON = new JSONArray(json);
+            for (int i = 0; i < tipoProductoJSON.length(); i++) {
+                JSONObject obj = tipoProductoJSON.getJSONObject(i);
+                TipoProducto tipoProducto = new TipoProducto();
+                tipoProducto.setId_TipoProducto(obj.getInt("ID_TIPOPRODUCTO"));
+                tipoProducto.setNombre_TipoProducto(obj.getString("NOMBRE_TIPOPRODUCTO"));
+                listaTipoProductos.add(tipoProducto);
+            }
+            return listaTipoProductos;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG).show();
+            return null;
         }
     }
 
@@ -153,4 +159,5 @@ public class ControladorServicio
             return " ";
         }
     }
+
 }
