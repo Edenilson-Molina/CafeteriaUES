@@ -88,7 +88,7 @@ public class ControladorServicio
         return respuesta;
     }
 
-    public static void insertarNotaExterno(String peticion, Context ctx) {
+    public static void insertarTipoProductoExterno(String peticion, Context ctx) {
 
         String json = obtenerRespuestaPeticion(peticion, ctx);
         try {
@@ -102,6 +102,26 @@ public class ControladorServicio
                 Toast.makeText(ctx, "Error registro duplicado", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static List<TipoProducto> obtenerTipoProductosExterno(String json, Context ctx) {
+
+        List<TipoProducto> listaTipoProductos = new ArrayList<TipoProducto>();
+
+        try {
+            JSONArray tipoProductoJSON = new JSONArray(json);
+            for (int i = 0; i < tipoProductoJSON.length(); i++) {
+                JSONObject obj = tipoProductoJSON.getJSONObject(i);
+                TipoProducto tipoProducto = new TipoProducto();
+                tipoProducto.setId_TipoProducto(obj.getInt("ID_TIPOPRODUCTO"));
+                tipoProducto.setNombre_TipoProducto(obj.getString("NOMBRE_TIPOPRODUCTO"));
+                listaTipoProductos.add(tipoProducto);
+            }
+            return listaTipoProductos;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG).show();
+            return null;
         }
     }
 

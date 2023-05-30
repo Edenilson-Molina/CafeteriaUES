@@ -6,6 +6,7 @@
     <string name="insertarServidor">Insert in Server</string>
     <string name="actualizar">Update</string>
     <string name="consultar">Check</string>
+    <string name="consultarServidor">Query Server</string>
     <string name="eliminar">Delete</string>
     <string name="limpiar">Clear</string>
     <string name="resultado">Result</string>
