@@ -15,7 +15,7 @@ public class FacultadInsertarActivity extends Activity {
     EditText codigo_Facultad;
     EditText nombre_Facultad;
 
-    private final String urlLocal = "http://192.168.1.15:8080/ws_Facultad_insert.php";
+    private final String urlLocal = "http://192.168.1.21/ws_Facultad_insert.php";
 
     @SuppressLint("NewApi")
     @Override
