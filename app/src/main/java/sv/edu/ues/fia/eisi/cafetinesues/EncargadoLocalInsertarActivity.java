@@ -14,7 +14,7 @@ public class EncargadoLocalInsertarActivity extends Activity {
     ControlDB helper;
     EditText codigo_EncargadoLocal;
     EditText nombre_EncargadoLocal;
-    private final String urlLocal = "http://192.168.1.21/ws_encargo_insert_.php";
+    private final String urlLocal = "http://192.168.1.45/ws_encargo_insert_.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

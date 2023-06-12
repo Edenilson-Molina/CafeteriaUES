@@ -16,7 +16,7 @@ public class TipoProductoInsertarActivity extends Activity {
     EditText codigo_TipoProducto;
     EditText nombre_TipoProducto;
 
-    private final String urlLocal = "http://192.168.1.21/ws_tipoproducto_insert.php";
+    private final String urlLocal = "http://192.168.1.45/ws_tipoproducto_insert.php";
 
     @SuppressLint("NewApi")
     @Override

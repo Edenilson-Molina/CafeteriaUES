@@ -26,7 +26,7 @@ public class FacultadConsultarActivity extends Activity {
     static List<String> nombreFacultad;
     ListView listViewFacultad;
     //http://localhost/ws_db_facultad.php
-    private final String urlLocal = "http://192.168.1.15:8080/ws_db_facultad.php";
+    private final String urlLocal = "http://192.168.1.45/ws_db_facultad.php";
 
     @SuppressLint("NewApi")
     @Override

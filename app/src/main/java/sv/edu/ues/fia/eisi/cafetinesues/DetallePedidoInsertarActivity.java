@@ -10,8 +10,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
-
 public class DetallePedidoInsertarActivity extends AppCompatActivity {
 
     ControlDB helper;

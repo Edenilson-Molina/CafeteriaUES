@@ -13,7 +13,7 @@ public class TipoUbicacionInsertarActivity extends Activity {
     ControlDB helper;
     EditText codigo_TipoUbicacion;
     EditText nombre_TipoUbicacion;
-    private final String urlLocal = "http://192.168.0.12/apps/ws_tipoubicacion_insert.php";
+    private final String urlLocal = "http://192.168.1.45/apps/ws_tipoubicacion_insert.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

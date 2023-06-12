@@ -23,7 +23,7 @@ public class ProductoConsultarActivity extends Activity {
 
     EditText cantidadAparicionesEnComboProductos;
 
-    private final String urlLocal = "http://192.168.1.21/ws_consultar_aparicionesproducto.php";
+    private final String urlLocal = "http://192.168.1.45/ws_consultar_aparicionesproducto.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -17,7 +17,7 @@ public class ComboProductoInsertarActivity extends AppCompatActivity {
     EditText editIdProducto;
     ControlDB helper;
 
-    private final String urlLocal = "http://192.168.1.21/ws_comboproducto_insert.php";
+    private final String urlLocal = "http://192.168.1.45/ws_comboproducto_insert.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

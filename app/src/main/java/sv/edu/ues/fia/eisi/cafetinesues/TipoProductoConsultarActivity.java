@@ -28,7 +28,7 @@ public class TipoProductoConsultarActivity extends Activity {
     static List<String> nombreTipoProducto;
     ListView listViewTipoProductos;
     //http://localhost/ws_db_tipoproducto.php
-    private final String urlLocal = "http://192.168.1.21/ws_db_tipoproducto.php";
+    private final String urlLocal = "http://192.168.1.45/ws_db_tipoproducto.php";
 
     @SuppressLint("NewApi")
     @Override
